@@ -1,0 +1,37 @@
+<!-- Sidebar con altura fija y scroll interno -->
+<div class="h-screen flex flex-col overflow-hidden">
+  
+    <!-- Header fijo del sidebar -->
+  <header class="flex-shrink-0 min-h-[60px] ">
+    <div class="flex justify-center items-center">
+      <a class="flex focus:outline-hidden focus:opacity-80" 
+         href="#" aria-label="Brand">
+        <img src="images/logo.png" alt="Logo" class="w-18 h-18 mx-auto my-4 rounded-full">
+      </a>
+      
+      <!-- Close Button (móvil) -->
+      <div class="lg:hidden -me-2">
+        <button type="button" (click)="onCloseSidebar()"
+                class="flex justify-center items-center gap-x-3 size-8 bg-slate-700/50 hover:bg-slate-600 text-slate-200 rounded-full disabled:opacity-50 disabled:pointer-events-none focus:outline-hidden focus:bg-slate-600 transition-colors duration-200">
+          <svg class="shrink-0 size-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+               stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M18 6 6 18" />
+            <path d="m6 6 12 12" />
+          </svg>
+          <span class="sr-only">Close</span>
+        </button>
+      </div>
+    </div>
+  </header>
+  <h1 class="text-xl  text-center font-semibold text-sky-100  ">Admin</h1>
+  <!-- Contenido del sidebar con scroll -->
+  <div class="flex-1 overflow-y-auto">
+    
+    <!-- Navigation Menu -->
+    <nav class="p-4 space-y-1 ">
+      <app-side-menu-list></app-side-menu-list>
+    </nav>
+  </div>
+
+
+</div>

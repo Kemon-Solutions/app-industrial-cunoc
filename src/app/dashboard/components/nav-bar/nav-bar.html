@@ -1,0 +1,99 @@
+<header class="flex w-full justify-between items-center bg-[#0f2138] px-4 py-2">
+   
+
+        <div class="flex  justify-between items-center lg:hidden ">
+            <h1 class="ml-6 text-xl font-semibold text-sky-100 m-4">Admin</h1>
+            <button
+                type="button"
+                (click)="optenToggleSidebar()"
+                class="inline-flex items-center justify-center p-2 text-slate-200 bg-[#1b3553] border border-[#1b3553] rounded-lg hover:bg-[#244569] hover:text-white focus:outline-none focus:ring-2 focus:ring-sky-500/40"
+                aria-label="Abrir menú principal"
+                >
+                <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 17 14">
+                    <path
+                    stroke="currentColor"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M1 1h15M1 7h15M1 13h15"
+                    />
+                </svg>
+            </button>
+        </div>
+
+        <!-- User -->
+        <div class="flex flex-shrink-0 ml-auto">
+       
+           <!-- User Dropdown -->
+            <div class="hs-dropdown relative inline-flex w-full">
+                <button id="hs-dropdown-user" type="button"
+                    class="hs-dropdown-toggle w-full flex items-center gap-x-3 py-2 px-3 text-sm bg-transparent
+                    hover:bg-[#1b3553] hover:rounded-sm text-slate-100 focus:outline-none focus:bg-[#1b3553]
+                    disabled:opacity-50 disabled:pointer-events-none transition-colors
+                    duration-200"
+                    aria-haspopup="menu" aria-expanded="false" aria-label="Dropdown">
+                    <img class="shrink-0 size-8 rounded-full ring-2 ring-sky-500"
+                        [src]="user().fotoUrl || 'images/user-default.png'"
+                        alt="Avatar">
+                    <div class="text-left">
+                        <div class="font-medium text-slate-100">{{user().nombre1}} {{user().apellido1}}</div>
+                        <div class="text-xs text-slate-400">{{user().rol?.nombre || 'Sin rol'}}</div>
+                        @if (user().sucursal) {
+                        <div class="text-xs font-semibold text-sky-400">{{ user().sucursal!.nombre | uppercase }}</div>
+                        }
+                    </div>
+                    <svg class="hs-dropdown-open:rotate-180 shrink-0 size-4 ml-auto transition-transform duration-200"
+                        xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="m6 9 6 6 6-6" />
+                    </svg>
+                </button>
+
+                <div class="hs-dropdown-menu transition-[opacity,margin] duration hs-dropdown-open:opacity-100 opacity-0 w-60 hidden z-10 bg-white text-[#1e2328] shadow-md rounded-lg "
+                    role="menu" aria-orientation="vertical" aria-labelledby="hs-dropdown-user">
+
+                    <!-- Perfil Section -->
+                    <div class="py-3 px-4 ">
+                        <div class="flex items-center gap-x-3">
+                            <img class="shrink-0 size-10 rounded-full"
+                                [src]="user().fotoUrl || 'images/user-default.png'"
+                                alt="Avatar">
+                            <div>
+                                <div class="font-medium">{{user().nombre1}} {{user().apellido1}}</div>
+                                <div class="text-xs text-[#979a9c]">{{user().userName}}</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Configuración de Cuenta -->
+                    <div class="py-2">
+                        <a class="flex items-center gap-x-3 py-2 px-4 text-sm hover:bg-[#eef0f2] hover:text-blue-400 focus:outline-none focus:bg-[#eef0f2] transition-colors duration-200"
+                            role="menuitem" (click)="openProfile($event)">
+                            <app-custom-icon [name]="'circle-user'" [color]="'#1e2328'"></app-custom-icon>
+                            Mi Perfil
+                        </a>
+
+                        <a class="flex items-center gap-x-3 py-2 px-4 text-sm hover:bg-[#eef0f2] hover:text-blue-400 focus:outline-none focus:bg-[#eef0f2] transition-colors duration-200"
+                            href="#" role="menuitem">
+                            <app-custom-icon [name]="'cog'" [color]="'#1e2328'"></app-custom-icon>
+                            Configuración
+                        </a>
+                    </div>
+
+                    <!-- Cerrar Sesión -->
+                    <div class="py-2 ">
+                        <a class="flex items-center gap-x-3 py-2 px-4 text-sm text-red-400 hover:bg-[#eef0f2] hover:text-red-300 focus:outline-none focus:bg-[#eef0f2] transition-colors duration-200"
+                            href="#" role="menuitem" (click)="logout()">
+                            <app-custom-icon [name]="'log-out'" [color]="'red'"></app-custom-icon>
+                            Cerrar Sesión
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+         
+        </div>
+    
+
+
+</header>

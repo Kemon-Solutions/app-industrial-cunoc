@@ -1,0 +1,127 @@
+<form [formGroup]="form()" (ngSubmit)="onSubmit()" class="space-y-6">
+  <!-- Código -->
+  <div>
+    <label class="block text-sm font-medium text-gray-700 mb-1">Código</label>
+    <input
+      type="text"
+      formControlName="codigo"
+      placeholder="USR_CREAR"
+      class="input-control uppercase"
+    />
+
+    @if (form().get('codigo')?.touched && form().get('codigo')?.invalid) {
+      <div class="text-red-600 text-sm mt-1 space-y-1">
+        @if (form().get('codigo')?.errors?.['required']) {
+          <div>El código es requerido</div>
+        }
+        @if (form().get('codigo')?.errors?.['minlength']) {
+          <div>Mínimo 3 caracteres</div>
+        }
+        @if (form().get('codigo')?.errors?.['maxlength']) {
+          <div>Máximo 20 caracteres</div>
+        }
+      </div>
+    }
+  </div>
+
+  <!-- Módulo y Acción -->
+  <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+    <div>
+      <label class="block text-sm font-medium text-gray-700 mb-1">Módulo</label>
+      <input
+        type="text"
+        formControlName="modulo"
+        placeholder="usuarios"
+        class="input-control"
+      />
+
+      @if (form().get('modulo')?.touched && form().get('modulo')?.invalid) {
+        <div class="text-red-600 text-sm mt-1 space-y-1">
+          @if (form().get('modulo')?.errors?.['required']) {
+            <div>El módulo es requerido</div>
+          }
+          @if (form().get('modulo')?.errors?.['maxlength']) {
+            <div>Máximo 50 caracteres</div>
+          }
+        </div>
+      }
+    </div>
+
+    <div>
+      <label class="block text-sm font-medium text-gray-700 mb-1">Acción</label>
+      <input
+        type="text"
+        formControlName="accion"
+        placeholder="crear"
+        class="input-control"
+      />
+
+      @if (form().get('accion')?.touched && form().get('accion')?.invalid) {
+        <div class="text-red-600 text-sm mt-1 space-y-1">
+          @if (form().get('accion')?.errors?.['required']) {
+            <div>La acción es requerida</div>
+          }
+          @if (form().get('accion')?.errors?.['maxlength']) {
+            <div>Máximo 50 caracteres</div>
+          }
+        </div>
+      }
+    </div>
+  </div>
+
+  <!-- Descripción -->
+  <div>
+    <label class="block text-sm font-medium text-gray-700 mb-1">Descripción</label>
+    <textarea
+      formControlName="descripcion"
+      rows="2"
+      placeholder="Permite crear nuevos usuarios"
+      class="input-control"
+    ></textarea>
+
+    @if (form().get('descripcion')?.touched && form().get('descripcion')?.invalid) {
+      <div class="text-red-600 text-sm mt-1 space-y-1">
+        @if (form().get('descripcion')?.errors?.['maxlength']) {
+          <div>Máximo 250 caracteres</div>
+        }
+      </div>
+    }
+  </div>
+
+  <!-- Activo -->
+  <div class="flex items-center">
+    <label class="relative inline-flex items-center cursor-pointer">
+      <input
+        type="checkbox"
+        formControlName="activo"
+        class="sr-only peer"
+      />
+      <div
+        class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-blue-400 rounded-full peer peer-checked:bg-blue-600 transition-colors"
+      ></div>
+      <div
+        class="absolute top-1/2 left-0.5 -translate-y-1/2 w-5 h-5 bg-white rounded-full shadow-md transition-transform peer-checked:translate-x-5"
+      ></div>
+      <span class="ml-3 text-sm font-medium text-gray-700">Activo</span>
+    </label>
+  </div>
+
+  <!-- Botones -->
+  <div class="flex justify-end space-x-3 pt-2">
+    <button
+      type="button"
+      (click)="onCancel()"
+      class="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-200 rounded-md hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-400"
+    >
+      Cancelar
+    </button>
+
+    <button
+      type="submit"
+      [disabled]="isLoading() || form().invalid"
+      class="px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-400 disabled:opacity-50 disabled:cursor-not-allowed"
+    >
+      {{ btnText }}
+    </button>
+  </div>
+</form>
