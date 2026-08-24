@@ -49,13 +49,13 @@ export class UsuariosService extends HttpService {
     }
   }
 
-  async createUsuario(usuario: Omit<IUsuario, 'usuarioId' | 'created_at' | 'updated_at' | 'deleted_at'>): Promise<UsuarioResponse | null> {
+  async createUsuario(usuario: Omit<IUsuario, 'id' | 'created_at' | 'updated_at' | 'deleted_at'>): Promise<UsuarioResponse | null> {
     try {
-      const { nombre1, nombre2, nombre3, apellido1, apellido2, apellido3, userName, correo, rolId, puestoId, sucursal_id, activo, clave } = usuario;
+      const { nombre1, nombre2, nombre3, apellido1, apellido2, apellido3, userName, correo, rolId, puestoId, sucursalId, activo, clave } = usuario;
       const resp = await firstValueFrom(this.post<UsuarioResponse>(`${this.endpoints.usuarios}`, {
         nombre1, nombre2, nombre3, apellido1, apellido2, apellido3, userName, correo, rolId,
         ...(puestoId ? { puestoId } : {}),
-        ...(sucursal_id ? { sucursal_id } : {}),
+        ...(sucursalId ? { sucursalId } : {}),
         activo, clave
       }));
       if (resp.body?.success) {
@@ -72,11 +72,11 @@ export class UsuariosService extends HttpService {
 
   async updateUsuario(usuario: IUsuario): Promise<UsuarioResponse | null> {
     try {
-      const { usuarioId, nombre1, nombre2, nombre3, apellido1, apellido2, apellido3, userName, correo, rolId, puestoId, sucursal_id, activo } = usuario;
-      const resp = await firstValueFrom(this.put<UsuarioResponse>(`${this.endpoints.usuarios}/${usuarioId}`, {
+      const { id, nombre1, nombre2, nombre3, apellido1, apellido2, apellido3, userName, correo, rolId, puestoId, sucursalId, activo } = usuario;
+      const resp = await firstValueFrom(this.put<UsuarioResponse>(`${this.endpoints.usuarios}/${id}`, {
         nombre1, nombre2, nombre3, apellido1, apellido2, apellido3, userName, correo, rolId,
         puestoId: puestoId || undefined,
-        sucursal_id: sucursal_id || undefined,
+        sucursalId: sucursalId || undefined,
         activo,
       }));
       if (resp.body?.success) {

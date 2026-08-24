@@ -65,8 +65,8 @@ export class RolService extends HttpService {
   async updateRol(rolUpdate: IRol): Promise<RolResponse | null> {
     try {
       // Preparamos los datos para actualizar
-      const { rolId, nombre, activo, invitado } = rolUpdate;
-      const resp = await firstValueFrom(this.put<RolResponse>(`${this.endpoints.empresa}/${rolId}`, {
+      const { id, nombre, activo, invitado } = rolUpdate;
+      const resp = await firstValueFrom(this.put<RolResponse>(`${this.endpoints.empresa}/${id}`, {
         nombre,
         activo,
         invitado,
@@ -84,7 +84,7 @@ export class RolService extends HttpService {
     }
   }
 
-  async createRol(createRol: Omit<IRol, 'rolId'>): Promise<RolResponse | null> {
+  async createRol(createRol: Omit<IRol, 'id'>): Promise<RolResponse | null> {
     try {
       // Obtenemos solo lo necesario para crear el rol
       const { nombre } = createRol;

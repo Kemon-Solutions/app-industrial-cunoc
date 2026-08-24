@@ -1,11 +1,11 @@
 <nav class="mb-4" aria-label="breadcrumb">
     <ol class="flex flex-wrap text-sm text-gray-700">
         <li class="flex items-center">
-            <a routerLink="/dashboard" class="text-blue-600 hover:underline">Inicio</a>
+            <a routerLink="/dashboard" class="text-primary-600 hover:underline">Inicio</a>
             <span class="mx-2">></span>
         </li>
         <li class="flex items-center">
-            <a routerLink="/dashboard/config" class="text-blue-600 hover:underline">Configuración</a>
+            <a routerLink="/dashboard/config" class="text-primary-600 hover:underline">Configuración</a>
             <span class="mx-2">></span>
         </li>
         <li class="flex items-center text-gray-500">Usuarios</li>
@@ -16,7 +16,7 @@
     <div class="flex items-center justify-between px-4 py-3 border-b border-gray-300">
         <h2 class="text-lg font-semibold text-gray-800">Usuarios</h2>
         <button (click)="openUpsertModal(true)"
-            class="px-4 py-2 text-sm bg-blue-600 text-white rounded hover:bg-blue-700">Nuevo usuario</button>
+            class="px-4 py-2 text-sm bg-primary-600 text-white rounded hover:bg-primary-700">Nuevo usuario</button>
     </div>
 
     <div class="p-4">
@@ -25,11 +25,11 @@
                 <label for="searchUsuario" class="sr-only">Buscar usuario</label>
                 <input type="text" id="searchUsuario" placeholder="Buscar usuario..." [value]="buscador()"
                     (input)="onSearch($any($event.target).value)"
-                    class="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" />
+                    class="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500" />
             </div>
             <div>
                 <button type="button" (click)="fetchData()" [disabled]="isLoading()"
-                    class="px-4 py-2 bg-green-600 text-white text-sm rounded hover:bg-green-700 disabled:opacity-50">
+                    class="btn btn-outline">
                     @if (isLoading()) { Buscando... } @else { Buscar }
                 </button>
             </div>
@@ -58,7 +58,7 @@
                         <td colspan="7" class="px-4 py-8 text-center text-gray-500">No se encontraron usuarios</td>
                     </tr>
                     } @else {
-                    @for (u of (usuariosList() || []); track u.usuarioId; let i = $index) {
+                    @for (u of (usuariosList() || []); track u.id; let i = $index) {
                     <tr class="hover:bg-gray-300 odd:bg-white even:bg-gray-100">
                         <td class="px-2 py-2 text-center border border-gray-300">{{ (pagination().page - 1) *
                             pagination().pageSize + i + 1 }}</td>
@@ -69,28 +69,28 @@
                         <td class="px-2 py-2 border border-gray-300">{{ getPuestoName(u.puestoId) }}</td>
                         <td class="px-2 py-2 text-center border border-gray-300">
                             <div class="flex justify-center items-center">
-                                <label [for]="'switch-' + u.usuarioId" class="relative inline-flex items-center cursor-pointer">
-                                    <input type="checkbox" [id]="'switch-' + u.usuarioId" [checked]="u.activo"
+                                <label [for]="'switch-' + u.id" class="relative inline-flex items-center cursor-pointer">
+                                    <input type="checkbox" [id]="'switch-' + u.id" [checked]="u.activo"
                                         (change)="toggleStatus(u, cbxActivo.checked)" #cbxActivo
                                         [disabled]="u.rol?.esAdmin" class="peer sr-only">
-                                    <div class="w-8 h-4 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-3 after:w-3 after:transition-all peer-checked:bg-blue-600 peer-disabled:opacity-50"></div>
+                                    <div class="w-8 h-4 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-3 after:w-3 after:transition-all peer-checked:bg-primary-600 peer-disabled:opacity-50"></div>
                                 </label>
                             </div>
                         </td>
                         <td class="px-3 py-1.5 text-center border space-x-2 border-gray-300">
                             <button (click)="openUpsertModal(false, u)"
-                                class="px-2 py-1 bg-green-600 text-white rounded text-xs hover:bg-green-700 transition">
-                                <app-custom-icon [name]="'square-pen'" [color]="'#eee'" [size]="18"></app-custom-icon>
+                                class="btn-action btn-action--edit">
+                                <app-custom-icon [name]="'square-pen'" [color]="'currentColor'" [size]="18"></app-custom-icon>
                             </button>
                             @if (esAdmin()) {
                             <button (click)="openResetClaveModal(u)" title="Restablecer contraseña"
                                 class="px-2 py-1 bg-yellow-500 text-white rounded text-xs hover:bg-yellow-600 transition">
-                                <app-custom-icon [name]="'key-round'" [color]="'#eee'" [size]="18"></app-custom-icon>
+                                <app-custom-icon [name]="'key-round'" [color]="'currentColor'" [size]="18"></app-custom-icon>
                             </button>
                             }
                             <button (click)="openDeleteModal(u)"
-                                class="px-2 py-1 bg-red-600 text-white rounded text-xs hover:bg-red-700 transition">
-                                <app-custom-icon [name]="'trash-2'" [color]="'#eee'" [size]="18"></app-custom-icon>
+                                class="btn-action btn-action--delete">
+                                <app-custom-icon [name]="'trash-2'" [color]="'currentColor'" [size]="18"></app-custom-icon>
                             </button>
                         </td>
                     </tr>
@@ -194,7 +194,7 @@
                 <button type="button" (click)="closeModal()"
                     class="py-2 px-3 text-sm rounded-lg bg-white border">Cerrar</button>
                 <button type="button" (click)="deleteUsuario(usuarioEdit())"
-                    class="py-2 px-3 text-sm rounded-lg text-white bg-red-600">Eliminar</button>
+                    class="btn btn-danger">Eliminar</button>
             </div>
         </div>
     </div>

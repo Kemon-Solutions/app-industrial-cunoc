@@ -1,7 +1,7 @@
 <nav class="mb-4" aria-label="breadcrumb">
     <ol class="flex flex-wrap text-sm text-gray-700">
         <li class="flex items-center">
-            <a routerLink="/dashboard" class="text-blue-600 hover:underline">Inicio</a>
+            <a routerLink="/dashboard" class="text-primary-600 hover:underline">Inicio</a>
             <span class="mx-2">></span>
         </li>
         <li class="flex items-center text-gray-500">
@@ -15,7 +15,7 @@
     <div class="flex items-center justify-between px-4 py-3 border-b border-gray-300">
         <h2 class="text-lg font-semibold text-gray-800">Permisos</h2>
         <button (click)="openUpsertModal(true)"
-            class="px-4 py-2 text-sm bg-blue-600 text-white rounded hover:bg-blue-700 transition">
+            class="px-4 py-2 text-sm bg-primary-600 text-white rounded hover:bg-primary-700 transition">
             Nuevo permiso
         </button>
     </div>
@@ -26,11 +26,11 @@
                 <label for="searchPermiso" class="sr-only">Buscar permiso</label>
                 <input type="text" id="searchPermiso" placeholder="Buscar por código, módulo..." [value]="buscador()"
                     (input)="onSearch($any($event.target).value)"
-                    class="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" />
+                    class="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500" />
             </div>
             <div>
                 <button type="button" (click)="fetchData()" [disabled]="isLoading()"
-                    class="px-4 py-2 bg-green-600 text-white text-sm rounded hover:bg-green-700 transition disabled:opacity-50">
+                    class="btn btn-outline">
                     @if (isLoading()) {
                     Buscando...
                     } @else {
@@ -69,7 +69,7 @@
                         </td>
                     </tr>
                     } @else {
-                    @for (permiso of permisosList(); track permiso.permisoId; let i = $index) {
+                    @for (permiso of permisosList(); track permiso.id; let i = $index) {
                     <tr class="hover:bg-gray-300 odd:bg-white even:bg-gray-100">
                         <td class="px-2 py-2 text-center border border-gray-300 justify-center">
                             {{ (pagination().page - 1) * pagination().pageSize + i + 1 }}
@@ -80,11 +80,11 @@
                         <td class="px-2 py-2 border border-gray-300 text-gray-600">{{ permiso.descripcion || '-' }}</td>
                         <td class="px-2 py-2 border border-gray-300 text-center">
                             <div class="flex justify-center items-center">
-                                <label [for]="'switch-' + permiso.permisoId" class="relative inline-flex items-center cursor-pointer">
-                                    <input type="checkbox" [id]="'switch-' + permiso.permisoId" [checked]="permiso.activo"
+                                <label [for]="'switch-' + permiso.id" class="relative inline-flex items-center cursor-pointer">
+                                    <input type="checkbox" [id]="'switch-' + permiso.id" [checked]="permiso.activo"
                                         (change)="togglePermisoStatus(permiso, cbxActivo.checked)" #cbxActivo
                                         class="peer sr-only">
-                                    <div class="w-8 h-4 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-3 after:w-3 after:transition-all peer-checked:bg-blue-600"></div>
+                                    <div class="w-8 h-4 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-3 after:w-3 after:transition-all peer-checked:bg-primary-600"></div>
                                 </label>
                             </div>
                         </td>
@@ -93,12 +93,12 @@
                         </td>
                         <td class="px-3 py-1.5 text-center border space-x-2 border-gray-300">
                             <button (click)="openUpsertModal(false, permiso)"
-                                class="px-2 py-1 bg-green-600 text-white rounded text-xs hover:bg-green-700 transition">
-                                <app-custom-icon [name]="'square-pen'" [color]="'#eee'" [size]="18"></app-custom-icon>
+                                class="btn-action btn-action--edit">
+                                <app-custom-icon [name]="'square-pen'" [color]="'currentColor'" [size]="18"></app-custom-icon>
                             </button>
                             <button (click)="openDeleteModal(permiso)"
-                                class="px-2 py-1 bg-red-600 text-white rounded text-xs hover:bg-red-700 transition">
-                                <app-custom-icon [name]="'trash-2'" [color]="'#eee'" [size]="18"></app-custom-icon>
+                                class="btn-action btn-action--delete">
+                                <app-custom-icon [name]="'trash-2'" [color]="'currentColor'" [size]="18"></app-custom-icon>
                             </button>
                         </td>
                     </tr>
@@ -207,7 +207,7 @@
                     Cerrar
                 </button>
                 <button type="button" (click)="deletePermiso(permisoEdit())"
-                    class="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-transparent bg-red-600 text-white hover:bg-red-700 focus:outline-hidden focus:bg-red-700 disabled:opacity-50 disabled:pointer-events-none">
+                    class="btn btn-danger">
                     Eliminar
                 </button>
             </div>

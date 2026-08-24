@@ -9,7 +9,7 @@ import { PaginationComponent } from '../../../shared/components/pagination/pagin
 import { UpsertRolComponent } from '../../components/upsert-rol/upsert-rol';
 
 const emptyRol: IRol = {
-  rolId: '',
+  id: '',
   nombre: '',
   invitado: false,
   esAdmin: false,
@@ -29,7 +29,7 @@ export default class RolPageComponent {
   metadata = signal({});
   nuevoRol = signal(true);
   rolEdit = signal<IRol>({
-    rolId: '',
+    id: '',
     nombre: '',
     invitado: false,
     esAdmin: false,
@@ -197,7 +197,7 @@ export default class RolPageComponent {
   async upsertRol(rol: IRol) {
     this.guardando.set(true);
     try {
-      if (!rol.rolId) { await this.createRol(rol); }
+      if (!rol.id) { await this.createRol(rol); }
       else { await this.updateRol(rol); }
     } finally {
       this.guardando.set(false);
@@ -230,7 +230,7 @@ export default class RolPageComponent {
       // Actualizar el rol en la lista local sin recargar toda la tabla
       const rolActualizado = resp.data;
       this.rolesList.update(roles => 
-        roles.map(r => r.rolId === rolActualizado.rolId ? rolActualizado : r)
+        roles.map(r => r.id === rolActualizado.id ? rolActualizado : r)
       );
       
       this.closeModal();
@@ -239,7 +239,7 @@ export default class RolPageComponent {
 
 
   async deleteRol(rol: IRol) {
-    const response = await this.rolService.deleteRol(rol.rolId || '');
+    const response = await this.rolService.deleteRol(rol.id || '');
     if (response?.success) {
       this.fetchData();
       this.closeModal();

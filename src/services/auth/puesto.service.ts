@@ -65,8 +65,8 @@ export class PuestoService extends HttpService {
   async updatePuesto(puestoUpdate: IPuesto): Promise<PuestoResponse | null> {
     try {
       // Preparamos los datos para actualizar
-      const { puestoId, nombre } = puestoUpdate;
-      const resp = await firstValueFrom(this.put<PuestoResponse>(`${this.endpoints.empresa}/${puestoId}`, {
+      const { id, nombre } = puestoUpdate;
+      const resp = await firstValueFrom(this.put<PuestoResponse>(`${this.endpoints.empresa}/${id}`, {
         nombre
       }));          
       if (resp.body?.success) {
@@ -82,7 +82,7 @@ export class PuestoService extends HttpService {
     }
   }
 
-  async createPuesto(createPuesto: Omit<IPuesto, 'puestoId'>): Promise<PuestoResponse | null> {
+  async createPuesto(createPuesto: Omit<IPuesto, 'id'>): Promise<PuestoResponse | null> {
     try {
       // Obtenemos solo lo necesario para crear el puesto
       const { nombre } = createPuesto;

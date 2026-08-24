@@ -8,7 +8,7 @@ import { PuestoService } from '../../../../services/auth/puesto.service';
 import { UpsertPuestoComponent } from '../../components/upsert-puesto/upsert-puesto.component';
 
 const emptyPuesto: IPuesto = {
-  puestoId: '',
+  id: '',
   nombre: ''
 }
 
@@ -24,7 +24,7 @@ export default class PuestoPageComponent {
   metadata = signal({});
   nuevoPuesto = signal(true);
   puestoEdit = signal<IPuesto>({
-    puestoId: '',
+    id: '',
     nombre: '',
   });
 
@@ -189,7 +189,7 @@ export default class PuestoPageComponent {
   async upsertPuesto(puesto: IPuesto) {
     this.guardando.set(true);
     try {
-      if (!puesto.puestoId) { await this.createPuesto(puesto); }
+      if (!puesto.id) { await this.createPuesto(puesto); }
       else { await this.updatePuesto(puesto); }
     } finally {
       this.guardando.set(false);
@@ -222,7 +222,7 @@ export default class PuestoPageComponent {
       // Actualizar el puesto en la lista local sin recargar toda la tabla
       const puestoActualizado = resp.data;
       this.puestosList.update(puestos => 
-        puestos.map(p => p.puestoId === puestoActualizado.puestoId ? puestoActualizado : p)
+        puestos.map(p => p.id === puestoActualizado.id ? puestoActualizado : p)
       );
       
       this.closeModal();
@@ -231,7 +231,7 @@ export default class PuestoPageComponent {
 
 
   async deletePuesto(puesto: IPuesto) {
-    const response = await this.puestoService.deletePuesto(puesto.puestoId || '');
+    const response = await this.puestoService.deletePuesto(puesto.id || '');
     if (response?.success) {
       this.fetchData();
       this.closeModal();

@@ -20,7 +20,7 @@ export default class UpsertAccesoComponent {
   isLoading = input<boolean>(false);
 
   // Outputs
-  @Output() save = new EventEmitter<Omit<IAcceso, 'accesoId' | 'created_at' | 'updated_at' | 'deleted_at' | 'menu' | 'rol' | 'subMenus'>>();
+  @Output() save = new EventEmitter<Omit<IAcceso, 'id' | 'created_at' | 'updated_at' | 'deleted_at' | 'menu' | 'rol' | 'subMenus'>>();
   @Output() cancel = new EventEmitter<void>();
 
   form = signal<FormGroup>(this.fb.group({}));
@@ -34,8 +34,10 @@ export default class UpsertAccesoComponent {
     const r = this.rol();
 
     const group = this.fb.group({
-      menuId: [m.menuId || '', [Validators.required]],
-      rolId: [r.rolId || '', [Validators.required]],
+      // `m` es el menú seleccionado: su llave primaria viene del API como `id`.
+      // Aquí alimenta el campo menuId del acceso, que sí es una columna de Acceso.
+      menuId: [m.id || '', [Validators.required]],
+      rolId: [r.id || '', [Validators.required]],
       mainMenuId: [null as string | null],
       ordenMenu: [100, [Validators.required]],
       showApp: [true, [Validators.required]],

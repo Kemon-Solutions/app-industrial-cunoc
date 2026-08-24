@@ -62,7 +62,7 @@ export default class LoginComponent {
 
         // Obtener accesos por rol y guardarlos en localStorage
         try {
-          const rolId = authData?.data.user?.rolId || authData?.data.user?.rol?.rolId || '';
+          const rolId = authData?.data.user?.rolId || authData?.data.user?.rol?.id || '';
           if (rolId) {
             this.authService.setAccesosLoading(true);
             const accesosResp = await this.accesoService.getAccesosByRol(rolId);

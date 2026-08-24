@@ -61,7 +61,7 @@ export class PermisoService extends HttpService {
     }
   }
 
-  async createPermiso(createPermiso: Omit<IPermiso, 'permisoId'>): Promise<PermisoResponse | null> {
+  async createPermiso(createPermiso: Omit<IPermiso, 'id'>): Promise<PermisoResponse | null> {
     try {
       const { codigo, modulo, accion, descripcion, activo } = createPermiso;
       const resp = await firstValueFrom(this.post<PermisoResponse>(`${this.endpoints.permisos}`, {
@@ -86,8 +86,8 @@ export class PermisoService extends HttpService {
 
   async updatePermiso(updatePermiso: IPermiso): Promise<PermisoResponse | null> {
     try {
-      const { permisoId, codigo, modulo, accion, descripcion, activo } = updatePermiso;
-      const resp = await firstValueFrom(this.put<PermisoResponse>(`${this.endpoints.permisos}/${permisoId}`, {
+      const { id, codigo, modulo, accion, descripcion, activo } = updatePermiso;
+      const resp = await firstValueFrom(this.put<PermisoResponse>(`${this.endpoints.permisos}/${id}`, {
         codigo,
         modulo,
         accion,

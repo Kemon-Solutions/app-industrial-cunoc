@@ -53,7 +53,7 @@ export class ConfigService extends HttpService {
     }
   }
 
-  async createConfig(payload: Omit<IConfig, 'configId' | 'created_at' | 'updated_at' | 'deleted_at'>): Promise<ConfigResponse | null> {
+  async createConfig(payload: Omit<IConfig, 'id' | 'created_at' | 'updated_at' | 'deleted_at'>): Promise<ConfigResponse | null> {
     try {
       const { llave, tipo, valor, descripcion, activo } = payload;
       const resp = await firstValueFrom(this.post<ConfigResponse>(`${this.endpoints.configs}`, { llave, tipo, valor, descripcion, activo }));
@@ -69,7 +69,7 @@ export class ConfigService extends HttpService {
     }
   }
 
-  async updateConfig(configId: string, payload: Partial<Omit<IConfig, 'configId' | 'created_at' | 'updated_at' | 'deleted_at'>>): Promise<ConfigResponse | null> {
+  async updateConfig(configId: string, payload: Partial<Omit<IConfig, 'id' | 'created_at' | 'updated_at' | 'deleted_at'>>): Promise<ConfigResponse | null> {
     try {
       const { llave, tipo, valor, descripcion, activo } = payload;
       const resp = await firstValueFrom(this.put<ConfigResponse>(`${this.endpoints.configs}/${configId}`, { llave, tipo, valor, descripcion, activo }));

@@ -7,7 +7,7 @@ import { ConfigService } from '../../../../services/auth/config.service';
 import { UpsertConfigComponent } from '../../components/upsert-config/upsert-config';
 
 const emptyConfig: IConfig = {
-  configId: '',
+  id: '',
   llave: '',
   valor: '',
   tipo: TipoConfiguracion.STRING,
@@ -143,7 +143,7 @@ export default class ConfiguracionesPageComponent {
   async upsertConfig(cfg: IConfig) {
     this.guardando.set(true);
     try {
-      if (!cfg.configId) await this.createConfig(cfg);
+      if (!cfg.id) await this.createConfig(cfg);
       else await this.updateConfig(cfg);
     } finally {
       this.guardando.set(false);
@@ -151,7 +151,7 @@ export default class ConfiguracionesPageComponent {
   }
 
   async createConfig(cfg: IConfig) {
-    const { configId, created_at, updated_at, deleted_at, ...payload } = cfg as any;
+    const { id, created_at, updated_at, deleted_at, ...payload } = cfg as any;
     const resp = await this.configService.createConfig(payload);
     if (resp?.success) {
       // Agregar la nueva configuración a la lista local sin recargar toda la tabla
@@ -166,7 +166,7 @@ export default class ConfiguracionesPageComponent {
   }
 
   async updateConfig(cfg: IConfig) {
-    const resp = await this.configService.updateConfig(cfg.configId || '', {
+    const resp = await this.configService.updateConfig(cfg.id || '', {
       llave: cfg.llave,
       tipo: cfg.tipo,
       valor: cfg.valor,
@@ -177,7 +177,7 @@ export default class ConfiguracionesPageComponent {
       // Actualizar la configuración en la lista local sin recargar toda la tabla
       const configActualizada = resp.data;
       this.configs.update(configs => 
-        configs.map(c => c.configId === configActualizada.configId ? configActualizada : c)
+        configs.map(c => c.id === configActualizada.id ? configActualizada : c)
       );
       
       this.closeModal();
@@ -185,7 +185,7 @@ export default class ConfiguracionesPageComponent {
   }
 
   async deleteConfig(cfg: IConfig) {
-    const resp = await this.configService.deleteConfig(cfg.configId || '');
+    const resp = await this.configService.deleteConfig(cfg.id || '');
     if (resp?.success) {
       await this.fetchData();
       this.closeModal();

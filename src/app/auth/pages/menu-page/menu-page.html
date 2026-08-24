@@ -1,11 +1,11 @@
 <nav class="mb-4" aria-label="breadcrumb">
     <ol class="flex flex-wrap text-sm text-gray-700">
         <li class="flex items-center">
-            <a routerLink="/dashboard" class="text-blue-600 hover:underline">Inicio</a>
+            <a routerLink="/dashboard" class="text-primary-600 hover:underline">Inicio</a>
             <span class="mx-2">></span>
         </li>
         <li class="flex items-center">
-            <a routerLink="/dashboard/config" class="text-blue-600 hover:underline">Configuración</a>
+            <a routerLink="/dashboard/config" class="text-primary-600 hover:underline">Configuración</a>
             <span class="mx-2">></span>
         </li>
         <li class="flex items-center text-gray-500">Menús</li>
@@ -17,7 +17,7 @@
         <h2 class="text-lg font-semibold text-gray-800">Menús</h2>
         <div class="flex gap-2">
             <button (click)="openCreateMenuPrincipal()"
-                class="px-4 py-2 text-sm bg-blue-600 text-white rounded hover:bg-blue-700">Nuevo menú</button>
+                class="px-4 py-2 text-sm bg-primary-600 text-white rounded hover:bg-primary-700">Nuevo menú</button>
             <button (click)="openCreateSubmenu()"
                 class="px-4 py-2 text-sm bg-indigo-600 text-white rounded hover:bg-indigo-700">Nuevo submenú</button>
         </div>
@@ -41,7 +41,7 @@
                     <label for="searchMenuPrin" class="sr-only">Buscar</label>
                     <input id="searchMenuPrin" type="text" placeholder="Buscar menús..." [value]="buscadorMenus()"
                         (input)="onSearchMenus($any($event.target).value)"
-                        class="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" />
+                        class="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500" />
                 </div>
             </form>
             <div class="overflow-x-auto">
@@ -66,7 +66,7 @@
                             <td colspan="6" class="px-4 py-8 text-center text-gray-500">No hay menús principales</td>
                         </tr>
                         } @else {
-                        @for (m of getMenusPrincipalesPageSlice(); track m.menuId; let i = $index) {
+                        @for (m of getMenusPrincipalesPageSlice(); track m.id; let i = $index) {
                         <tr class="hover:bg-gray-300 odd:bg-white even:bg-gray-100">
                             <td class="px-2 py-2 text-center border border-gray-300">{{ (paginationMenus().page - 1) *
                                 paginationMenus().pageSize + i + 1 }}</td>
@@ -76,25 +76,25 @@
                             <td class="px-2 py-2 border border-gray-300">{{ m.label }}</td>
                             <td class="px-2 py-2 border border-gray-300">{{ m.pathWeb || '-' }}</td>
                             <td class="px-2 py-2 text-center border border-gray-300">
-                                <label [for]="'switch-m-'+m.menuId"
+                                <label [for]="'switch-m-'+m.id"
                                     class="relative inline-block w-8 h-4 cursor-pointer">
-                                    <input type="checkbox" [id]="'switch-m-'+m.menuId" [checked]="m.activo"
+                                    <input type="checkbox" [id]="'switch-m-'+m.id" [checked]="m.activo"
                                         (change)="onToggleActivo(m, $any($event.target).checked)" class="peer sr-only">
                                     <span
-                                        class="absolute inset-0 bg-gray-200 rounded-full transition-colors peer-checked:bg-blue-600"></span>
+                                        class="absolute inset-0 bg-gray-200 rounded-full transition-colors peer-checked:bg-primary-600"></span>
                                     <span
                                         class="absolute top-0 left-0.5 -translate-y-0 size-4 bg-white rounded-full shadow transition-transform peer-checked:translate-x-5"></span>
                                 </label>
                             </td>
                             <td class="px-3 py-1.5 text-center border space-x-2 border-gray-300">
                                 <button (click)="openUpsertModal(false, m)"
-                                    class="px-2 py-1 bg-green-600 text-white rounded text-xs hover:bg-green-700 transition">
-                                    <app-custom-icon [name]="'square-pen'" [color]="'#eee'"
+                                    class="btn-action btn-action--edit">
+                                    <app-custom-icon [name]="'square-pen'" [color]="'currentColor'"
                                         [size]="18"></app-custom-icon>
                                 </button>
                                 <button (click)="openDeleteModal(m)"
-                                    class="px-2 py-1 bg-red-600 text-white rounded text-xs hover:bg-red-700 transition">
-                                    <app-custom-icon [name]="'trash-2'" [color]="'#eee'" [size]="18"></app-custom-icon>
+                                    class="btn-action btn-action--delete">
+                                    <app-custom-icon [name]="'trash-2'" [color]="'currentColor'" [size]="18"></app-custom-icon>
                                 </button>
                             </td>
                         </tr>
@@ -118,7 +118,7 @@
                     <label for="searchSub" class="sr-only">Buscar</label>
                     <input id="searchSub" type="text" placeholder="Buscar submenus..." [value]="buscadorSubs()"
                         (input)="onSearchSubs($any($event.target).value)"
-                        class="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" />
+                        class="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500" />
                 </div>
             </form>
             <div class="overflow-x-auto">
@@ -143,7 +143,7 @@
                             <td colspan="6" class="px-4 py-8 text-center text-gray-500">No hay submenús</td>
                         </tr>
                         } @else {
-                        @for (m of getSubmenusPageSlice(); track m.menuId; let i = $index) {
+                        @for (m of getSubmenusPageSlice(); track m.id; let i = $index) {
                         <tr class="hover:bg-gray-300 odd:bg-white even:bg-gray-100">
                             <td class="px-2 py-2 text-center border border-gray-300">{{ (paginationSubs().page - 1) *
                                 paginationSubs().pageSize + i + 1 }}</td>
@@ -153,25 +153,25 @@
                             <td class="px-2 py-2 border border-gray-300">{{ m.label }}</td>
                             <td class="px-2 py-2 border border-gray-300">{{ m.pathWeb || '-' }}</td>
                             <td class="px-2 py-2 text-center border border-gray-300">
-                                <label [for]="'switch-sm-'+m.menuId"
+                                <label [for]="'switch-sm-'+m.id"
                                     class="relative inline-block w-8 h-4 cursor-pointer">
-                                    <input type="checkbox" [id]="'switch-sm-'+m.menuId" [checked]="m.activo"
+                                    <input type="checkbox" [id]="'switch-sm-'+m.id" [checked]="m.activo"
                                         (change)="onToggleActivo(m, $any($event.target).checked)" class="peer sr-only">
                                     <span
-                                        class="absolute inset-0 bg-gray-200 rounded-full transition-colors peer-checked:bg-blue-600"></span>
+                                        class="absolute inset-0 bg-gray-200 rounded-full transition-colors peer-checked:bg-primary-600"></span>
                                     <span
                                         class="absolute top-0 left-0.5 -translate-y-0 size-4 bg-white rounded-full shadow transition-transform peer-checked:translate-x-5"></span>
                                 </label>
                             </td>
                             <td class="px-3 py-1.5 text-center border space-x-2 border-gray-300">
                                 <button (click)="openUpsertModal(false, m)"
-                                    class="px-2 py-1 bg-green-600 text-white rounded text-xs hover:bg-green-700 transition">
-                                    <app-custom-icon [name]="'square-pen'" [color]="'#eee'"
+                                    class="btn-action btn-action--edit">
+                                    <app-custom-icon [name]="'square-pen'" [color]="'currentColor'"
                                         [size]="18"></app-custom-icon>
                                 </button>
                                 <button (click)="openDeleteModal(m)"
-                                    class="px-2 py-1 bg-red-600 text-white rounded text-xs hover:bg-red-700 transition">
-                                    <app-custom-icon [name]="'trash-2'" [color]="'#eee'" [size]="18"></app-custom-icon>
+                                    class="btn-action btn-action--delete">
+                                    <app-custom-icon [name]="'trash-2'" [color]="'currentColor'" [size]="18"></app-custom-icon>
                                 </button>
                             </td>
                         </tr>
@@ -237,7 +237,7 @@
                 <button type="button" (click)="closeModal()"
                     class="py-2 px-3 text-sm rounded-lg bg-white border">Cerrar</button>
                 <button type="button" (click)="deleteMenu(menuEdit())"
-                    class="py-2 px-3 text-sm rounded-lg text-white bg-red-600">Eliminar</button>
+                    class="btn btn-danger">Eliminar</button>
             </div>
         </div>
     </div>

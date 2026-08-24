@@ -54,7 +54,7 @@ export class UpsertUsuarioComponent {
         correo: [u?.correo ?? '', [Validators.required, Validators.email]],
         rolId: [u?.rolId ?? '', [Validators.required]],
         puestoId: [u?.puestoId ?? ''],
-        sucursal_id: [u?.sucursal_id ?? ''],
+        sucursalId: [u?.sucursalId ?? ''],
         activo: [u?.activo ?? true],
         clave: [''], // solo requerido al crear
       });
@@ -72,7 +72,7 @@ export class UpsertUsuarioComponent {
           correo: '',
           rolId: '',
           puestoId: '',
-          sucursal_id: '',
+          sucursalId: '',
           activo: true,
           clave: '',
         });
@@ -93,7 +93,7 @@ export class UpsertUsuarioComponent {
         ...this.usuario(),
         ...raw,
         puestoId: raw.puestoId || undefined,
-        sucursal_id: raw.sucursal_id || undefined,
+        sucursalId: raw.sucursalId || undefined,
         estados: Array.isArray(raw.estados) ? raw.estados.join(',') : raw.estados,
       } as IUsuario;
       this.save.emit(value);

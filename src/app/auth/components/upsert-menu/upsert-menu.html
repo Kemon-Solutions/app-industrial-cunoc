@@ -61,7 +61,7 @@
         <div class="flex items-center">
             <label class="relative inline-flex items-center cursor-pointer">
                 <input type="checkbox" formControlName="principal" class="sr-only peer" />
-                <div class="w-11 h-6 bg-gray-200 rounded-full peer-checked:bg-blue-600 transition-colors"></div>
+                <div class="w-11 h-6 bg-gray-200 rounded-full peer-checked:bg-primary-600 transition-colors"></div>
                 <div
                     class="absolute top-1/2 left-0.5 -translate-y-1/2 w-5 h-5 bg-white rounded-full shadow-md transition-transform peer-checked:translate-x-5">
                 </div>
@@ -72,7 +72,7 @@
         <div class="flex items-center">
             <label class="relative inline-flex items-center cursor-pointer">
                 <input type="checkbox" formControlName="activo" class="sr-only peer" />
-                <div class="w-11 h-6 bg-gray-200 rounded-full peer-checked:bg-blue-600 transition-colors"></div>
+                <div class="w-11 h-6 bg-gray-200 rounded-full peer-checked:bg-primary-600 transition-colors"></div>
                 <div
                     class="absolute top-1/2 left-0.5 -translate-y-1/2 w-5 h-5 bg-white rounded-full shadow-md transition-transform peer-checked:translate-x-5">
                 </div>
@@ -88,7 +88,7 @@
         <button type="button" (click)="onCancel()"
             class="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-200 rounded-md hover:bg-gray-300">Cancelar</button>
         <button type="submit" [disabled]="isLoading() || form().invalid"
-            class="px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-md hover:bg-blue-700 disabled:opacity-50">{{
+            class="px-4 py-2 text-sm font-medium text-white bg-primary-600 rounded-md hover:bg-primary-700 disabled:opacity-50">{{
             btnText }}</button>
     </div>
 </form>

@@ -17,9 +17,9 @@
         <label class="block text-sm font-medium text-gray-700 mb-1">Menú principal</label>
         <select class="w-full input-control p-2 border rounded" formControlName="mainMenuId">
           <option [ngValue]="null">Seleccione opción</option>
-          @for (a of (accesos() || []); track a.accesoId) {
+          @for (a of (accesos() || []); track a.id) {
             @if (a.menu.principal) {
-              <option [value]="a.menu.menuId">{{ a.menu.label }}</option>
+              <option [value]="a.menu.id">{{ a.menu.label }}</option>
             }
           }
         </select>
@@ -70,7 +70,7 @@
     <button
       type="submit"
       [disabled]="isLoading() || form().invalid"
-      class="px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-400 disabled:opacity-50 disabled:cursor-not-allowed"
+      class="px-4 py-2 text-sm font-medium text-white bg-primary-600 rounded-md hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-primary-300 disabled:opacity-50 disabled:cursor-not-allowed"
       >
       {{ menu().principal ? 'Asignar menú' : 'Asignar submenú' }}
     </button>

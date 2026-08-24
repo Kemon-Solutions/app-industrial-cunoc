@@ -8,7 +8,7 @@ import { MenuService } from '../../../../services/auth/menu.service';
 import { UpsertMenuComponent } from '../../components/upsert-menu/upsert-menu';
 
 const emptyMenu: IMenu = {
-  menuId: '',
+  id: '',
   label: '',
   descripcion: '',
   icono: '',
@@ -170,7 +170,7 @@ export default class MenuPageComponent {
   async upsertMenu(menu: IMenu) {
     this.guardando.set(true);
     try {
-      if (!menu.menuId) await this.createMenu(menu);
+      if (!menu.id) await this.createMenu(menu);
       else await this.updateMenu(menu);
     } finally {
       this.guardando.set(false);
@@ -178,7 +178,7 @@ export default class MenuPageComponent {
   }
 
   async createMenu(menu: IMenu) {
-    const { menuId, created_at, updated_at, deleted_at, ...payload } = menu;
+    const { id, created_at, updated_at, deleted_at, ...payload } = menu;
     const resp = await this.menuService.createMenu(payload as any);
     if (resp?.success) {
       // Agregar el nuevo menú a la lista local sin recargar toda la tabla
@@ -204,11 +204,11 @@ export default class MenuPageComponent {
       const menuActualizado = resp.data;
       if (menu.principal) {
         this.menusPrincipales.update(menus => 
-          menus.map(m => m.menuId === menuActualizado.menuId ? menuActualizado : m)
+          menus.map(m => m.id === menuActualizado.id ? menuActualizado : m)
         );
       } else {
         this.submenus.update(subs => 
-          subs.map(s => s.menuId === menuActualizado.menuId ? menuActualizado : s)
+          subs.map(s => s.id === menuActualizado.id ? menuActualizado : s)
         );
       }
       
@@ -217,7 +217,7 @@ export default class MenuPageComponent {
   }
 
   async deleteMenu(menu: IMenu) {
-    const resp = await this.menuService.deleteMenu(menu.menuId || '');
+    const resp = await this.menuService.deleteMenu(menu.id || '');
     if (resp?.success) {
       if (menu.principal) await this.fetchMenusPage(); else await this.fetchSubmenusPage();
       this.closeModal();

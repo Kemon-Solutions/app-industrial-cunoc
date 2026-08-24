@@ -130,11 +130,11 @@ export default class MiPerfilPageComponent {
       if (resp?.success && resp.data) {
         const updated = { ...resp.data } as any;
         if (!updated.rol && updated.rolId) {
-          const r = (this.roles() || []).find(x => x.rolId === updated.rolId);
+          const r = (this.roles() || []).find(x => x.id === updated.rolId);
           if (r) updated.rol = r;
         }
         if (!updated.puesto && updated.puestoId) {
-          const p = (this.puestos() || []).find(x => x.puestoId === updated.puestoId);
+          const p = (this.puestos() || []).find(x => x.id === updated.puestoId);
           if (p) updated.puesto = p;
         }
         this.auth.updateUser(updated);
@@ -158,7 +158,7 @@ export default class MiPerfilPageComponent {
 
     this.pwdLoading.set(true);
     try {
-      const userId = this.user()?.usuarioId || '';
+      const userId = this.user()?.id || '';
   const resp = await this.usuariosService.cambiarClave(userId, current, next);
       if (resp?.success) {
         // Actualizar marca de tiempo local del último cambio

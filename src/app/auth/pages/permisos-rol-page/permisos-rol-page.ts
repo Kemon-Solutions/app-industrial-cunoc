@@ -93,11 +93,11 @@ export default class PermisosRolPageComponent {
   // ---------- Matriz ----------
   async fetchMatriz() {
     const rol = this.selectedRol();
-    if (!rol?.rolId || this.isLoading()) return;
+    if (!rol?.id || this.isLoading()) return;
 
     this.isLoading.set(true);
     const resp = await this.permisoRolService.getMatriz({
-      rolId: rol.rolId,
+      rolId: rol.id,
       codigo: this.fCodigo(),
       modulo: this.fModulo(),
       accion: this.fAccion(),
@@ -141,16 +141,16 @@ export default class PermisosRolPageComponent {
   /** Asigna o retira el permiso según el nuevo estado del switch. */
   async togglePermiso(permiso: IPermisoMatriz, asignar: boolean) {
     const rol = this.selectedRol();
-    if (!rol?.rolId || !permiso.permisoId) return;
-    const permisoId = permiso.permisoId;
+    if (!rol?.id || !permiso.id) return;
+    const permisoId = permiso.id;
 
     // Actualización optimista
     this.updateRow(permisoId, asignar);
     this.setSaving(permisoId, true);
 
     const resp = asignar
-      ? await this.permisoRolService.asignar(rol.rolId, permisoId)
-      : await this.permisoRolService.retirar(rol.rolId, permisoId);
+      ? await this.permisoRolService.asignar(rol.id, permisoId)
+      : await this.permisoRolService.retirar(rol.id, permisoId);
 
     this.setSaving(permisoId, false);
 
@@ -162,7 +162,7 @@ export default class PermisosRolPageComponent {
 
   private updateRow(permisoId: string, asignado: boolean) {
     this.matriz.update(rows =>
-      rows.map(r => r.permisoId === permisoId ? { ...r, asignado } : r)
+      rows.map(r => r.id === permisoId ? { ...r, asignado } : r)
     );
   }
 }

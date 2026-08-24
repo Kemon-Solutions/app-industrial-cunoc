@@ -43,7 +43,7 @@ export class UpsertMenuComponent implements OnDestroy {
       const k = this.key();
 
       // Avoid rebuilding the form if inputs didn't change
-      if (this.lastMenuId === m?.menuId && this.lastKey === k && this.lastNuevo === isNuevo && this.form()) {
+      if (this.lastMenuId === m?.id && this.lastKey === k && this.lastNuevo === isNuevo && this.form()) {
         return;
       }
 
@@ -83,7 +83,7 @@ export class UpsertMenuComponent implements OnDestroy {
       if (s2) this.subs.push(s2);
 
       // Remember inputs state
-      this.lastMenuId = m?.menuId;
+      this.lastMenuId = m?.id;
       this.lastKey = k;
       this.lastNuevo = isNuevo;
     });

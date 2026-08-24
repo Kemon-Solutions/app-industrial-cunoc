@@ -82,7 +82,7 @@ export default class AccesoPageComponent {
 
   selectedRol(): IRol | null {
     const id = this.selectedRolId();
-    return (this.roles() || []).find(r => r.rolId === id) || null;
+    return (this.roles() || []).find(r => r.id === id) || null;
   }
 
   selectedRolStrict(): IRol {
@@ -98,7 +98,7 @@ export default class AccesoPageComponent {
   subMenusAvailable(): IMenu[] {
     const assignedIds = this.assignedIdsSet();
     const filter = this.filterSubmenus().toLowerCase().trim();
-    let subs = (this.menus() || []).filter(m => !m.principal && !assignedIds.has(m.menuId || ''));
+    let subs = (this.menus() || []).filter(m => !m.principal && !assignedIds.has(m.id || ''));
     
     if (filter) {
       subs = subs.filter(m => 
@@ -126,13 +126,13 @@ export default class AccesoPageComponent {
 
   async eliminarAcceso(acceso: IAcceso) {
     // Si es un menú principal y tiene submenús asignados, impedir eliminación directa
-    if (acceso.menu?.principal && this.hasSubAccesos(acceso.menu?.menuId)) {
+    if (acceso.menu?.principal && this.hasSubAccesos(acceso.menu?.id)) {
       alert('Este menú principal tiene submenús asignados. Elimine o reasigne primero sus submenús.');
       return;
     }
     const ok = confirm('¿Eliminar este acceso?');
-    if (!ok || !acceso.accesoId) return;
-    await this.accesoService.deleteAcceso(acceso.accesoId);
+    if (!ok || !acceso.id) return;
+    await this.accesoService.deleteAcceso(acceso.id);
     await this.refreshAccesos();
   }
 
@@ -169,13 +169,13 @@ export default class AccesoPageComponent {
   async onDropSub(targetIndex: number, mainMenuId: string) {
     if (!this.dragSubAcceso) return;
     // Validar target index
-    const parent = (this.accesos() || []).find(a => a.menu?.menuId === mainMenuId);
+    const parent = (this.accesos() || []).find(a => a.menu?.id === mainMenuId);
     const count = parent?.subMenus?.length || 0;
     if (targetIndex < 0 || targetIndex >= count) { this.dragSubAcceso = null; return; }
 
     const newOrden = (targetIndex + 1);
     const moved = { ...this.dragSubAcceso, ordenMenu: newOrden } as IAcceso;
-    if (moved.accesoId) {
+    if (moved.id) {
       await this.accesoService.updateAcceso(moved);
     }
     await this.refreshAccesos();

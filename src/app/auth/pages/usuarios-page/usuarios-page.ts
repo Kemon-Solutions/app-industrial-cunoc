@@ -13,7 +13,7 @@ import { ISucursal } from '../../../../interfaces/auth';
 import { CustomIconComponent } from '../../../shared/components/custom-icon/custom-icon.component';
 
 const emptyUsuario: IUsuario = {
-  usuarioId: '',
+  id: '',
   nombreCompleto: '',
   nombre1: '',
   apellido1: '',
@@ -24,7 +24,7 @@ const emptyUsuario: IUsuario = {
   activo: true,
   rolId: '',
   puestoId: '',
-  sucursal_id: '',
+  sucursalId: '',
   created_at: new Date(),
 };
 
@@ -164,7 +164,7 @@ export default class UsuariosPageComponent {
   async upsertUsuario(usuario: IUsuario) {
     this.guardando.set(true);
     try {
-      if (!usuario.usuarioId) await this.createUsuario(usuario);
+      if (!usuario.id) await this.createUsuario(usuario);
       else await this.updateUsuario(usuario);
     } finally {
       this.guardando.set(false);
@@ -172,7 +172,7 @@ export default class UsuariosPageComponent {
   }
 
   async createUsuario(usuario: IUsuario) {
-    const { usuarioId, created_at, updated_at, deleted_at, ...payload } = usuario;
+    const { id, created_at, updated_at, deleted_at, ...payload } = usuario;
     const resp = await this.usuariosService.createUsuario(payload as any);
     if (resp?.success) {
       // Agregar el nuevo usuario a la lista local sin recargar toda la tabla
@@ -197,7 +197,7 @@ export default class UsuariosPageComponent {
       // Actualizar el usuario en la lista local sin recargar toda la tabla
       const usuarioActualizado = resp.data;
       this.usuariosList.update(usuarios => 
-        usuarios.map(u => u.usuarioId === usuarioActualizado.usuarioId ? usuarioActualizado : u)
+        usuarios.map(u => u.id === usuarioActualizado.id ? usuarioActualizado : u)
       );
       
       this.closeModal();
@@ -205,7 +205,7 @@ export default class UsuariosPageComponent {
   }
 
   async deleteUsuario(usuario: IUsuario) {
-    const resp = await this.usuariosService.deleteUsuario(usuario.usuarioId || '');
+    const resp = await this.usuariosService.deleteUsuario(usuario.id || '');
     if (resp?.success) {
       this.fetchData();
       this.closeModal();
@@ -216,13 +216,13 @@ export default class UsuariosPageComponent {
 
   // Helpers para el template (evitar arrow functions en expresiones)
   getRolName(rolId: string): string {
-    const r = (this.rolesList() || []).find(r => r.rolId === rolId);
+    const r = (this.rolesList() || []).find(r => r.id === rolId);
     return r?.nombre ?? '-';
   }
 
   getPuestoName(puestoId?: string | null): string {
     if (!puestoId) return '-';
-    const p = (this.puestosList() || []).find(p => p.puestoId === puestoId);
+    const p = (this.puestosList() || []).find(p => p.id === puestoId);
     return p?.nombre ?? '-';
   }
 
@@ -235,9 +235,9 @@ export default class UsuariosPageComponent {
   async confirmarResetClave() {
     const u = this.resetClaveUsuario();
     const clave = this.resetClaveValor();
-    if (!u?.usuarioId || clave.length < 4 || this.guardandoReset()) return;
+    if (!u?.id || clave.length < 4 || this.guardandoReset()) return;
     this.guardandoReset.set(true);
-    const resp = await this.usuariosService.resetClave(u.usuarioId, clave);
+    const resp = await this.usuariosService.resetClave(u.id, clave);
     if (resp?.success) {
       this.modalResetClave.set(false);
       this.resetClaveUsuario.set(null);

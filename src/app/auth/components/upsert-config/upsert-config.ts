@@ -48,7 +48,7 @@ export class UpsertConfigComponent implements OnDestroy {
             const cfg = this.config();
             const k = this.key();
 
-            if (this.lastConfigId === cfg?.configId && this.lastKey === k && this.lastNuevo === isNuevo && this.form()) {
+            if (this.lastConfigId === cfg?.id && this.lastKey === k && this.lastNuevo === isNuevo && this.form()) {
                 return;
             }
 
@@ -70,7 +70,7 @@ export class UpsertConfigComponent implements OnDestroy {
             this.jsonError.set('');
 
             // track inputs
-            this.lastConfigId = cfg?.configId;
+            this.lastConfigId = cfg?.id;
             this.lastKey = k;
             this.lastNuevo = isNuevo;
 

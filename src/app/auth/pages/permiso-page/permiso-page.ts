@@ -9,7 +9,7 @@ import { PaginationComponent } from '../../../shared/components/pagination/pagin
 import { UpsertPermisoComponent } from '../../components/upsert-permiso/upsert-permiso';
 
 const emptyPermiso: IPermiso = {
-  permisoId: '',
+  id: '',
   codigo: '',
   modulo: '',
   accion: '',
@@ -174,7 +174,7 @@ export default class PermisoPageComponent {
   async upsertPermiso(permiso: IPermiso) {
     this.guardando.set(true);
     try {
-      if (!permiso.permisoId) { await this.createPermiso(permiso); }
+      if (!permiso.id) { await this.createPermiso(permiso); }
       else { await this.updatePermiso(permiso); }
     } finally {
       this.guardando.set(false);
@@ -203,7 +203,7 @@ export default class PermisoPageComponent {
     if (resp?.success) {
       const permisoActualizado = resp.data;
       this.permisosList.update(permisos =>
-        permisos.map(p => p.permisoId === permisoActualizado.permisoId ? permisoActualizado : p)
+        permisos.map(p => p.id === permisoActualizado.id ? permisoActualizado : p)
       );
 
       this.closeModal();
@@ -211,7 +211,7 @@ export default class PermisoPageComponent {
   }
 
   async deletePermiso(permiso: IPermiso) {
-    const response = await this.permisoService.deletePermiso(permiso.permisoId || '');
+    const response = await this.permisoService.deletePermiso(permiso.id || '');
     if (response?.success) {
       this.fetchData();
       this.closeModal();

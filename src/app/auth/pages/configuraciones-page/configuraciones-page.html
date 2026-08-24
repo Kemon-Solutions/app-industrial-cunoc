@@ -1,11 +1,11 @@
 <nav class="mb-4" aria-label="breadcrumb">
     <ol class="flex flex-wrap text-sm text-gray-700">
         <li class="flex items-center">
-            <a routerLink="/dashboard" class="text-blue-600 hover:underline">Inicio</a>
+            <a routerLink="/dashboard" class="text-primary-600 hover:underline">Inicio</a>
             <span class="mx-2">></span>
         </li>
         <li class="flex items-center">
-            <a routerLink="/dashboard/config" class="text-blue-600 hover:underline">Configuración</a>
+            <a routerLink="/dashboard/config" class="text-primary-600 hover:underline">Configuración</a>
             <span class="mx-2">></span>
         </li>
         <li class="flex items-center text-gray-500">Configuraciones</li>
@@ -17,7 +17,7 @@
         <h2 class="text-lg font-semibold text-gray-800">Configuraciones</h2>
         <div class="flex gap-2">
             <button (click)="openCreate()"
-                class="px-4 py-2 text-sm bg-blue-600 text-white rounded hover:bg-blue-700">Nueva configuración</button>
+                class="px-4 py-2 text-sm bg-primary-600 text-white rounded hover:bg-primary-700">Nueva configuración</button>
         </div>
     </div>
 
@@ -27,7 +27,7 @@
                 <label for="searchCfg" class="sr-only">Buscar</label>
                 <input id="searchCfg" type="text" placeholder="Buscar..." [value]="buscador()"
                     (input)="onSearch($any($event.target).value)"
-                    class="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" />
+                    class="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500" />
             </div>
         </form>
 
@@ -53,7 +53,7 @@
                         <td colspan="6" class="px-4 py-8 text-center text-gray-500">No hay configuraciones</td>
                     </tr>
                     } @else {
-                    @for (c of getPageSlice(); track c.configId; let i = $index) {
+                    @for (c of getPageSlice(); track c.id; let i = $index) {
                     <tr class="hover:bg-gray-300 odd:bg-white even:bg-gray-100">
                         <td class="px-2 py-2 text-center border border-gray-300">{{ (pagination().page - 1) *
                             pagination().pageSize + i + 1 }}</td>
@@ -62,24 +62,24 @@
                         <td class="px-2 py-2 border border-gray-300 truncate max-w-[320px]" title="{{ c.valor }}">{{
                             c.valor }}</td>
                         <td class="px-2 py-2 text-center border border-gray-300">
-                            <label [for]="'switch-c-'+c.configId" class="relative inline-block w-8 h-4 cursor-pointer">
-                                <input type="checkbox" [id]="'switch-c-'+c.configId" [checked]="c.activo"
+                            <label [for]="'switch-c-'+c.id" class="relative inline-block w-8 h-4 cursor-pointer">
+                                <input type="checkbox" [id]="'switch-c-'+c.id" [checked]="c.activo"
                                     (change)="onToggleActivo(c, $any($event.target).checked)" class="peer sr-only">
                                 <span
-                                    class="absolute inset-0 bg-gray-200 rounded-full transition-colors peer-checked:bg-blue-600"></span>
+                                    class="absolute inset-0 bg-gray-200 rounded-full transition-colors peer-checked:bg-primary-600"></span>
                                 <span
                                     class="absolute top-0 left-0.5 -translate-y-0 size-4 bg-white rounded-full shadow transition-transform peer-checked:translate-x-5"></span>
                             </label>
                         </td>
                         <td class="px-3 py-1.5 text-center border space-x-2 border-gray-300">
                             <button (click)="openUpsertModal(false, c)"
-                                class="px-2 py-1 bg-green-600 text-white rounded text-xs hover:bg-green-700 transition"
+                                class="btn-action btn-action--edit"
                                 title="Editar">
                                 <app-custom-icon [name]="'square-pen'" [color]="'#ffffff'"
                                     [size]="18"></app-custom-icon>
                             </button>
                             <button (click)="openDeleteModal(c)"
-                                class="px-2 py-1 bg-red-600 text-white rounded text-xs hover:bg-red-700 transition"
+                                class="btn-action btn-action--delete"
                                 title="Eliminar">
                                 <app-custom-icon [name]="'trash-2'" [color]="'#ffffff'" [size]="18"></app-custom-icon>
                             </button>
@@ -141,7 +141,7 @@
                 <button type="button" (click)="closeModal()"
                     class="py-2 px-3 text-sm rounded-lg bg-white border">Cerrar</button>
                 <button type="button" (click)="deleteConfig(configEdit())"
-                    class="py-2 px-3 text-sm rounded-lg text-white bg-red-600">Eliminar</button>
+                    class="btn btn-danger">Eliminar</button>
             </div>
         </div>
     </div>

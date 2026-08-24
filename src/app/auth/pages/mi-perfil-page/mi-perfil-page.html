@@ -1,7 +1,7 @@
 <nav class="mb-4" aria-label="breadcrumb">
   <ol class="flex flex-wrap text-sm text-gray-700">
     <li class="flex items-center">
-      <a routerLink="/dashboard" class="text-blue-600 hover:underline">Inicio</a>
+      <a routerLink="/dashboard" class="text-primary-600 hover:underline">Inicio</a>
       <span class="mx-2">></span>
     </li>
     <li class="flex items-center text-gray-500">Mi Perfil</li>
@@ -12,9 +12,9 @@
   <div class="flex items-center justify-between px-4 py-4 border-b border-gray-200">
     <h2 class="text-lg font-semibold text-gray-800">Mi Perfil</h2>
     <div class="flex items-center gap-2">
-      <button (click)="openEdit()" class="px-4 py-2 text-sm bg-blue-600 text-white rounded hover:bg-blue-700">Editar perfil</button>
+      <button (click)="openEdit()" class="px-4 py-2 text-sm bg-primary-600 text-white rounded hover:bg-primary-700">Editar perfil</button>
       <button (click)="openPasswordModal()" class="px-4 py-2 text-sm bg-amber-600 text-white rounded hover:bg-amber-700">Cambiar contraseña</button>
-      <button (click)="onChangePhotoClick()" class="px-4 py-2 text-sm bg-green-600 text-white rounded hover:bg-green-700">Cambiar foto</button>
+      <button (click)="onChangePhotoClick()" class="btn btn-primary">Cambiar foto</button>
       <input #photoInput type="file" accept="image/png, image/jpeg" class="hidden" (change)="onPhotoSelected($event)" />
     </div>
   </div>

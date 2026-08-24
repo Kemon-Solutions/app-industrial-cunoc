@@ -29,7 +29,7 @@ export class AccesoService extends HttpService {
     }
   }
 
-  async createAcceso(dto: Omit<IAcceso, 'accesoId' | 'created_at' | 'updated_at' | 'deleted_at' | 'menu' | 'rol' | 'subMenus'>): Promise<AccesoResponse | null> {
+  async createAcceso(dto: Omit<IAcceso, 'id' | 'created_at' | 'updated_at' | 'deleted_at' | 'menu' | 'rol' | 'subMenus'>): Promise<AccesoResponse | null> {
     try {
       const resp = await firstValueFrom(this.post<AccesoResponse>(`${this.endpoints.base}`, dto));
       if (resp.body?.success) {
@@ -46,9 +46,9 @@ export class AccesoService extends HttpService {
 
   async updateAcceso(acceso: IAcceso): Promise<AccesoResponse | null> {
     try {
-      const { accesoId, ordenMenu, showApp, showWeb, activo, mainMenuId, menuId, rolId } = acceso as IAcceso;
+      const { id, ordenMenu, showApp, showWeb, activo, mainMenuId, menuId, rolId } = acceso as IAcceso;
       const resp = await firstValueFrom(
-        this.put<AccesoResponse>(`${this.endpoints.base}/${accesoId}`, { ordenMenu, showApp, showWeb, activo, mainMenuId, menuId, rolId })
+        this.put<AccesoResponse>(`${this.endpoints.base}/${id}`, { ordenMenu, showApp, showWeb, activo, mainMenuId, menuId, rolId })
       );
       if (resp.body?.success) {
         this.toastr.success(resp.body.message || 'Acceso actualizado', 'Éxito');

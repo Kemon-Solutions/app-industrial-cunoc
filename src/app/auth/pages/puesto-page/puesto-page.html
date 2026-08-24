@@ -19,7 +19,7 @@
     <div class="flex items-center justify-between px-4 py-3 border-b border-gray-300">
         <h2 class="text-lg font-semibold text-gray-800">Puestos</h2>
         <button (click)="openUpsertModal(true)"
-            class="px-4 py-2 text-sm bg-blue-600 text-white rounded hover:bg-blue-700 transition">
+            class="px-4 py-2 text-sm bg-primary-600 text-white rounded hover:bg-primary-700 transition">
             Nuevo puesto
         </button>
     </div>
@@ -30,11 +30,11 @@
                 <label for="searchPuesto" class="sr-only">Buscar puesto</label>
                 <input type="text" id="searchPuesto" placeholder="Buscar puesto..." [value]="buscador()"
                     (input)="onSearch($any($event.target).value)"
-                    class="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" />
+                    class="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500" />
             </div>
             <div>
                 <button type="button" (click)="fetchData()" [disabled]="isLoading()"
-                    class="px-4 py-2 bg-green-600 text-white text-sm rounded hover:bg-green-700 transition disabled:opacity-50">
+                    class="btn btn-outline">
                     @if (isLoading()) {
                     Buscando...
                     } @else {
@@ -68,7 +68,7 @@
                         </td>
                     </tr>
                     } @else {
-                    @for (puesto of puestosList(); track puesto.puestoId; let i = $index) {
+                    @for (puesto of puestosList(); track puesto.id; let i = $index) {
                     <tr class="hover:bg-gray-300 odd:bg-white even:bg-gray-100">
                         <td class="px-2 py-2 text-center border border-gray-300 justify-center">
                             {{ (pagination().page - 1) * pagination().pageSize + i + 1 }}
@@ -76,12 +76,12 @@
                         <td class="px-2 py-2 border border-gray-300">{{ puesto.nombre }}</td>
                         <td class="px-3 py-1.5 text-center border space-x-2 border-gray-300">
                             <button (click)="openUpsertModal(false, puesto)"
-                                class="px-2 py-1 bg-green-600 text-white rounded text-xs hover:bg-green-700 transition">
-                                <app-custom-icon [name]="'square-pen'" [color]="'#eee'" [size]="18"></app-custom-icon>
+                                class="btn-action btn-action--edit">
+                                <app-custom-icon [name]="'square-pen'" [color]="'currentColor'" [size]="18"></app-custom-icon>
                             </button>
                             <button (click)="openDeleteModal(puesto)"
-                                class="px-2 py-1 bg-red-600 text-white rounded text-xs hover:bg-red-700 transition">
-                                <app-custom-icon [name]="'trash-2'" [color]="'#eee'" [size]="18"></app-custom-icon>
+                                class="btn-action btn-action--delete">
+                                <app-custom-icon [name]="'trash-2'" [color]="'currentColor'" [size]="18"></app-custom-icon>
                             </button>
                         </td>
                     </tr>
@@ -203,7 +203,7 @@
                     Cerrar
                 </button>
                 <button type="button" (click)="deletePuesto(puestoEdit())"
-                    class="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-transparent bg-red-600 text-white hover:bg-red-700 focus:outline-hidden focus:bg-red-700 disabled:opacity-50 disabled:pointer-events-none">
+                    class="btn btn-danger">
                     Eliminar
                 </button>
             </div>
