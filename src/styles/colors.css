@@ -1,97 +1,263 @@
-/* 
- * Variables CSS personalizadas para el dashboard corporativo
- * Estas variables complementan la configuración de Tailwind
- */
+/* ============================================================================
+ * SISTEMA DE DISEÑO — Ingeniería Industrial, CUNOC-USAC
+ * ----------------------------------------------------------------------------
+ * Paleta institucional:
+ *   Azul institucional  #165D98  (primario)
+ *   Dorado institucional #F2AC1D (acento / terciario)
+ *   Gris claro          #F2F2F2  (secundario / superficies)
+ *
+ * Tipografía:
+ *   Montserrat  -> títulos, encabezados, números destacados
+ *   Open Sans   -> cuerpo, tablas, formularios
+ *   (Se cargan desde Google Fonts en src/index.html)
+ *
+ * Este archivo se importa desde styles.css DESPUÉS de "tailwindcss", por lo que
+ * el bloque @theme genera automáticamente utilidades de Tailwind v4:
+ *   bg-primary-600, text-primary, border-terciary-400, font-display, etc.
+ * ========================================================================== */
 
+@theme {
+  /* ---------------------------------------------------------------- Fuentes */
+  --font-sans: "Open Sans", ui-sans-serif, system-ui, -apple-system, "Segoe UI",
+    Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-display: "Montserrat", "Open Sans", ui-sans-serif, system-ui,
+    -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  --font-mono: ui-monospace, "SFMono-Regular", "Cascadia Code", Menlo, monospace;
+
+  /* ------------------------------------------------- Azul institucional USAC */
+  --color-primary: #165d98;
+  --color-primary-50: #eef5fb;
+  --color-primary-100: #d7e7f4;
+  --color-primary-200: #aecfe9;
+  --color-primary-300: #7fb2d9;
+  --color-primary-400: #4a8dc2;
+  --color-primary-500: #165d98;
+  --color-primary-600: #124e80;
+  --color-primary-700: #0e3e67;
+  --color-primary-800: #0a2f4e;
+  --color-primary-900: #071f34;
+  --color-primary-950: #04141f;
+
+  /* -------------------------------------------- Dorado institucional (acento) */
+  --color-terciary: #f2ac1d;
+  --color-terciary-50: #fef8e9;
+  --color-terciary-100: #fdedc6;
+  --color-terciary-200: #fbdc8d;
+  --color-terciary-300: #f8c953;
+  --color-terciary-400: #f2ac1d;
+  --color-terciary-500: #d99310;
+  --color-terciary-600: #b0760c;
+  --color-terciary-700: #875a09;
+  --color-terciary-800: #5e3e06;
+  --color-terciary-900: #3b2704;
+
+  /* Alias en inglés por comodidad: bg-accent-400, text-accent-600, ... */
+  --color-accent: #f2ac1d;
+  --color-accent-50: #fef8e9;
+  --color-accent-100: #fdedc6;
+  --color-accent-200: #fbdc8d;
+  --color-accent-300: #f8c953;
+  --color-accent-400: #f2ac1d;
+  --color-accent-500: #d99310;
+  --color-accent-600: #b0760c;
+  --color-accent-700: #875a09;
+  --color-accent-800: #5e3e06;
+
+  /* ----------------------------------------------- Secundario / neutros fríos */
+  /* .bg-secondary / .text-secondary conservan el gris claro usado en navbar */
+  --color-secondary: #f2f2f2;
+  --color-secondary-50: #f8fafc;
+  --color-secondary-100: #eef1f5;
+  --color-secondary-200: #dde3ea;
+  --color-secondary-300: #b2bcca;
+  --color-secondary-400: #8b98aa;
+  --color-secondary-500: #64748b;
+  --color-secondary-600: #475569;
+  --color-secondary-700: #334155;
+  --color-secondary-800: #1e293b;
+  --color-secondary-900: #0f172a;
+
+  /* ------------------------------------------------------ Colores de estado */
+  --color-success: #1c8b4b;
+  --color-success-50: #ecf8f1;
+  --color-success-100: #d1eede;
+  --color-success-300: #6cc797;
+  --color-success-500: #1c8b4b;
+  --color-success-600: #16713d;
+  --color-success-700: #10552e;
+
+  --color-warning: #f2ac1d;
+  --color-warning-50: #fef8e9;
+  --color-warning-100: #fdedc6;
+  --color-warning-300: #f8c953;
+  --color-warning-500: #d99310;
+  --color-warning-600: #b0760c;
+  --color-warning-700: #875a09;
+
+  --color-danger: #c0392b;
+  --color-danger-50: #fdeeec;
+  --color-danger-100: #f9d3cf;
+  --color-danger-300: #e58b80;
+  --color-danger-500: #c0392b;
+  --color-danger-600: #9d2e23;
+  --color-danger-700: #7a241b;
+
+  --color-info: #0e7490;
+  --color-info-50: #ecfaff;
+  --color-info-100: #cbeffb;
+  --color-info-500: #0e7490;
+  --color-info-700: #0a5468;
+
+  /* ------------------------------------------------- Radios y sombras base */
+  --radius-card: 0.75rem;
+  --shadow-card: 0 1px 2px 0 rgb(7 31 52 / 0.06), 0 1px 3px 1px rgb(7 31 52 / 0.05);
+  --shadow-card-hover: 0 4px 10px -2px rgb(7 31 52 / 0.12);
+}
+
+/* ============================================================================
+ * Variables CSS "planas" (sin Tailwind) para estilos manuales y componentes
+ * ========================================================================== */
 :root {
-  /* Colores primarios corporativos */
-  --color-primary: 14 165 233; /* primary-500 en RGB */
-  --color-primary-hover: 2 132 199; /* primary-600 en RGB */
-  --color-primary-light: 186 230 253; /* primary-200 en RGB */
-  
-  /* Colores secundarios */
-  --color-secondary: 100 116 139; /* secondary-500 en RGB */
-  --color-secondary-hover: 71 85 105; /* secondary-600 en RGB */
-  
-  /* Colores de estado */
-  --color-success: 34 197 94; /* success-500 en RGB */
-  --color-warning: 245 158 11; /* warning-500 en RGB */
-  --color-danger: 239 68 68; /* danger-500 en RGB */
-  
-  /* Colores corporativos específicos */
-  --color-corporate-dark: 30 58 138; /* corporate-dark-blue en RGB */
-  --color-corporate-light: 59 130 246; /* corporate-light-blue en RGB */
-  --color-corporate-accent: 245 158 11; /* corporate-accent-gold en RGB */
-  
-  /* Colores de fondo */
-  --bg-sidebar: 248 250 252; /* bg-slate-50 */
-  --bg-sidebar-dark: 15 23 42; /* bg-slate-900 */
-  --bg-sidebar-item-hover: 241 245 249; /* bg-slate-100 */
-  --bg-sidebar-item-active: 14 165 233; /* primary-500 */
-  
-  /* Colores de texto */
-  --text-primary: 31 41 55; /* text-gray-800 */
-  --text-secondary: 107 114 128; /* text-gray-500 */
-  --text-light: 156 163 175; /* text-gray-400 */
-  --text-white: 255 255 255; /* text-white */
-  
+  /* Marca */
+  --brand-primary: #165d98;
+  --brand-primary-dark: #0e3e67;
+  --brand-primary-light: #4a8dc2;
+  --brand-accent: #f2ac1d;
+  --brand-accent-dark: #b0760c;
+
+  /* Superficies */
+  --surface: #ffffff;
+  --surface-muted: #f6f8fa;
+  --surface-sunken: #eef1f5;
+
+  /* Texto */
+  --text-strong: #0e2233;
+  --text-base: #1e2328;
+  --text-muted: #5c6b7a;
+  --text-inverse: #ffffff;
+
   /* Bordes */
-  --border-light: 229 231 235; /* border-gray-200 */
-  --border-medium: 209 213 219; /* border-gray-300 */
-  
-  /* Sombras personalizadas */
-  --shadow-sidebar: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-  --shadow-menu-item: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
-  
+  --border-subtle: #e5eaef;
+  --border-base: #cfd8e0;
+  --border-strong: #aebbc7;
+
+  /* Sidebar */
+  --sidebar-width: 16rem;
+  --sidebar-bg: #ffffff;
+  --sidebar-item-hover: #eef5fb;
+  --sidebar-item-active-bg: #d7e7f4;
+  --sidebar-item-active-text: #0e3e67;
+
   /* Transiciones */
-  --transition-standard: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-standard: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
   --transition-fast: all 0.15s ease-in-out;
-  
-  /* Espaciado específico del sidebar */
-  --sidebar-width: 16rem; /* w-64 */
-  --sidebar-item-padding: 0.75rem 1rem; /* py-3 px-4 */
-  --sidebar-border-radius: 0.5rem; /* rounded-lg */
+
+  /* Tablas (consumidas por .gc-table en styles.css) */
+  --table-font-family: "Open Sans", ui-sans-serif, system-ui, -apple-system,
+    "Segoe UI", Roboto, Arial, sans-serif;
+  --table-font-size: 0.875rem;
+  --table-text-color: #1e2328;
+  --table-header-bg: #165d98;
+  --table-header-color: #ffffff;
+  --table-row-bg: #ffffff;
+  --table-row-alt-bg: #f6f8fa;
+  --table-row-hover-bg: #eef5fb;
+  --table-border-color: #e5eaef;
+  --table-cell-py: 0.55rem;
+  --table-cell-px: 0.65rem;
 }
 
-/* Variables para modo oscuro */
+/* Modo oscuro (se activa con la clase .dark en :root) */
 :root.dark {
-  --bg-sidebar: 15 23 42; /* bg-slate-900 */
-  --bg-sidebar-item-hover: 30 41 59; /* bg-slate-800 */
-  --text-primary: 248 250 252; /* text-slate-50 */
-  --text-secondary: 203 213 225; /* text-slate-300 */
-  --border-light: 71 85 105; /* border-slate-600 */
+  --surface: #0f1b26;
+  --surface-muted: #14232f;
+  --surface-sunken: #0a141d;
+  --text-strong: #f1f5f9;
+  --text-base: #e2e8f0;
+  --text-muted: #94a3b8;
+  --border-subtle: #1e3241;
+  --border-base: #2b455a;
+  --sidebar-bg: #0f1b26;
+  --sidebar-item-hover: #14232f;
+  --sidebar-item-active-bg: #0e3e67;
+  --sidebar-item-active-text: #d7e7f4;
+  --table-row-bg: #0f1b26;
+  --table-row-alt-bg: #14232f;
+  --table-row-hover-bg: #0e3e67;
+  --table-border-color: #1e3241;
+  --table-text-color: #e2e8f0;
 }
 
-/* Clases utilitarias personalizadas */
+/* ============================================================================
+ * Utilidades de marca
+ * ========================================================================== */
+
+/* Degradado institucional: azul profundo -> azul medio */
+.brand-gradient {
+  background: linear-gradient(135deg, #0e3e67 0%, #165d98 55%, #2b7ab8 100%);
+}
+
+/* Franja dorada decorativa (encabezados de página / tarjetas) */
+.brand-rule {
+  height: 3px;
+  width: 3.5rem;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #f2ac1d 0%, #d99310 100%);
+}
+
+/* Encabezado de página institucional */
+.page-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.page-title {
+  font-family: var(--font-display, "Montserrat", sans-serif);
+  font-weight: 700;
+  font-size: 1.375rem;
+  line-height: 1.2;
+  color: var(--text-strong);
+  letter-spacing: -0.01em;
+}
+
+.page-subtitle {
+  font-size: 0.8125rem;
+  color: var(--text-muted);
+  margin-top: 0.15rem;
+}
+
+/* Sidebar */
 .sidebar-gradient {
-  background: linear-gradient(135deg, 
-    rgb(var(--color-primary)) 0%, 
-    rgb(var(--color-corporate-dark)) 100%);
+  background: linear-gradient(160deg, #0e3e67 0%, #165d98 100%);
 }
 
 .sidebar-item-active {
-  background: rgba(var(--color-primary), 0.1);
-  color: rgb(var(--color-primary));
-  border-left: 3px solid rgb(var(--color-primary));
+  background: var(--sidebar-item-active-bg);
+  color: var(--sidebar-item-active-text);
+  border-left: 3px solid var(--brand-accent);
 }
 
 .sidebar-item-hover {
-  background: rgba(var(--color-primary), 0.05);
+  background: var(--sidebar-item-hover);
   transform: translateX(2px);
   transition: var(--transition-standard);
 }
 
-/* Efectos de hover para iconos */
 .sidebar-icon {
   transition: var(--transition-fast);
 }
 
 .sidebar-item:hover .sidebar-icon {
-  color: rgb(var(--color-primary));
-  transform: scale(1.1);
+  color: var(--brand-primary);
+  transform: scale(1.08);
 }
 
-/* Animación para el acordeón */
+/* Animación del acordeón del menú lateral */
 .accordion-enter {
   animation: slideDown 0.3s ease-out;
 }
@@ -104,7 +270,7 @@
   }
   to {
     opacity: 1;
-    max-height: 200px;
+    max-height: 400px;
     transform: translateY(0);
   }
 }

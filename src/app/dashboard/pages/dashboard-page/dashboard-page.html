@@ -1,21 +1,19 @@
-
-
 <!-- Layout principal -->
 <div class="flex min-h-screen">
 
   <!-- Sidebar -->
   <div
     id="hs-sidebar-header"
-    class="fixed bg-[#0f2138]  border-r border-[#1b3553] inset-y-0 left-0 z-40 w-64 transform transition-transform duration-300 ease-in-out lg:translate-x-0 lg:static lg:inset-auto "
+    class="sidebar-gradient fixed border-r border-primary-800 inset-y-0 left-0 z-40 w-64 transform transition-transform duration-300 ease-in-out lg:translate-x-0 lg:static lg:inset-auto"
     [class.-translate-x-full]="!isSidebarOpen"
     [class.translate-x-0]="isSidebarOpen">
 
     <app-side-menu (closeSidebar)="closeSidebar()"></app-side-menu>
   </div>
 
-  <div class="flex flex-col flex-1 ">
+  <div class="flex flex-col flex-1">
     <!-- Top Navigation Bar -->
-    <app-nav-bar class="block w-full border-b border-[#1b3553]" (openToggleSidebar)="toggleSidebar()"></app-nav-bar>
+    <app-nav-bar class="block w-full border-b border-primary-800" (openToggleSidebar)="toggleSidebar()"></app-nav-bar>
 
     <!-- Overlay (solo móvil) -->
     <div
@@ -27,7 +25,7 @@
     ></div>
 
     <!-- Contenido principal -->
-    <main class="flex-1  bg-[#f1f5f9] transition-all duration-300 p-8">
+    <main class="flex-1 bg-[color:var(--surface-muted)] transition-all duration-300 p-4 sm:p-6 lg:p-8 overflow-x-hidden">
       <router-outlet></router-outlet>
     </main>
   </div>

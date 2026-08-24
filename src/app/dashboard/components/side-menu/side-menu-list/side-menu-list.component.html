@@ -20,15 +20,15 @@
     <div class="p-3 text-sm text-slate-400">Sin accesos asignados</div>
 } @else {
 <div class="hs-accordion-group" id="side-menu-accordion-group">
-    @for(acceso of accesos(); track acceso.accesoId){
+    @for(acceso of accesos(); track acceso.id){
         <!-- Item de acordeón por cada acceso -->
-        <div class="hs-accordion" [id]="acceso.accesoId">
+        <div class="hs-accordion" [id]="acceso.id">
             <button type="button"
                 class="hs-accordion-toggle w-full flex items-center gap-x-3 py-2.5 px-3 text-sm font-semibold text-slate-300 hover:bg-[#1b3553] hover:text-white rounded-lg  focus:outline-none focus:bg-[#1b3553] transition-colors duration-200"
-                [id]="acceso.accesoId + '-btn'"
+                [id]="acceso.id + '-btn'"
                 aria-expanded="false"
-                [attr.aria-controls]="acceso.accesoId + '-content'"
-                [attr.data-hs-accordion]="'#' + (acceso.accesoId + '-content')">
+                [attr.aria-controls]="acceso.id + '-content'"
+                [attr.data-hs-accordion]="'#' + (acceso.id + '-content')">
                 <app-custom-icon [name]="acceso.menu.icono" [color]="'#cbd5e1'"></app-custom-icon>
                 {{acceso.menu.label}}
                 <svg class="hs-accordion-active:rotate-180 shrink-0 size-4 ml-auto transition-transform duration-200"
@@ -41,10 +41,10 @@
             <div
                 class="hs-accordion-content w-full overflow-hidden transition-[height] duration-300 hidden"
                 role="region"
-                [id]="acceso.accesoId + '-content'"
-                [attr.aria-labelledby]="acceso.accesoId + '-btn'">
+                [id]="acceso.id + '-content'"
+                [attr.aria-labelledby]="acceso.id + '-btn'">
                 <div class="pl-6 space-y-1 mt-1">
-                    @for(submenu of acceso.subMenus; track submenu.accesoId){
+                    @for(submenu of acceso.subMenus; track submenu.id){
                         <a [routerLink]="prefix + submenu.menu.pathWeb"
                             routerLinkActive="bg-[#1b3553] text-white border-l-4 border-sky-400"
                             class="flex items-center gap-x-3 py-2 px-3 text-sm  font-medium text-slate-300 hover:bg-[#1b3553] hover:text-white focus:outline-none focus:bg-[#1b3553] transition-colors duration-200">

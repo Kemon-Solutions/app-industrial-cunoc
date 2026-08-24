@@ -1,8 +1,16 @@
-/* You can add global styles to this file, and also import other style files */
+/* ============================================================================
+ * Estilos globales — Sistema Ingeniería Industrial, CUNOC-USAC
+ * Los tokens de color y tipografía viven en ./styles/colors.css (@theme).
+ * ========================================================================== */
+
 @import "tailwindcss";
 @import "preline/variants.css";
+@import "./styles/colors.css";
+@import "ngx-toastr/toastr";
 
-/* Safelist: clases dinámicas de estados de pedido definidas en TypeScript */
+/* --------------------------------------------------------------------------
+ * Safelist: clases construidas dinámicamente desde TypeScript
+ * ------------------------------------------------------------------------ */
 @source inline("bg-amber-100 text-amber-700 border-amber-200 bg-amber-400 bg-amber-50 border-amber-300");
 @source inline("bg-blue-100 text-blue-700 border-blue-200 bg-blue-400 bg-blue-50 border-blue-300");
 @source inline("bg-orange-100 text-orange-700 border-orange-200 bg-orange-400 bg-orange-50 border-orange-300");
@@ -12,181 +20,310 @@
 @source inline("bg-purple-100 text-purple-700 border-purple-200 bg-purple-400 bg-purple-50 border-purple-300");
 @source inline("bg-sky-100 text-sky-700 text-sky-800 border-sky-200 bg-sky-400 bg-sky-50 border-sky-300");
 @source inline("bg-green-100 text-green-700 border-green-200 bg-green-400 bg-green-50 border-green-300");
-@import "./styles/colors.css";
-@import "ngx-toastr/toastr"; /* ✅ Estilos de ngx-toastr */
+/* Paleta institucional usada dinámicamente (badges de estado, alertas de stock) */
+@source inline("bg-primary bg-primary-50 bg-primary-100 bg-primary-500 bg-primary-600 bg-primary-700 text-primary text-primary-600 text-primary-700 border-primary-200 border-primary-500");
+@source inline("bg-terciary bg-terciary-50 bg-terciary-100 bg-terciary-400 text-terciary text-terciary-600 text-terciary-700 border-terciary-200 border-terciary-400");
+@source inline("bg-success-50 bg-success-100 bg-success-500 text-success-600 text-success-700 border-success-300");
+@source inline("bg-danger-50 bg-danger-100 bg-danger-500 text-danger-600 text-danger-700 border-danger-300");
+@source inline("bg-warning-50 bg-warning-100 bg-warning-500 text-warning-600 text-warning-700 border-warning-300");
+/* Alineaciones que solo aparecen en TypeScript (tablas apiladas en móvil) */
+@source inline("md:text-center md:text-right");
 
-/* Custom color utilities for the corporate dashboard */
-.bg-primary-50 { background-color: rgb(189, 226, 245); }
-/* .bg-primary-100 { background-color: rgb(162, 215, 243); } */
-.bg-primary-100 { background-color: rgb(189, 226, 246); }
-.bg-primary-200 { background-color: rgb(134, 203, 241); }
-.bg-primary-500 { background-color: rgb(98, 189, 239); }
-.bg-primary-600 { background-color: rgb(42, 154, 214); }
-.bg-primary-700 { background-color: rgb(29, 134, 191); }
-.bg-primary-800 { background-color: rgb(13, 103, 151); }
-
-.bg-primary { background-color: rgb(22 93 152); }  /* #165D98*/
-.bg-secondary { background-color: rgb(242 242 242); }  /* #f2f2f2 */
-.bg-terciary { background-color: rgb(242 171 29); }  /* #F2AC1D*/
-.text-primary { color: rgb(22 93 152); }  /* #165D98*/
-.text-secondary { color: rgb(242 242 242); }  /* #F2F2F2*/
-.text-terciary { color: rgb(242 171 29); }  /* #F2AC1D*/
-
-.bg-secondary-300 { background-color: rgb(178, 188, 202); }
-.bg-secondary-500 { background-color: rgb(100 116 139); }
-.bg-secondary-600 { background-color: rgb(71 85 105); }
-.bg-secondary-700 { background-color: rgb(51 65 85); }
-.bg-secondary-100 { background-color: rgb(221, 226, 232); }
-.bg-secondary-50 { background-color: rgb(248 250 252); }
-
-.bg-success-500 { background-color: rgb(34 197 94); }
-.bg-success-50 { background-color: rgb(240 253 244); }
-.bg-warning-500 { background-color: rgb(245 158 11); }
-.bg-warning-50 { background-color: rgb(255 251 235); }
-.bg-danger-500 { background-color: rgb(239 68 68); }
-.bg-danger-50 { background-color: rgb(254 242 242); }
-
-.bg-corporate-dark-blue { background-color: rgb(30 58 138); }
-.bg-corporate-light-blue { background-color: rgb(59 130 246); }
-.bg-corporate-accent-gold { background-color: rgb(245 158 11); }
-
-.text-primary-500 { color: rgb(98, 189, 239); }
-.text-primary-600 { color: rgb(42, 154, 214); }
-.text-primary-700 { color: rgb(29, 134, 191); }
-.text-primary-800 { color: rgb(13, 103, 151); }
-
-.text-secondary-500 { color: rgb(100 116 139); }
-.text-secondary-600 { color: rgb(71 85 105); }
-.text-secondary-700 { color: rgb(51 65 85); }
-.text-secondary-900 { color: rgb(15 23 42); }
-
-.text-success-500 { color: rgb(34 197 94); }
-.text-success-700 { color: rgb(21 128 61); }
-.text-warning-500 { color: rgb(245 158 11); }
-.text-warning-700 { color: rgb(180 83 9); }
-.text-warning-300 { color: rgb(252 211 77); }
-.text-danger-500 { color: rgb(239 68 68); }
-.text-danger-600 { color: rgb(220 38 38); }
-.text-danger-700 { color: rgb(185 28 28); }
-
-.border-primary-500 { border-color: rgb(14 165 233); }
-.border-primary-200 { border-color: rgb(186 230 253); }
-
-/* Gradients */
-.bg-gradient-to-r.from-primary-500.to-primary-800 {
-  background: linear-gradient(to right, rgb(14 165 233), rgb(7 89 133));
+/* --------------------------------------------------------------------------
+ * Base
+ * ------------------------------------------------------------------------ */
+html {
+  -webkit-text-size-adjust: 100%;
 }
 
-.bg-gradient-to-r.from-primary-50.to-secondary-50 {
-  background: linear-gradient(to right, rgb(240 249 255), rgb(248 250 252));
+body {
+  font-family: var(--font-sans);
+  color: var(--text-base);
+  background-color: var(--surface-muted);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
-/* Hover states */
-.hover\:bg-primary-50:hover { background-color: rgb(240 249 255); }
-.hover\:bg-primary-200:hover { background-color: rgb(186 230 253); }
-.hover\:bg-secondary-50:hover { background-color: rgb(248 250 252); }
-.hover\:bg-success-50:hover { background-color: rgb(240 253 244); }
-.hover\:bg-warning-50:hover { background-color: rgb(255 251 235); }
-.hover\:bg-danger-50:hover { background-color: rgb(254 242 242); }
-
-.hover\:text-primary-700:hover { color: rgb(3 105 161); }
-.hover\:text-secondary-900:hover { color: rgb(15 23 42); }
-.hover\:text-success-700:hover { color: rgb(21 128 61); }
-.hover\:text-warning-700:hover { color: rgb(180 83 9); }
-.hover\:text-danger-700:hover { color: rgb(185 28 28); }
-
-/* Ring styles */
-.ring-primary-200 { --tw-ring-color: rgb(186 230 253); }
-
-/* Custom scrollbar styles */
-.scrollbar-thin::-webkit-scrollbar {
-  width: 6px;
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+.font-display {
+  font-family: var(--font-display);
+  letter-spacing: -0.01em;
+  color: var(--text-strong);
 }
 
-.scrollbar-thin::-webkit-scrollbar-track {
-  background: rgb(248 250 252);
+::selection {
+  background: var(--brand-primary);
+  color: #fff;
 }
 
-.scrollbar-thin::-webkit-scrollbar-thumb {
-  background: rgb(203 213 225);
-  border-radius: 3px;
+/* Foco visible coherente en toda la app */
+:where(a, button, input, select, textarea):focus-visible {
+  outline: 2px solid var(--brand-primary);
+  outline-offset: 2px;
 }
 
-.scrollbar-thin::-webkit-scrollbar-thumb:hover {
-  background: rgb(148 163 184);
-}
-
-/* Reusable form control with primary focus */
+/* --------------------------------------------------------------------------
+ * Formularios
+ * ------------------------------------------------------------------------ */
 .input-control {
   display: block;
   width: 100%;
-  border-radius: 0.375rem; /* rounded-md */
-  border: 1px solid rgb(209 213 219); /* gray-300 */
-  padding: 0.5rem 0.75rem; /* px-3 py-2 */
-  font-size: 0.875rem; /* text-sm */
+  border-radius: 0.5rem;
+  border: 1px solid var(--border-base);
+  background-color: #fff;
+  padding: 0.5rem 0.75rem;
+  font-size: 0.875rem;
+  color: var(--text-base);
   outline: none;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
 }
+
+.input-control::placeholder {
+  color: #9aa7b4;
+}
+
 .input-control:focus {
-  border-color: rgb(14 165 233); /* primary-500 */
+  border-color: var(--brand-primary);
+  box-shadow: 0 0 0 3px rgb(22 93 152 / 0.15);
 }
 
+.input-control:disabled {
+  background-color: var(--surface-sunken);
+  color: var(--text-muted);
+  cursor: not-allowed;
+}
+
+.input-control.is-invalid,
+.input-control[aria-invalid="true"] {
+  border-color: var(--color-danger-500, #c0392b);
+}
+
+.input-label {
+  display: block;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: var(--text-strong);
+  margin-bottom: 0.3rem;
+}
+
+.input-help {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  margin-top: 0.25rem;
+}
+
+.input-error {
+  font-size: 0.75rem;
+  color: #c0392b;
+  margin-top: 0.25rem;
+}
+
+/* --------------------------------------------------------------------------
+ * Botones institucionales
+ * ------------------------------------------------------------------------ */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.45rem;
+  border-radius: 0.5rem;
+  padding: 0.5rem 0.95rem;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  line-height: 1.25rem;
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition: var(--transition-fast);
+  white-space: nowrap;
+}
+
+.btn:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.btn-primary {
+  background-color: var(--brand-primary);
+  color: #fff;
+}
+.btn-primary:hover:not(:disabled) {
+  background-color: var(--brand-primary-dark);
+}
+
+.btn-accent {
+  background-color: var(--brand-accent);
+  color: #3b2704;
+}
+.btn-accent:hover:not(:disabled) {
+  background-color: #e09e14;
+}
+
+.btn-outline {
+  background-color: #fff;
+  border-color: var(--border-base);
+  color: var(--text-strong);
+}
+.btn-outline:hover:not(:disabled) {
+  border-color: var(--brand-primary);
+  color: var(--brand-primary);
+  background-color: var(--surface-muted);
+}
+
+.btn-ghost {
+  background-color: transparent;
+  color: var(--text-muted);
+}
+.btn-ghost:hover:not(:disabled) {
+  background-color: var(--surface-sunken);
+  color: var(--text-strong);
+}
+
+.btn-danger {
+  background-color: #c0392b;
+  color: #fff;
+}
+.btn-danger:hover:not(:disabled) {
+  background-color: #9d2e23;
+}
+
+.btn-sm {
+  padding: 0.3rem 0.6rem;
+  font-size: 0.75rem;
+}
+
+/* --------------------------------------------------------------------------
+ * Tarjetas / superficies
+ * ------------------------------------------------------------------------ */
+.card {
+  background-color: var(--surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-card, 0.75rem);
+  box-shadow: var(--shadow-card);
+}
+
+.card-pad {
+  padding: 1rem 1.15rem;
+}
+
+/* Tarjeta de indicador (KPI) del panel de inventario */
+.kpi-card {
+  position: relative;
+  overflow: hidden;
+  background-color: var(--surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-card, 0.75rem);
+  padding: 1rem 1.15rem;
+  box-shadow: var(--shadow-card);
+}
+
+.kpi-card::before {
+  content: "";
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 4px;
+  background: var(--brand-primary);
+}
+
+.kpi-card--accent::before {
+  background: var(--brand-accent);
+}
+.kpi-card--danger::before {
+  background: #c0392b;
+}
+.kpi-card--success::before {
+  background: #1c8b4b;
+}
+
+.kpi-value {
+  font-family: var(--font-display);
+  font-size: 1.75rem;
+  font-weight: 700;
+  line-height: 1;
+  color: var(--text-strong);
+}
+
+.kpi-label {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  font-weight: 600;
+  color: var(--text-muted);
+}
+
+/* --------------------------------------------------------------------------
+ * Badges / etiquetas
+ * ------------------------------------------------------------------------ */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  border-radius: 999px;
+  padding: 0.15rem 0.6rem;
+  font-size: 0.7rem;
+  font-weight: 600;
+  border: 1px solid transparent;
+  white-space: nowrap;
+}
+
+.badge-primary {
+  background: #eef5fb;
+  color: #0e3e67;
+  border-color: #aecfe9;
+}
+.badge-accent {
+  background: #fef8e9;
+  color: #875a09;
+  border-color: #fbdc8d;
+}
+.badge-success {
+  background: #ecf8f1;
+  color: #10552e;
+  border-color: #a8dcc1;
+}
+.badge-danger {
+  background: #fdeeec;
+  color: #7a241b;
+  border-color: #f0b9b1;
+}
+.badge-neutral {
+  background: var(--surface-sunken);
+  color: var(--text-muted);
+  border-color: var(--border-base);
+}
+
+/* Enlace activo del menú lateral (usado por side-menu-list) */
 .sidebar-item-link {
-  background-color: #bfdbfe; /* bg-primary-200 → azul claro */
-  color: #1d4ed8;            /* text-primary-700 → azul intenso */
-  border-left: 4px solid #3b82f6; /* border-l-4 border-primary-500 → borde izquierdo azul */
+  background-color: #d7e7f4;
+  color: #0e3e67;
+  border-left: 4px solid #f2ac1d;
 }
 
-/* ==============================
-   Global table styles (centralized)
-   Use class="gc-table" on all tables; optional gc-table--compact for smaller cells
-   Customize via CSS variables below
-============================== */
-:root {
-  --table-font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Noto Sans, Ubuntu, Cantarell, Helvetica Neue, Arial, "Apple Color Emoji", "Segoe UI Emoji";
-  --table-font-size: 0.875rem; /* text-sm */
-  --table-text-color: rgb(17 24 39); /* gray-900 */
-  --table-header-bg: #ffffff; /* white */
-  --table-header-color: #0f172a; /* slate-900 */
-  --table-row-bg: #ffffff; /* white */
-  --table-row-alt-bg: #f3f4f6; /* gray-100 */
-  --table-row-hover-bg: #e5e7eb; /* gray-200 */
-  --table-border-color: #cbd5e1; /* slate-300 */
-  --table-cell-py: 0.5rem; /* 8px */
-  --table-cell-px: 0.5rem; /* 8px */
-
-
-  /*primera paleta */
-  --text: #272643;
-  --background: #f8f8fb;
-  --primary: #6c6aab;
-  --secondary: #a6a5cf;
-  --accent: #7a78bc;
-
-
-    /*segunda paleta */
-  --text: #1F1F20;
-  --background: #FFFFFF;
-  --primary: #E3E3E3;
-  --secondary: #E3E3E3;
-  --accent: #E3E0F3;
-
-  /* segunda paleta */
-
-  --text: #050315;
---background: #fbfbfe;
---primary: #2f27ce;
---secondary: #dedcff;
---accent: #433bff;
-
-/* Actual en uso */
---bg: #fafbfc;
---border: #eef0f2;
---text: #1e2328;
---textsecun: #979a9c;
---hover: #eef0f2;
-
+/* --------------------------------------------------------------------------
+ * Scrollbar
+ * ------------------------------------------------------------------------ */
+.scrollbar-thin::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+.scrollbar-thin::-webkit-scrollbar-track {
+  background: var(--surface-muted);
+}
+.scrollbar-thin::-webkit-scrollbar-thumb {
+  background: #b9c6d2;
+  border-radius: 3px;
+}
+.scrollbar-thin::-webkit-scrollbar-thumb:hover {
+  background: var(--brand-primary-light);
 }
 
+/* --------------------------------------------------------------------------
+ * Tablas globales — usar class="gc-table" (variante compacta: gc-table--compact)
+ * ------------------------------------------------------------------------ */
 .gc-table {
   width: 100%;
   border-collapse: collapse;
@@ -195,13 +332,20 @@
   font-size: var(--table-font-size);
   color: var(--table-text-color);
   background-color: var(--table-row-bg);
+  border-radius: 0.5rem;
+  overflow: hidden;
 }
 
 .gc-table thead th {
   background-color: var(--table-header-bg);
   color: var(--table-header-color);
-  font-weight: 700;
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
   text-align: center;
+  white-space: nowrap;
 }
 
 .gc-table th,
@@ -211,24 +355,360 @@
   vertical-align: middle;
 }
 
-.gc-table tbody tr:nth-child(odd) { background-color: var(--table-row-bg); }
-.gc-table tbody tr:nth-child(even) { background-color: var(--table-row-alt-bg); }
-.gc-table tbody tr:hover { background-color: var(--table-row-hover-bg); }
+.gc-table tbody tr:nth-child(odd) {
+  background-color: var(--table-row-bg);
+}
+.gc-table tbody tr:nth-child(even) {
+  background-color: var(--table-row-alt-bg);
+}
+.gc-table tbody tr:hover {
+  background-color: var(--table-row-hover-bg);
+}
 
-/* Compact variant */
-.gc-table--compact { font-size: 0.8125rem; }
+.gc-table--compact {
+  font-size: 0.8125rem;
+}
 .gc-table--compact th,
-.gc-table--compact td { padding: 0.375rem 0.5rem; }
+.gc-table--compact td {
+  padding: 0.375rem 0.5rem;
+}
 
-/* Centralized header cell class for reuse even outside .gc-table */
 .gc-th {
   background-color: var(--table-header-bg);
   color: var(--table-header-color);
-  font-weight: 700;
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
   text-align: center;
   padding: var(--table-cell-py) var(--table-cell-px);
   border: 1px solid var(--table-border-color);
 }
-.gc-th--left { text-align: left; }
-.gc-th--center { text-align: center; }
-.gc-th--right { text-align: right; }
+.gc-th--left {
+  text-align: left;
+}
+.gc-th--center {
+  text-align: center;
+}
+.gc-th--right {
+  text-align: right;
+}
+
+/* Contenedor con scroll horizontal para tablas anchas */
+.table-scroll {
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* --------------------------------------------------------------------------
+ * Botones de acción de las tablas (editar, eliminar, ver, movimiento)
+ * Tonos apagados sobre el azul institucional, para que la fila siga siendo
+ * lo que resalta y no los botones.
+ * ------------------------------------------------------------------------ */
+.btn-action {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 0.5rem;
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition: var(--transition-fast);
+  vertical-align: middle;
+  line-height: 0;
+}
+
+.btn-action:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.btn-action--edit {
+  background: #eef5fb;
+  color: #165d98;
+  border-color: #cfe2f2;
+}
+.btn-action--edit:hover:not(:disabled) {
+  background: #d7e7f4;
+  border-color: #aecfe9;
+}
+
+.btn-action--delete {
+  background: #fdf2f0;
+  color: #a2352a;
+  border-color: #f3ceca;
+}
+.btn-action--delete:hover:not(:disabled) {
+  background: #f9ddd9;
+  border-color: #e8b3ac;
+}
+
+.btn-action--view {
+  background: #f6f8fa;
+  color: #4a5b6b;
+  border-color: #e0e6ec;
+}
+.btn-action--view:hover:not(:disabled) {
+  background: #eef1f5;
+  color: #165d98;
+  border-color: #cfd8e0;
+}
+
+.btn-action--move {
+  background: #fef8e9;
+  color: #8a5c0a;
+  border-color: #f7e3b4;
+}
+.btn-action--move:hover:not(:disabled) {
+  background: #fdedc6;
+  border-color: #f2d488;
+}
+
+/* Grupo de acciones dentro de una celda */
+.acciones-celda {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+/* --------------------------------------------------------------------------
+ * Paginación
+ * ------------------------------------------------------------------------ */
+.pag-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 2rem;
+  height: 2rem;
+  padding: 0 0.5rem;
+  border-radius: 0.5rem;
+  border: 1px solid var(--border-subtle);
+  background: #fff;
+  color: var(--text-base);
+  font-size: 0.8125rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: var(--transition-fast);
+}
+.pag-btn:hover:not(:disabled):not(.pag-btn--activa) {
+  background: var(--surface-muted);
+  border-color: var(--border-base);
+  color: var(--brand-primary);
+}
+.pag-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+.pag-btn--activa {
+  background: var(--brand-primary);
+  border-color: var(--brand-primary);
+  color: #fff;
+  cursor: default;
+}
+.pag-btn--salto {
+  border-color: transparent;
+  color: var(--text-muted);
+  letter-spacing: 0.05em;
+}
+.pag-btn--salto:hover:not(:disabled) {
+  border-color: var(--border-base);
+  color: var(--brand-primary);
+}
+
+/* --------------------------------------------------------------------------
+ * Ficha de detalle (modal de un registro)
+ * ------------------------------------------------------------------------ */
+.detalle-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(11rem, 1fr));
+  gap: 0.85rem 1.25rem;
+}
+
+.detalle-campo {
+  min-width: 0;
+}
+
+.detalle-etiqueta {
+  display: block;
+  font-size: 0.65rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-muted);
+  margin-bottom: 0.15rem;
+}
+
+.detalle-valor {
+  font-size: 0.875rem;
+  color: var(--text-strong);
+  overflow-wrap: anywhere;
+}
+
+/* ============================================================================
+ * RESPONSIVE
+ * ========================================================================== */
+
+/* --------------------------------------------------------------------------
+ * Tablas apiladas: en móvil cada fila se convierte en una tarjeta con
+ * pares etiqueta / valor. La etiqueta sale de `data-label` en cada <td>,
+ * así que no hace falta duplicar el marcado.
+ * Uso: <table class="gc-table gc-table--stack"> + [attr.data-label] en los td.
+ * ------------------------------------------------------------------------ */
+@media (max-width: 767px) {
+  .gc-table--stack {
+    border: 0;
+    background: transparent;
+    border-radius: 0;
+  }
+
+  .gc-table--stack thead {
+    /* Los encabezados se reemplazan por las etiquetas de cada celda */
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+  }
+
+  .gc-table--stack tbody,
+  .gc-table--stack tr,
+  .gc-table--stack td {
+    display: block;
+    width: 100%;
+  }
+
+  .gc-table--stack tbody tr,
+  .gc-table--stack tbody tr:nth-child(odd),
+  .gc-table--stack tbody tr:nth-child(even) {
+    background-color: var(--surface);
+    border: 1px solid var(--border-subtle);
+    border-radius: 0.65rem;
+    margin-bottom: 0.7rem;
+    box-shadow: var(--shadow-card);
+    overflow: hidden;
+  }
+
+  .gc-table--stack tbody tr:last-child {
+    margin-bottom: 0;
+  }
+
+  /* La etiqueta va posicionada, no como item flex: así las celdas que
+     contienen varias líneas (nombre + descripción) se apilan bien y no
+     se desbordan a lo ancho. */
+  .gc-table--stack td {
+    position: relative;
+    border: 0;
+    border-bottom: 1px dashed var(--border-subtle);
+    padding: 0.55rem 0.8rem 0.55rem 7.5rem;
+    text-align: left;
+    min-height: 2.4rem;
+    overflow-wrap: anywhere;
+  }
+
+  .gc-table--stack td:last-child {
+    border-bottom: 0;
+  }
+
+  .gc-table--stack td::before {
+    content: attr(data-label);
+    position: absolute;
+    left: 0.8rem;
+    top: 0.6rem;
+    width: 6.2rem;
+    font-size: 0.65rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    line-height: 1.15;
+    color: var(--text-muted);
+  }
+
+  /* Celdas sin etiqueta (estados vacíos, "cargando…") ocupan todo el ancho */
+  .gc-table--stack td:not([data-label]),
+  .gc-table--stack td[colspan] {
+    padding-left: 0.8rem;
+    text-align: center;
+  }
+
+  .gc-table--stack td:not([data-label])::before,
+  .gc-table--stack td[colspan]::before {
+    content: none;
+  }
+
+  /* La celda de acciones ocupa su propia franja, alineada a la derecha */
+  .gc-table--stack td.celda-acciones {
+    padding-left: 0.8rem;
+    text-align: right;
+    background: var(--surface-muted);
+  }
+}
+
+/* --------------------------------------------------------------------------
+ * Ajustes finos por tamaño de pantalla
+ * ------------------------------------------------------------------------ */
+@media (max-width: 640px) {
+  /* Encabezado de página: título arriba, acciones abajo a lo ancho */
+  .page-header {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .page-title {
+    font-size: 1.15rem;
+  }
+
+  /* Botones de acción un poco más grandes para el dedo */
+  .btn-action {
+    width: 2.25rem;
+    height: 2.25rem;
+  }
+
+  .pag-btn {
+    min-width: 2rem;
+    height: 2rem;
+    font-size: 0.75rem;
+  }
+
+  .card-pad {
+    padding: 0.85rem 0.9rem;
+  }
+
+  .kpi-value {
+    font-size: 1.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .detalle-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .gc-table--stack td {
+    padding-left: 6.2rem;
+  }
+
+  .gc-table--stack td::before {
+    width: 5rem;
+  }
+}
+
+/* Tarjeta de un registro en el listado móvil del inventario */
+.fila-card {
+  display: block;
+  width: 100%;
+  text-align: left;
+  background: var(--surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: 0.65rem;
+  padding: 0.8rem 0.85rem;
+  box-shadow: var(--shadow-card);
+  transition: var(--transition-fast);
+}
+
+.fila-card:active {
+  background: var(--surface-muted);
+}

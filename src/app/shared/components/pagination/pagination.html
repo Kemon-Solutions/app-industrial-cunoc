@@ -1,38 +1,78 @@
-@if(showText()){
-    <div class="text-xs text-gray-700">
-        Mostrando {{ (paginationObj().page - 1) * paginationObj().pageSize + 1 }} a
-        {{ Math.min(paginationObj().page * paginationObj().pageSize, paginationObj().totalItems) }}
-        de {{ paginationObj().totalItems }} resultados
-    </div>
-}
-<nav class="flex items-center justify-center space-x-1 mt-2">
-    <form class="max-w-sm mx-auto text-[0.8em]">
-        <label for="underline_select" class="sr-only">Underline select</label>
-        <select id="underline_select" (change)="changePageSize(+txtPageSize.value)" #txtPageSize
-            class="block py-0.5 px-2 w-full text-sm text-gray-600 bg-transparent border-gray-300 border-1 rounded-sm appearance-none dark:text-gray-400 dark:border-gray-600 focus:outline-none focus:ring-0 focus:border-gray-600 peer">
-            <option value="5" [selected]="paginationObj().pageSize === 5">5 registros página</option>
-            <option value="10" [selected]="paginationObj().pageSize === 10">10 registros página</option>
-            <option value="20" [selected]="paginationObj().pageSize === 20">20 registros página</option>
-            <option value="50" [selected]="paginationObj().pageSize === 50">50 registros página</option>
-        </select>
-    </form>
-</nav>
-<nav class="flex items-center justify-center space-x-1 mt-1">
-    <button (click)="previousPage()" [disabled]="paginationObj().page === 1"
-        class="px-3 py-1 rounded bg-gray-200 hover:bg-gray-300 disabled:opacity-50">
-        ←
-    </button>
+<div class="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between sm:gap-3 w-full">
 
-    @for (page of totalPagesArray(); track $index) {
-    <button (click)="goToPage(page)" [class.bg-blue-500]="page === paginationObj().page"
-        [class.text-white]="page === paginationObj().page" class="px-3 py-1 rounded hover:bg-gray-300">
-        {{ page }}
-    </button>
-    }
+  <!-- Resumen -->
+  @if (showText()) {
+    <p class="text-xs text-secondary-500 text-center sm:text-left">
+      Mostrando {{ desde() }} a {{ hasta() }} de {{ paginationObj().totalItems }} resultados
+    </p>
+  } @else {
+    <span class="hidden sm:block"></span>
+  }
 
-    <button (click)="nextPage()" [disabled]="paginationObj().page === totalPages"
-        class="px-3 py-1 rounded bg-gray-200 hover:bg-gray-300 disabled:opacity-50">
-        →
-    </button>
-</nav>
-<!--  -->
+  <div class="flex flex-wrap items-center justify-center gap-2 sm:gap-3">
+
+    <!-- Registros por página -->
+    <label class="sr-only" for="pag-tamano">Registros por página</label>
+    <select id="pag-tamano" #txtPageSize (change)="cambiarTamano(+txtPageSize.value)"
+            class="h-8 rounded-lg border border-[color:var(--border-subtle)] bg-white px-2 text-xs text-secondary-600 focus:border-primary-500 focus:outline-none">
+      <option value="5" [selected]="paginationObj().pageSize === 5">5 por página</option>
+      <option value="10" [selected]="paginationObj().pageSize === 10">10 por página</option>
+      <option value="20" [selected]="paginationObj().pageSize === 20">20 por página</option>
+      <option value="50" [selected]="paginationObj().pageSize === 50">50 por página</option>
+      <option value="100" [selected]="paginationObj().pageSize === 100">100 por página</option>
+    </select>
+
+    <!-- Navegación -->
+    <nav class="flex items-center gap-1" aria-label="Paginación">
+
+      @if (totalPages() > maxVisibles()) {
+        <button type="button" class="pag-btn" (click)="primera()"
+                [disabled]="paginationObj().page === 1" title="Primera página" aria-label="Primera página">
+          «
+        </button>
+      }
+
+      <button type="button" class="pag-btn" (click)="anterior()"
+              [disabled]="paginationObj().page === 1" title="Anterior" aria-label="Página anterior">
+        ‹
+      </button>
+
+      <!-- Móvil: indicador compacto en lugar de la lista de páginas -->
+      <span class="sm:hidden px-2 text-xs font-medium text-secondary-600 whitespace-nowrap">
+        Página {{ paginationObj().page }} de {{ totalPages() }}
+      </span>
+
+      <!-- Escritorio: números y saltos de bloque -->
+      <span class="hidden sm:flex items-center gap-1">
+        @for (elemento of elementos(); track $index) {
+          @if (esSalto(elemento)) {
+            <button type="button" class="pag-btn pag-btn--salto" (click)="irA(numero(elemento))"
+                    [title]="'Saltar a la página ' + numero(elemento)"
+                    [attr.aria-label]="'Saltar a la página ' + numero(elemento)">
+              …
+            </button>
+          } @else {
+            <button type="button" class="pag-btn"
+                    [class.pag-btn--activa]="numero(elemento) === paginationObj().page"
+                    [attr.aria-current]="numero(elemento) === paginationObj().page ? 'page' : null"
+                    (click)="irA(numero(elemento))">
+              {{ numero(elemento) }}
+            </button>
+          }
+        }
+      </span>
+
+      <button type="button" class="pag-btn" (click)="siguiente()"
+              [disabled]="paginationObj().page >= totalPages()" title="Siguiente" aria-label="Página siguiente">
+        ›
+      </button>
+
+      @if (totalPages() > maxVisibles()) {
+        <button type="button" class="pag-btn" (click)="ultima()"
+                [disabled]="paginationObj().page >= totalPages()" title="Última página" aria-label="Última página">
+          »
+        </button>
+      }
+    </nav>
+  </div>
+</div>

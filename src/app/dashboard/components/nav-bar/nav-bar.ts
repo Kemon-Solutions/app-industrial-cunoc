@@ -29,7 +29,7 @@ export class NavBar {
   }
 
   async actualizarFoto() {
-    if (!this.user()?.usuarioId) return;
+    if (!this.user()?.id) return;
 
     // const nuevaFotoUrl = await this.fotoPerfilService.descargarFotoUsuario(this.user().usuarioId);
     // if (nuevaFotoUrl) {
