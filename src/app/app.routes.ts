@@ -1,12 +1,10 @@
 import { Routes } from '@angular/router';
 import { AuthGuard } from '../services/auth/guards/auth-guard';
 import { AccessGuard } from '../services/auth/guards/access-guard';
-// import { AccessGuard } from './auth/guards/access-guard';
 
 export const routes: Routes = [
     {
         path: '',
-        // loadComponent: () => import('./shared/pages/home-page/home-page'),
         loadComponent: () => import('./auth/pages/login/login')
     },
     {
@@ -33,6 +31,49 @@ export const routes: Routes = [
             {
                 path: 'mi-perfil',
                 loadComponent: () => import('./auth/pages/mi-perfil-page/mi-perfil-page'),
+            },
+            /* ================= Laboratorio de Ingeniería Industrial =================
+             * Para exigir permiso por rol (tabla Acceso) agregue en este bloque:
+             *     canActivate: [AccessGuard],
+             * después de ejecutar la sección 9 de database/lab-inventario.sql,
+             * que registra los menús y accesos del módulo.
+             * ====================================================================== */
+            {
+                path: 'laboratorio',
+                children: [
+                    {
+                        path: '',
+                        loadComponent: () => import('./laboratorio/pages/inventario-page/inventario-page'),
+                    },
+                    {
+                        path: 'insumos',
+                        loadComponent: () => import('./laboratorio/pages/insumos-page/insumos-page'),
+                    },
+                    {
+                        path: 'movimientos',
+                        loadComponent: () => import('./laboratorio/pages/movimientos-page/movimientos-page'),
+                    },
+                    {
+                        path: 'categorias',
+                        loadComponent: () => import('./laboratorio/pages/categorias-page/categorias-page'),
+                    },
+                    {
+                        path: 'ubicaciones',
+                        loadComponent: () => import('./laboratorio/pages/ubicaciones-page/ubicaciones-page'),
+                    },
+                    {
+                        path: 'areas',
+                        loadComponent: () => import('./laboratorio/pages/areas-page/areas-page'),
+                    },
+                    {
+                        path: 'almacenamientos',
+                        loadComponent: () => import('./laboratorio/pages/almacenamientos-page/almacenamientos-page'),
+                    },
+                    {
+                        path: 'estados',
+                        loadComponent: () => import('./laboratorio/pages/estados-page/estados-page'),
+                    },
+                ]
             },
             {
                 path: 'config',
@@ -76,58 +117,6 @@ export const routes: Routes = [
                     },
                 ]
             },
-            //     children: [
-            //         {
-            //             path: '',
-            //             loadComponent: () => import('./configuracion/pages/config-page/config-page'),
-            //             // canActivate: [AccessGuard]
-            //         },
-            //         {
-            //             path: 'config',
-            //             loadComponent: () => import('./configuracion/pages/configuraciones-page/configuraciones-page.component'),
-            //             canActivate: [AccessGuard]
-            //         },
-            //         {
-            //             path: 'user',
-            //             loadComponent: () => import('./configuracion/pages/user-page/user-page'),
-            //             canActivate: [AccessGuard]
-            //         },
-            //         {
-            //             path: 'users',
-            //             loadComponent: () => import('./configuracion/pages/users-page/users-page'),
-            //             canActivate: [AccessGuard]
-            //         },
-            //         {
-            //             path: 'roles',
-            //             loadComponent: () => import('./configuracion/pages/rol-page/rol-page'),
-            //             canActivate: [AccessGuard]
-            //         },
-            //         {
-            //             path: 'metodos',
-            //             loadComponent: () => import('./configuracion/pages/metodos-auth-page/metodos-auth-page.component'),
-            //             canActivate: [AccessGuard]
-            //         },
-            //         {
-            //             path: 'menus',
-            //             loadComponent: () => import('./configuracion/pages/menu-page/menu-page.component'),
-            //             canActivate: [AccessGuard]
-            //         },
-            //         {
-            //             path: 'accesos',
-            //             loadComponent: () => import('./configuracion/pages/acceso-page/acceso-page.component'),
-            //             canActivate: [AccessGuard]
-            //         }
-            //     ]
-            // },
-            // {
-            //     path: 'reportes',
-            //     children: [
-            //         {
-            //             path: '',
-            //             loadComponent: () => import('./reportes/pages/home-reporte/home-reporte.component'),
-            //         }
-            //     ]
-            // },
         ]
     },
     {
@@ -142,6 +131,4 @@ export const routes: Routes = [
         path: '**',
         loadComponent: () => import('./shared/pages/404-page/404-page'),
     }
-
-
 ];

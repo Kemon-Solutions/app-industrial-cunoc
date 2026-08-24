@@ -1,0 +1,69 @@
+<form [formGroup]="form()" (ngSubmit)="onSubmit()" class="space-y-4">
+
+  <div class="rounded-lg bg-primary-50 border border-primary-200 px-4 py-3">
+    <p class="text-xs uppercase tracking-wide font-semibold text-primary-700">Objeto</p>
+    <p class="font-display font-semibold text-[color:var(--text-strong)]">
+      {{ insumo().nombre }}
+      @if (insumo().descripcion) {
+        <span class="font-normal text-secondary-600">— {{ insumo().descripcion }}</span>
+      }
+    </p>
+    <p class="text-sm text-secondary-600 mt-1">
+      Existencia actual: <strong>{{ insumo().cantidad }}</strong> {{ insumo().unidad }}
+      @if (insumo().codigo) { · <span class="font-mono text-xs">{{ insumo().codigo }}</span> }
+    </p>
+  </div>
+
+  <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+    <div>
+      <label class="input-label" for="mov-tipo">Tipo de movimiento <span class="text-danger-600">*</span></label>
+      <select id="mov-tipo" formControlName="tipo" class="input-control">
+        @for (tipo of tipos; track tipo.valor) {
+          <option [value]="tipo.valor">{{ tipo.etiqueta }}</option>
+        }
+      </select>
+    </div>
+
+    <div>
+      <label class="input-label" for="mov-cantidad">Cantidad <span class="text-danger-600">*</span></label>
+      <input id="mov-cantidad" type="number" min="0" step="1" formControlName="cantidad"
+             class="input-control" />
+    </div>
+
+    <div class="sm:col-span-2">
+      <label class="input-label" for="mov-responsable">Responsable</label>
+      <input id="mov-responsable" type="text" formControlName="responsable" class="input-control"
+             placeholder="Estudiante o docente que recibe / entrega" />
+    </div>
+
+    <div class="sm:col-span-2">
+      <label class="input-label" for="mov-motivo">Motivo</label>
+      <textarea id="mov-motivo" rows="2" formControlName="motivo" class="input-control"
+                placeholder="Ej. Práctica de estudio de tiempos, grupo 3"></textarea>
+    </div>
+  </div>
+
+  <div class="rounded-lg border px-4 py-3"
+       [class.border-danger-300]="resultadoNegativo()"
+       [class.bg-danger-50]="resultadoNegativo()"
+       [class.border-success-300]="!resultadoNegativo()"
+       [class.bg-success-50]="!resultadoNegativo()">
+    @if (resultadoNegativo()) {
+      <p class="text-sm font-semibold text-danger-700">
+        No hay existencias suficientes: el resultado sería {{ resultado() }}.
+      </p>
+    } @else {
+      <p class="text-sm text-success-700">
+        Existencia después del movimiento: <strong>{{ resultado() }}</strong> {{ insumo().unidad }}
+      </p>
+    }
+  </div>
+
+  <div class="flex flex-col-reverse sm:flex-row sm:justify-end gap-2 pt-2 border-t border-[color:var(--border-subtle)]">
+    <button type="button" class="btn btn-outline" (click)="cancelar.emit()">Cancelar</button>
+    <button type="submit" class="btn btn-primary"
+            [disabled]="guardando() || form().invalid || resultadoNegativo()">
+      {{ guardando() ? 'Registrando…' : 'Registrar movimiento' }}
+    </button>
+  </div>
+</form>

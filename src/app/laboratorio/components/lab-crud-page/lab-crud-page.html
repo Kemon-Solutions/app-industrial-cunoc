@@ -1,0 +1,228 @@
+<section class="space-y-5 max-w-5xl">
+
+  <!-- Encabezado -->
+  <header class="page-header">
+    <div>
+      <h1 class="page-title">{{ titulo() }}</h1>
+      <div class="brand-rule mt-2"></div>
+      @if (subtitulo()) {
+        <p class="page-subtitle">{{ subtitulo() }}</p>
+      }
+    </div>
+
+    <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 w-full sm:w-auto">
+      <div class="relative w-full sm:w-auto">
+        <input
+          type="search"
+          #txtBuscar
+          [value]="buscador()"
+          (keyup.enter)="buscar(txtBuscar.value)"
+          (search)="buscar(txtBuscar.value)"
+          placeholder="Buscar…"
+          class="input-control pl-9 w-full sm:w-56"
+          aria-label="Buscar registros" />
+        <svg class="absolute left-3 top-2.5 h-4 w-4 text-secondary-400" viewBox="0 0 20 20"
+             fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+          <circle cx="9" cy="9" r="6" />
+          <path d="M13.5 13.5 17.5 17.5" stroke-linecap="round" />
+        </svg>
+      </div>
+
+      <button type="button" class="btn btn-primary w-full sm:w-auto" (click)="abrirUpsert(true)">
+        <svg class="h-4 w-4" viewBox="0 0 20 20" fill="none" stroke="currentColor"
+             stroke-width="2" stroke-linecap="round" aria-hidden="true">
+          <path d="M10 4v12M4 10h12" />
+        </svg>
+        Nueva {{ entidad() }}
+      </button>
+    </div>
+  </header>
+
+  <!-- Tabla -->
+  <div class="card card-pad">
+    <div class="table-scroll">
+      <table class="gc-table gc-table--compact gc-table--stack">
+        <thead>
+          <tr>
+            @for (col of columnas(); track col.campo) {
+              <th [style.width]="col.ancho">{{ col.etiqueta }}</th>
+            }
+            <th style="width: 7rem">Acciones</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          @if (isLoading()) {
+            <tr>
+              <td [attr.colspan]="columnas().length + 1" class="text-center py-8 text-secondary-500">
+                Cargando…
+              </td>
+            </tr>
+          } @else if (registros().length === 0) {
+            <tr>
+              <td [attr.colspan]="columnas().length + 1" class="text-center py-8 text-secondary-500">
+                No hay registros que mostrar.
+              </td>
+            </tr>
+          } @else {
+            @for (registro of registros(); track registro['id']) {
+              <tr>
+                @for (col of columnas(); track col.campo) {
+                  <td [attr.data-label]="col.etiqueta" [class]="claseAlineacion(col)">
+                    @switch (col.tipo) {
+                      @case ('badge') {
+                        <span class="badge badge-primary">{{ texto(registro, col) }}</span>
+                      }
+                      @case ('activo') {
+                        @if (esActivo(registro)) {
+                          <span class="badge badge-success">Activo</span>
+                        } @else {
+                          <span class="badge badge-neutral">Inactivo</span>
+                        }
+                      }
+                      @default {
+                        {{ texto(registro, col) }}
+                      }
+                    }
+                  </td>
+                }
+
+                <td class="celda-acciones md:text-center whitespace-nowrap">
+                  <span class="acciones-celda">
+                  <button type="button" class="btn-action btn-action--edit" title="Editar"
+                          (click)="abrirUpsert(false, registro)">
+                    <svg class="h-4 w-4" viewBox="0 0 20 20" fill="none" stroke="currentColor"
+                         stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M13.2 3.8a1.7 1.7 0 0 1 2.4 2.4L7.4 14.4l-3.2.8.8-3.2 8.2-8.2Z" />
+                    </svg>
+                  </button>
+
+                  <button type="button" class="btn-action btn-action--delete" title="Eliminar"
+                          (click)="abrirEliminar(registro)">
+                    <svg class="h-4 w-4" viewBox="0 0 20 20" fill="none" stroke="currentColor"
+                         stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M4 6h12M8 6V4.5h4V6m-6.5 0 .7 9.2a1.3 1.3 0 0 0 1.3 1.3h3a1.3 1.3 0 0 0 1.3-1.3L14.5 6" />
+                    </svg>
+                  </button>
+                  </span>
+                </td>
+              </tr>
+            }
+          }
+        </tbody>
+      </table>
+    </div>
+
+    <div class="mt-4">
+      <app-pagination [paginationObj]="pagination()" (changePage)="cambiarPagina($event)" />
+    </div>
+  </div>
+
+  <!-- ================= Modal alta / edición ================= -->
+  <div #modalUpsert
+       class="hs-overlay hidden size-full fixed top-0 start-0 z-[80] overflow-x-hidden overflow-y-auto pointer-events-none">
+    <div class="hs-overlay-open:mt-7 hs-overlay-open:opacity-100 hs-overlay-open:duration-500 mt-0 opacity-0 ease-out transition-all sm:max-w-lg sm:w-full m-2 sm:m-3 sm:mx-auto">
+      <div class="flex flex-col bg-white border border-[color:var(--border-subtle)] shadow-lg rounded-xl pointer-events-auto">
+
+        <div class="flex justify-between items-center py-3 px-4 border-b border-[color:var(--border-subtle)]">
+          <h3 class="font-display font-semibold text-[color:var(--text-strong)]">
+            {{ tituloModal() }}
+          </h3>
+          <button type="button" class="btn btn-ghost btn-sm" (click)="cerrarModales()" aria-label="Cerrar">
+            <svg class="h-4 w-4" viewBox="0 0 20 20" fill="none" stroke="currentColor"
+                 stroke-width="2" stroke-linecap="round">
+              <path d="M5 5l10 10M15 5L5 15" />
+            </svg>
+          </button>
+        </div>
+
+        <form [formGroup]="form()" (ngSubmit)="guardar()" class="p-4 space-y-4 max-h-[75vh] overflow-y-auto scrollbar-thin">
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            @for (campo of campos(); track campo.nombre) {
+              <div [class.sm:col-span-2]="campo.ancho !== 'mitad'">
+                <label class="input-label" [attr.for]="'campo-' + campo.nombre">
+                  {{ campo.etiqueta }}
+                  @if (campo.requerido) { <span class="text-danger-600">*</span> }
+                </label>
+
+                @switch (campo.tipo) {
+                  @case ('textarea') {
+                    <textarea [id]="'campo-' + campo.nombre" [formControlName]="campo.nombre"
+                              rows="3" class="input-control"
+                              [placeholder]="campo.placeholder || ''"></textarea>
+                  }
+                  @case ('select') {
+                    <select [id]="'campo-' + campo.nombre" [formControlName]="campo.nombre"
+                            class="input-control">
+                      <option value="">Seleccione…</option>
+                      @for (opcion of campo.opciones || []; track opcion.valor) {
+                        <option [value]="opcion.valor">{{ opcion.etiqueta }}</option>
+                      }
+                    </select>
+                  }
+                  @case ('numero') {
+                    <input [id]="'campo-' + campo.nombre" [formControlName]="campo.nombre"
+                           type="number" class="input-control"
+                           [placeholder]="campo.placeholder || ''" />
+                  }
+                  @case ('booleano') {
+                    <select [id]="'campo-' + campo.nombre" [formControlName]="campo.nombre"
+                            class="input-control">
+                      <option [value]="1">Sí</option>
+                      <option [value]="0">No</option>
+                    </select>
+                  }
+                  @default {
+                    <input [id]="'campo-' + campo.nombre" [formControlName]="campo.nombre"
+                           type="text" class="input-control"
+                           [placeholder]="campo.placeholder || ''" />
+                  }
+                }
+
+                @if (errorDe(campo.nombre); as mensaje) {
+                  <p class="input-error">{{ mensaje }}</p>
+                } @else if (campo.ayuda) {
+                  <p class="input-help">{{ campo.ayuda }}</p>
+                }
+              </div>
+            }
+          </div>
+
+          <div class="flex flex-col-reverse sm:flex-row sm:justify-end gap-2 pt-3 border-t border-[color:var(--border-subtle)]">
+            <button type="button" class="btn btn-outline" (click)="cerrarModales()">Cancelar</button>
+            <button type="submit" class="btn btn-primary"
+                    [disabled]="guardando() || form().invalid">
+              {{ guardando() ? 'Guardando…' : textoBoton() }}
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= Modal eliminar ================= -->
+  <div #modalEliminar
+       class="hs-overlay hidden size-full fixed top-0 start-0 z-[80] overflow-x-hidden overflow-y-auto pointer-events-none">
+    <div class="hs-overlay-open:mt-7 hs-overlay-open:opacity-100 hs-overlay-open:duration-500 mt-0 opacity-0 ease-out transition-all sm:max-w-md sm:w-full m-2 sm:m-3 sm:mx-auto">
+      <div class="flex flex-col bg-white border border-[color:var(--border-subtle)] shadow-lg rounded-xl pointer-events-auto">
+        <div class="p-5 space-y-3">
+          <h3 class="font-display font-semibold text-[color:var(--text-strong)]">
+            Eliminar {{ entidad() }}
+          </h3>
+          <p class="text-sm text-secondary-600">
+            ¿Confirma eliminar <strong>{{ registroActivo()['nombre'] }}</strong>?
+            El registro deja de estar disponible pero se conserva en el histórico.
+          </p>
+          <div class="flex flex-col-reverse sm:flex-row sm:justify-end gap-2 pt-2">
+            <button type="button" class="btn btn-outline" (click)="cerrarModales()">Cancelar</button>
+            <button type="button" class="btn btn-danger" [disabled]="guardando()"
+                    (click)="eliminar()">
+              {{ guardando() ? 'Eliminando…' : 'Eliminar' }}
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</section>

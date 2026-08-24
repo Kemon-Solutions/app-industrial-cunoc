@@ -1,0 +1,142 @@
+<section class="space-y-4 sm:space-y-5 max-w-6xl">
+
+  <header class="page-header">
+    <div>
+      <h1 class="page-title">Panel del inventario</h1>
+      <div class="brand-rule mt-2"></div>
+      <p class="page-subtitle">
+        Laboratorio de Ingeniería Industrial · Centro Universitario de Occidente, USAC
+      </p>
+    </div>
+
+    <a routerLink="/dashboard/laboratorio/insumos" class="btn btn-primary w-full sm:w-auto">
+      Ver inventario completo
+    </a>
+  </header>
+
+  @if (isLoading()) {
+    <div class="card card-pad text-center py-10 text-secondary-500">
+      Cargando indicadores…
+    </div>
+  } @else if (!resumen()) {
+    <div class="card card-pad text-center py-10 text-secondary-500">
+      No fue posible obtener el resumen del inventario.
+    </div>
+  } @else {
+
+    <!-- Indicadores -->
+    <div class="grid grid-cols-2 xl:grid-cols-4 gap-3 sm:gap-4">
+      <article class="kpi-card">
+        <p class="kpi-label">Registros</p>
+        <p class="kpi-value mt-1">{{ resumen()!.total_registros }}</p>
+        <p class="text-xs text-secondary-500 mt-1">Objetos distintos catalogados</p>
+      </article>
+
+      <article class="kpi-card kpi-card--accent">
+        <p class="kpi-label">Piezas totales</p>
+        <p class="kpi-value mt-1">{{ resumen()!.total_piezas }}</p>
+        <p class="text-xs text-secondary-500 mt-1">Suma de todas las existencias</p>
+      </article>
+
+      <article class="kpi-card kpi-card--danger">
+        <p class="kpi-label">Existencia crítica</p>
+        <p class="kpi-value mt-1">{{ resumen()!.criticos }}</p>
+        <p class="text-xs text-secondary-500 mt-1">En o por debajo del mínimo</p>
+      </article>
+
+      <article class="kpi-card kpi-card--success">
+        <p class="kpi-label">Existencia normal</p>
+        <p class="kpi-value mt-1">{{ resumen()!.normales }}</p>
+        <p class="text-xs text-secondary-500 mt-1">
+          {{ resumen()!.bajos }} objetos en nivel bajo
+        </p>
+      </article>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+
+      <!-- Por categoría -->
+      <div class="card card-pad">
+        <h2 class="font-display font-semibold text-base mb-3">Por clasificación</h2>
+        <ul class="space-y-2.5">
+          @for (fila of resumen()!.por_categoria; track fila.nombre) {
+            <li>
+              <div class="flex items-baseline justify-between text-sm">
+                <span class="text-[color:var(--text-base)]">{{ fila.nombre }}</span>
+                <span class="text-secondary-500 text-xs">
+                  {{ fila.registros }} reg. · {{ fila.piezas }} pzs.
+                </span>
+              </div>
+              <div class="h-1.5 rounded-full bg-secondary-100 mt-1 overflow-hidden">
+                <div class="h-full rounded-full bg-primary-500"
+                     [style.width.%]="porcentaje(fila.registros, maximoCategoria())"></div>
+              </div>
+            </li>
+          }
+        </ul>
+      </div>
+
+      <!-- Por ubicación -->
+      <div class="card card-pad">
+        <h2 class="font-display font-semibold text-base mb-3">Por ubicación</h2>
+        <ul class="space-y-2.5">
+          @for (fila of resumen()!.por_ubicacion; track fila.nombre) {
+            <li>
+              <div class="flex items-baseline justify-between text-sm">
+                <span class="text-[color:var(--text-base)]">{{ fila.nombre }}</span>
+                <span class="text-secondary-500 text-xs">
+                  {{ fila.registros }} reg. · {{ fila.piezas }} pzs.
+                </span>
+              </div>
+              <div class="h-1.5 rounded-full bg-secondary-100 mt-1 overflow-hidden">
+                <div class="h-full rounded-full bg-terciary-400"
+                     [style.width.%]="porcentaje(fila.registros, maximoUbicacion())"></div>
+              </div>
+            </li>
+          }
+        </ul>
+      </div>
+    </div>
+
+    <!-- Últimos movimientos -->
+    <div class="card card-pad">
+      <div class="flex items-center justify-between mb-3">
+        <h2 class="font-display font-semibold text-base">Últimos movimientos</h2>
+        <a routerLink="/dashboard/laboratorio/movimientos" class="btn btn-ghost btn-sm">
+          Ver todos
+        </a>
+      </div>
+
+      @if (resumen()!.ultimos_movimientos.length === 0) {
+        <p class="text-sm text-secondary-500 py-4 text-center">
+          Aún no se han registrado movimientos.
+        </p>
+      } @else {
+        <div class="table-scroll">
+          <table class="gc-table gc-table--compact gc-table--stack">
+            <thead>
+              <tr>
+                <th style="width: 10rem">Fecha</th>
+                <th style="width: 9rem">Tipo</th>
+                <th>Objeto</th>
+                <th style="width: 7rem">Cantidad</th>
+                <th style="width: 14%">Responsable</th>
+              </tr>
+            </thead>
+            <tbody>
+              @for (mov of resumen()!.ultimos_movimientos; track mov.id) {
+                <tr>
+                  <td data-label="Fecha" class="text-xs md:text-center">{{ fecha(mov.fecha_movimiento) }}</td>
+                  <td data-label="Tipo" class="md:text-center"><span class="badge badge-primary">{{ mov.tipo }}</span></td>
+                  <td data-label="Objeto">{{ mov.insumo?.nombre || '—' }}</td>
+                  <td data-label="Cantidad" class="md:text-center font-semibold">{{ mov.cantidad }}</td>
+                  <td data-label="Responsable" class="text-xs">{{ mov.responsable || '—' }}</td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+      }
+    </div>
+  }
+</section>

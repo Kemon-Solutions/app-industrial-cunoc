@@ -1,0 +1,414 @@
+<section class="space-y-4 sm:space-y-5 max-w-6xl">
+
+  <!-- Encabezado -->
+  <header class="page-header">
+    <div>
+      <h1 class="page-title">Inventario del laboratorio</h1>
+      <div class="brand-rule mt-2"></div>
+      <p class="page-subtitle">
+        Objetos, equipo y materiales del Laboratorio de Ingeniería Industrial · CUNOC-USAC
+      </p>
+    </div>
+
+    <button type="button" class="btn btn-primary w-full sm:w-auto" (click)="abrirUpsert(true)">
+      <svg class="h-4 w-4" viewBox="0 0 20 20" fill="none" stroke="currentColor"
+           stroke-width="2" stroke-linecap="round" aria-hidden="true">
+        <path d="M10 4v12M4 10h12" />
+      </svg>
+      Agregar objeto
+    </button>
+  </header>
+
+  <!-- Filtros -->
+  <div class="card card-pad">
+    <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-5 gap-3">
+
+      <div class="sm:col-span-2">
+        <label class="input-label" for="f-busqueda">Buscar</label>
+        <input id="f-busqueda" type="search" #txtBuscar [value]="busqueda()"
+               (keyup.enter)="buscar(txtBuscar.value)" (search)="buscar(txtBuscar.value)"
+               class="input-control" placeholder="Objeto, descripción o código…" />
+      </div>
+
+      <div>
+        <label class="input-label" for="f-categoria">Categoría</label>
+        <select id="f-categoria" class="input-control" [value]="filtroCategoria()"
+                (change)="cambiarFiltro('categoria', $any($event.target).value)">
+          <option value="">Todas</option>
+          @for (categoria of categorias(); track categoria.id) {
+            <option [value]="categoria.id">{{ categoria.nombre }}</option>
+          }
+        </select>
+      </div>
+
+      <div>
+        <label class="input-label" for="f-ubicacion">Ubicación</label>
+        <select id="f-ubicacion" class="input-control" [value]="filtroUbicacion()"
+                (change)="cambiarFiltro('ubicacion', $any($event.target).value)">
+          <option value="">Todas</option>
+          @for (ubicacion of ubicaciones(); track ubicacion.id) {
+            <option [value]="ubicacion.id">{{ ubicacion.nombre }}</option>
+          }
+        </select>
+      </div>
+
+      <div>
+        <label class="input-label" for="f-alerta">Existencias</label>
+        <select id="f-alerta" class="input-control" [value]="filtroAlerta()"
+                (change)="cambiarFiltro('alerta', $any($event.target).value)">
+          <option value="0">Todas</option>
+          <option value="1">Críticas</option>
+          <option value="2">Bajas</option>
+          <option value="3">Normales</option>
+        </select>
+      </div>
+    </div>
+
+    @if (hayFiltros()) {
+      <div class="mt-3">
+        <button type="button" class="btn btn-ghost btn-sm" (click)="limpiarFiltros()">
+          Limpiar filtros
+        </button>
+      </div>
+    }
+  </div>
+
+  <!-- ================= Listado ================= -->
+  <div class="card card-pad">
+
+    @if (isLoading()) {
+      <p class="text-center py-8 text-secondary-500 text-sm">Cargando inventario…</p>
+    } @else if (insumos().length === 0) {
+      <p class="text-center py-8 text-secondary-500 text-sm">
+        No se encontraron objetos con los criterios seleccionados.
+      </p>
+    } @else {
+
+      <!-- ---------- Móvil: tarjetas ---------- -->
+      <ul class="space-y-2.5 md:hidden">
+        @for (insumo of insumos(); track insumo.id) {
+          <li>
+            <div class="fila-card" (click)="abrirDetalle(insumo)">
+              <div class="flex items-start justify-between gap-3">
+                <div class="min-w-0">
+                  <p class="font-mono text-[0.65rem] text-secondary-400">{{ insumo.codigo }}</p>
+                  <p class="font-semibold text-[color:var(--text-strong)] leading-snug">
+                    {{ insumo.nombre }}
+                  </p>
+                  @if (insumo.descripcion) {
+                    <p class="text-xs text-secondary-500">{{ insumo.descripcion }}</p>
+                  }
+                </div>
+
+                <div class="text-right shrink-0">
+                  <p class="font-display text-lg font-bold leading-none text-[color:var(--text-strong)]">
+                    {{ insumo.cantidad }}
+                  </p>
+                  <p class="text-[0.65rem] text-secondary-500">{{ insumo.unidad }}</p>
+                </div>
+              </div>
+
+              <div class="mt-2 flex flex-wrap items-center gap-1.5">
+                @if (insumo.categoria) {
+                  <span class="badge badge-primary">{{ insumo.categoria.nombre }}</span>
+                }
+                <span [class]="claseAlerta(insumo)">{{ textoAlerta(insumo) }}</span>
+              </div>
+
+              <p class="mt-2 text-xs text-secondary-500">
+                {{ insumo.ubicacion?.nombre || 'Sin ubicación' }}
+                @if (insumo.area) { · {{ insumo.area.nombre }} }
+              </p>
+
+              <div class="mt-3 pt-2.5 border-t border-[color:var(--border-subtle)] flex justify-end"
+                   (click)="$event.stopPropagation()">
+                <ng-container *ngTemplateOutlet="acciones; context: { $implicit: insumo }" />
+              </div>
+            </div>
+          </li>
+        }
+      </ul>
+
+      <!-- ---------- Escritorio: tabla ---------- -->
+      <div class="table-scroll hidden md:block">
+        <table class="gc-table gc-table--compact">
+          <thead>
+            <tr>
+              <th>Objeto</th>
+              <th style="width: 9rem">Categoría</th>
+              <th style="width: 11rem">Ubicación</th>
+              <th style="width: 7rem">Existencia</th>
+              <th style="width: 9.5rem">Acciones</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            @for (insumo of insumos(); track insumo.id) {
+              <tr class="cursor-pointer" (click)="abrirDetalle(insumo)">
+                <td>
+                  <span class="font-mono text-[0.65rem] text-secondary-400">{{ insumo.codigo }}</span>
+                  <span class="block font-semibold text-[color:var(--text-strong)]">{{ insumo.nombre }}</span>
+                  @if (insumo.descripcion) {
+                    <span class="block text-xs text-secondary-500">{{ insumo.descripcion }}</span>
+                  }
+                </td>
+
+                <td class="text-center">
+                  @if (insumo.categoria) {
+                    <span class="badge badge-primary">{{ insumo.categoria.nombre }}</span>
+                  } @else { — }
+                </td>
+
+                <td class="text-xs">
+                  {{ insumo.ubicacion?.nombre || '—' }}
+                  @if (insumo.area) {
+                    <span class="block text-secondary-500">{{ insumo.area.nombre }}</span>
+                  }
+                </td>
+
+                <td class="text-center">
+                  <span class="inline-flex items-center gap-1.5">
+                    <span class="inline-block h-2 w-2 rounded-full shrink-0"
+                          [class]="claseIndicador(insumo)" [title]="textoAlerta(insumo)"></span>
+                    <span class="font-semibold">{{ insumo.cantidad }}</span>
+                  </span>
+                  <span class="block text-[0.65rem] text-secondary-500">{{ insumo.unidad }}</span>
+                </td>
+
+                <td class="text-center" (click)="$event.stopPropagation()">
+                  <ng-container *ngTemplateOutlet="acciones; context: { $implicit: insumo }" />
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    }
+
+    <div class="mt-4">
+      <app-pagination [paginationObj]="pagination()" (changePage)="cambiarPagina($event)" />
+    </div>
+  </div>
+
+  <!-- Botonera reutilizada por la tabla y por las tarjetas -->
+  <ng-template #acciones let-insumo>
+    <span class="acciones-celda">
+      <button type="button" class="btn-action btn-action--view" title="Ver detalle"
+              aria-label="Ver detalle" (click)="abrirDetalle(insumo)">
+        <svg class="h-4 w-4" viewBox="0 0 20 20" fill="none" stroke="currentColor"
+             stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M1.8 10S4.9 4.5 10 4.5 18.2 10 18.2 10 15.1 15.5 10 15.5 1.8 10 1.8 10Z" />
+          <circle cx="10" cy="10" r="2.2" />
+        </svg>
+      </button>
+
+      <button type="button" class="btn-action btn-action--move" title="Registrar movimiento"
+              aria-label="Registrar movimiento" (click)="abrirMovimiento(insumo)">
+        <svg class="h-4 w-4" viewBox="0 0 20 20" fill="none" stroke="currentColor"
+             stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M3 7h11l-2.5-2.5M17 13H6l2.5 2.5" />
+        </svg>
+      </button>
+
+      <button type="button" class="btn-action btn-action--edit" title="Editar"
+              aria-label="Editar" (click)="abrirUpsert(false, insumo)">
+        <svg class="h-4 w-4" viewBox="0 0 20 20" fill="none" stroke="currentColor"
+             stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M13.2 3.8a1.7 1.7 0 0 1 2.4 2.4L7.4 14.4l-3.2.8.8-3.2 8.2-8.2Z" />
+        </svg>
+      </button>
+
+      <button type="button" class="btn-action btn-action--delete" title="Eliminar"
+              aria-label="Eliminar" (click)="abrirEliminar(insumo)">
+        <svg class="h-4 w-4" viewBox="0 0 20 20" fill="none" stroke="currentColor"
+             stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M4 6h12M8 6V4.5h4V6m-6.5 0 .7 9.2a1.3 1.3 0 0 0 1.3 1.3h3a1.3 1.3 0 0 0 1.3-1.3L14.5 6" />
+        </svg>
+      </button>
+    </span>
+  </ng-template>
+
+  <!-- ================= Modal de detalle ================= -->
+  <div #modalDetalle
+       class="hs-overlay hidden size-full fixed top-0 start-0 z-[80] overflow-x-hidden overflow-y-auto pointer-events-none">
+    <div class="hs-overlay-open:mt-7 hs-overlay-open:opacity-100 hs-overlay-open:duration-500 mt-0 opacity-0 ease-out transition-all sm:max-w-2xl sm:w-full m-2 sm:m-3 sm:mx-auto">
+      <div class="flex flex-col bg-white border border-[color:var(--border-subtle)] shadow-lg rounded-xl pointer-events-auto">
+
+        <div class="flex justify-between items-start gap-3 py-3 px-4 border-b border-[color:var(--border-subtle)]">
+          <div class="min-w-0">
+            <p class="font-mono text-[0.7rem] text-secondary-400">{{ insumoActivo().codigo }}</p>
+            <h3 class="font-display font-semibold text-[color:var(--text-strong)] break-words">
+              {{ insumoActivo().nombre }}
+            </h3>
+            @if (insumoActivo().descripcion) {
+              <p class="text-xs text-secondary-500">{{ insumoActivo().descripcion }}</p>
+            }
+          </div>
+          <button type="button" class="btn btn-ghost btn-sm shrink-0" (click)="cerrarModales()" aria-label="Cerrar">
+            <svg class="h-4 w-4" viewBox="0 0 20 20" fill="none" stroke="currentColor"
+                 stroke-width="2" stroke-linecap="round"><path d="M5 5l10 10M15 5L5 15" /></svg>
+          </button>
+        </div>
+
+        <div class="p-4 space-y-4 max-h-[65vh] overflow-y-auto scrollbar-thin">
+
+          <!-- Existencias -->
+          <div class="rounded-lg border border-[color:var(--border-subtle)] bg-[color:var(--surface-muted)] px-4 py-3
+                      flex flex-wrap items-center justify-between gap-3">
+            <div>
+              <span class="detalle-etiqueta">Existencia actual</span>
+              <span class="font-display text-2xl font-bold text-[color:var(--text-strong)]">
+                {{ insumoActivo().cantidad }}
+              </span>
+              <span class="text-sm text-secondary-500">{{ insumoActivo().unidad }}</span>
+            </div>
+            <span [class]="claseAlerta(insumoActivo())">{{ textoAlerta(insumoActivo()) }}</span>
+          </div>
+
+          <div class="detalle-grid">
+            <div class="detalle-campo">
+              <span class="detalle-etiqueta">Categoría</span>
+              <span class="detalle-valor">{{ insumoActivo().categoria?.nombre || '—' }}</span>
+            </div>
+            <div class="detalle-campo">
+              <span class="detalle-etiqueta">Estado</span>
+              <span class="detalle-valor">{{ insumoActivo().estado?.nombre || '—' }}</span>
+            </div>
+            <div class="detalle-campo">
+              <span class="detalle-etiqueta">Ubicación</span>
+              <span class="detalle-valor">{{ insumoActivo().ubicacion?.nombre || '—' }}</span>
+            </div>
+            <div class="detalle-campo">
+              <span class="detalle-etiqueta">Área / lado</span>
+              <span class="detalle-valor">{{ insumoActivo().area?.nombre || '—' }}</span>
+            </div>
+            <div class="detalle-campo">
+              <span class="detalle-etiqueta">Almacenamiento</span>
+              <span class="detalle-valor">{{ insumoActivo().almacenamiento?.nombre || '—' }}</span>
+            </div>
+            <div class="detalle-campo">
+              <span class="detalle-etiqueta">Existencia mínima</span>
+              <span class="detalle-valor">{{ insumoActivo().stock_minimo }}</span>
+            </div>
+            <div class="detalle-campo">
+              <span class="detalle-etiqueta">Existencia media</span>
+              <span class="detalle-valor">{{ insumoActivo().stock_medio }}</span>
+            </div>
+            <div class="detalle-campo">
+              <span class="detalle-etiqueta">Costo unitario</span>
+              <span class="detalle-valor">Q {{ insumoActivo().costo_unitario }}</span>
+            </div>
+            <div class="detalle-campo">
+              <span class="detalle-etiqueta">Hoja de origen</span>
+              <span class="detalle-valor">{{ insumoActivo().hoja_origen || '—' }}</span>
+            </div>
+            <div class="detalle-campo">
+              <span class="detalle-etiqueta">Registrado</span>
+              <span class="detalle-valor">{{ fecha(insumoActivo().created_at) }}</span>
+            </div>
+          </div>
+
+          @if (insumoActivo().observaciones) {
+            <div>
+              <span class="detalle-etiqueta">Observaciones</span>
+              <p class="detalle-valor whitespace-pre-line">{{ insumoActivo().observaciones }}</p>
+            </div>
+          }
+        </div>
+
+        <div class="flex flex-col-reverse sm:flex-row sm:flex-wrap sm:justify-end gap-2 px-4 py-3
+                    border-t border-[color:var(--border-subtle)]">
+          <button type="button" class="btn btn-outline" (click)="cerrarModales()">Cerrar</button>
+          <button type="button" class="btn btn-outline" (click)="abrirMovimiento(insumoActivo())">
+            Registrar movimiento
+          </button>
+          <button type="button" class="btn btn-primary" (click)="abrirUpsert(false, insumoActivo())">
+            Editar
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= Modal alta / edición ================= -->
+  <div #modalUpsert
+       class="hs-overlay hidden size-full fixed top-0 start-0 z-[80] overflow-x-hidden overflow-y-auto pointer-events-none">
+    <div class="hs-overlay-open:mt-7 hs-overlay-open:opacity-100 hs-overlay-open:duration-500 mt-0 opacity-0 ease-out transition-all sm:max-w-3xl sm:w-full m-2 sm:m-3 sm:mx-auto">
+      <div class="flex flex-col bg-white border border-[color:var(--border-subtle)] shadow-lg rounded-xl pointer-events-auto">
+        <div class="flex justify-between items-center py-3 px-4 border-b border-[color:var(--border-subtle)]">
+          <h3 class="font-display font-semibold text-[color:var(--text-strong)]">
+            {{ esNuevo() ? 'Agregar objeto al inventario' : 'Editar objeto' }}
+          </h3>
+          <button type="button" class="btn btn-ghost btn-sm" (click)="cerrarModales()" aria-label="Cerrar">
+            <svg class="h-4 w-4" viewBox="0 0 20 20" fill="none" stroke="currentColor"
+                 stroke-width="2" stroke-linecap="round"><path d="M5 5l10 10M15 5L5 15" /></svg>
+          </button>
+        </div>
+
+        <div class="p-4 max-h-[75vh] overflow-y-auto scrollbar-thin">
+          <app-upsert-lab-insumo
+            [insumo]="insumoActivo()"
+            [nuevo]="esNuevo()"
+            [guardando]="guardando()"
+            [formKey]="formKey()"
+            [categorias]="categorias()"
+            [ubicaciones]="ubicaciones()"
+            [areas]="areas()"
+            [almacenamientos]="almacenamientos()"
+            [estados]="estados()"
+            (guardar)="guardarInsumo($event)"
+            (cancelar)="cerrarModales()" />
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= Modal movimiento ================= -->
+  <div #modalMovimiento
+       class="hs-overlay hidden size-full fixed top-0 start-0 z-[80] overflow-x-hidden overflow-y-auto pointer-events-none">
+    <div class="hs-overlay-open:mt-7 hs-overlay-open:opacity-100 hs-overlay-open:duration-500 mt-0 opacity-0 ease-out transition-all sm:max-w-xl sm:w-full m-2 sm:m-3 sm:mx-auto">
+      <div class="flex flex-col bg-white border border-[color:var(--border-subtle)] shadow-lg rounded-xl pointer-events-auto">
+        <div class="flex justify-between items-center py-3 px-4 border-b border-[color:var(--border-subtle)]">
+          <h3 class="font-display font-semibold text-[color:var(--text-strong)]">Registrar movimiento</h3>
+          <button type="button" class="btn btn-ghost btn-sm" (click)="cerrarModales()" aria-label="Cerrar">
+            <svg class="h-4 w-4" viewBox="0 0 20 20" fill="none" stroke="currentColor"
+                 stroke-width="2" stroke-linecap="round"><path d="M5 5l10 10M15 5L5 15" /></svg>
+          </button>
+        </div>
+
+        <div class="p-4 max-h-[75vh] overflow-y-auto scrollbar-thin">
+          <app-registrar-movimiento
+            [insumo]="insumoActivo()"
+            [guardando]="guardando()"
+            [formKey]="formKey()"
+            (registrar)="registrarMovimiento($event)"
+            (cancelar)="cerrarModales()" />
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= Modal eliminar ================= -->
+  <div #modalEliminar
+       class="hs-overlay hidden size-full fixed top-0 start-0 z-[80] overflow-x-hidden overflow-y-auto pointer-events-none">
+    <div class="hs-overlay-open:mt-7 hs-overlay-open:opacity-100 hs-overlay-open:duration-500 mt-0 opacity-0 ease-out transition-all sm:max-w-md sm:w-full m-2 sm:m-3 sm:mx-auto">
+      <div class="flex flex-col bg-white border border-[color:var(--border-subtle)] shadow-lg rounded-xl pointer-events-auto">
+        <div class="p-5 space-y-3">
+          <h3 class="font-display font-semibold text-[color:var(--text-strong)]">Eliminar objeto</h3>
+          <p class="text-sm text-secondary-600">
+            ¿Confirma eliminar <strong>{{ insumoActivo().nombre }}</strong> del inventario?
+            El registro se conserva en el histórico pero deja de listarse.
+          </p>
+          <div class="flex flex-col-reverse sm:flex-row sm:justify-end gap-2 pt-2">
+            <button type="button" class="btn btn-outline" (click)="cerrarModales()">Cancelar</button>
+            <button type="button" class="btn btn-danger" [disabled]="guardando()"
+                    (click)="eliminarInsumo()">
+              {{ guardando() ? 'Eliminando…' : 'Eliminar' }}
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</section>
