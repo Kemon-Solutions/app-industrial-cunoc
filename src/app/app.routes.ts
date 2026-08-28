@@ -4,8 +4,9 @@ import { AccessGuard } from '../services/auth/guards/access-guard';
 
 export const routes: Routes = [
     {
+        // Página pública del laboratorio. Desde aquí se entra al sistema.
         path: '',
-        loadComponent: () => import('./auth/pages/login/login')
+        loadComponent: () => import('./public/pages/inicio-page/inicio-page')
     },
     {
         path: 'login',

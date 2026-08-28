@@ -29,686 +29,901 @@
 /* Alineaciones que solo aparecen en TypeScript (tablas apiladas en móvil) */
 @source inline("md:text-center md:text-right");
 
-/* --------------------------------------------------------------------------
- * Base
- * ------------------------------------------------------------------------ */
-html {
-  -webkit-text-size-adjust: 100%;
-}
-
-body {
-  font-family: var(--font-sans);
-  color: var(--text-base);
-  background-color: var(--surface-muted);
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
-h1,
-h2,
-h3,
-h4,
-h5,
-h6,
-.font-display {
-  font-family: var(--font-display);
-  letter-spacing: -0.01em;
-  color: var(--text-strong);
-}
-
-::selection {
-  background: var(--brand-primary);
-  color: #fff;
-}
-
-/* Foco visible coherente en toda la app */
-:where(a, button, input, select, textarea):focus-visible {
-  outline: 2px solid var(--brand-primary);
-  outline-offset: 2px;
-}
-
-/* --------------------------------------------------------------------------
- * Formularios
- * ------------------------------------------------------------------------ */
-.input-control {
-  display: block;
-  width: 100%;
-  border-radius: 0.5rem;
-  border: 1px solid var(--border-base);
-  background-color: #fff;
-  padding: 0.5rem 0.75rem;
-  font-size: 0.875rem;
-  color: var(--text-base);
-  outline: none;
-  transition: border-color 0.15s ease, box-shadow 0.15s ease;
-}
-
-.input-control::placeholder {
-  color: #9aa7b4;
-}
-
-.input-control:focus {
-  border-color: var(--brand-primary);
-  box-shadow: 0 0 0 3px rgb(22 93 152 / 0.15);
-}
-
-.input-control:disabled {
-  background-color: var(--surface-sunken);
-  color: var(--text-muted);
-  cursor: not-allowed;
-}
-
-.input-control.is-invalid,
-.input-control[aria-invalid="true"] {
-  border-color: var(--color-danger-500, #c0392b);
-}
-
-.input-label {
-  display: block;
-  font-size: 0.8125rem;
-  font-weight: 600;
-  color: var(--text-strong);
-  margin-bottom: 0.3rem;
-}
-
-.input-help {
-  font-size: 0.75rem;
-  color: var(--text-muted);
-  margin-top: 0.25rem;
-}
-
-.input-error {
-  font-size: 0.75rem;
-  color: #c0392b;
-  margin-top: 0.25rem;
-}
-
-/* --------------------------------------------------------------------------
- * Botones institucionales
- * ------------------------------------------------------------------------ */
-.btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.45rem;
-  border-radius: 0.5rem;
-  padding: 0.5rem 0.95rem;
-  font-size: 0.8125rem;
-  font-weight: 600;
-  line-height: 1.25rem;
-  border: 1px solid transparent;
-  cursor: pointer;
-  transition: var(--transition-fast);
-  white-space: nowrap;
-}
-
-.btn:disabled {
-  opacity: 0.55;
-  cursor: not-allowed;
-}
-
-.btn-primary {
-  background-color: var(--brand-primary);
-  color: #fff;
-}
-.btn-primary:hover:not(:disabled) {
-  background-color: var(--brand-primary-dark);
-}
-
-.btn-accent {
-  background-color: var(--brand-accent);
-  color: #3b2704;
-}
-.btn-accent:hover:not(:disabled) {
-  background-color: #e09e14;
-}
-
-.btn-outline {
-  background-color: #fff;
-  border-color: var(--border-base);
-  color: var(--text-strong);
-}
-.btn-outline:hover:not(:disabled) {
-  border-color: var(--brand-primary);
-  color: var(--brand-primary);
-  background-color: var(--surface-muted);
-}
-
-.btn-ghost {
-  background-color: transparent;
-  color: var(--text-muted);
-}
-.btn-ghost:hover:not(:disabled) {
-  background-color: var(--surface-sunken);
-  color: var(--text-strong);
-}
-
-.btn-danger {
-  background-color: #c0392b;
-  color: #fff;
-}
-.btn-danger:hover:not(:disabled) {
-  background-color: #9d2e23;
-}
-
-.btn-sm {
-  padding: 0.3rem 0.6rem;
-  font-size: 0.75rem;
-}
-
-/* --------------------------------------------------------------------------
- * Tarjetas / superficies
- * ------------------------------------------------------------------------ */
-.card {
-  background-color: var(--surface);
-  border: 1px solid var(--border-subtle);
-  border-radius: var(--radius-card, 0.75rem);
-  box-shadow: var(--shadow-card);
-}
-
-.card-pad {
-  padding: 1rem 1.15rem;
-}
-
-/* Tarjeta de indicador (KPI) del panel de inventario */
-.kpi-card {
-  position: relative;
-  overflow: hidden;
-  background-color: var(--surface);
-  border: 1px solid var(--border-subtle);
-  border-radius: var(--radius-card, 0.75rem);
-  padding: 1rem 1.15rem;
-  box-shadow: var(--shadow-card);
-}
-
-.kpi-card::before {
-  content: "";
-  position: absolute;
-  inset: 0 auto 0 0;
-  width: 4px;
-  background: var(--brand-primary);
-}
-
-.kpi-card--accent::before {
-  background: var(--brand-accent);
-}
-.kpi-card--danger::before {
-  background: #c0392b;
-}
-.kpi-card--success::before {
-  background: #1c8b4b;
-}
-
-.kpi-value {
-  font-family: var(--font-display);
-  font-size: 1.75rem;
-  font-weight: 700;
-  line-height: 1;
-  color: var(--text-strong);
-}
-
-.kpi-label {
-  font-size: 0.75rem;
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
-  font-weight: 600;
-  color: var(--text-muted);
-}
-
-/* --------------------------------------------------------------------------
- * Badges / etiquetas
- * ------------------------------------------------------------------------ */
-.badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.3rem;
-  border-radius: 999px;
-  padding: 0.15rem 0.6rem;
-  font-size: 0.7rem;
-  font-weight: 600;
-  border: 1px solid transparent;
-  white-space: nowrap;
-}
-
-.badge-primary {
-  background: #eef5fb;
-  color: #0e3e67;
-  border-color: #aecfe9;
-}
-.badge-accent {
-  background: #fef8e9;
-  color: #875a09;
-  border-color: #fbdc8d;
-}
-.badge-success {
-  background: #ecf8f1;
-  color: #10552e;
-  border-color: #a8dcc1;
-}
-.badge-danger {
-  background: #fdeeec;
-  color: #7a241b;
-  border-color: #f0b9b1;
-}
-.badge-neutral {
-  background: var(--surface-sunken);
-  color: var(--text-muted);
-  border-color: var(--border-base);
-}
-
-/* Enlace activo del menú lateral (usado por side-menu-list) */
-.sidebar-item-link {
-  background-color: #d7e7f4;
-  color: #0e3e67;
-  border-left: 4px solid #f2ac1d;
-}
-
-/* --------------------------------------------------------------------------
- * Scrollbar
- * ------------------------------------------------------------------------ */
-.scrollbar-thin::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
-}
-.scrollbar-thin::-webkit-scrollbar-track {
-  background: var(--surface-muted);
-}
-.scrollbar-thin::-webkit-scrollbar-thumb {
-  background: #b9c6d2;
-  border-radius: 3px;
-}
-.scrollbar-thin::-webkit-scrollbar-thumb:hover {
-  background: var(--brand-primary-light);
-}
-
-/* --------------------------------------------------------------------------
- * Tablas globales — usar class="gc-table" (variante compacta: gc-table--compact)
- * ------------------------------------------------------------------------ */
-.gc-table {
-  width: 100%;
-  border-collapse: collapse;
-  border: 1px solid var(--table-border-color);
-  font-family: var(--table-font-family);
-  font-size: var(--table-font-size);
-  color: var(--table-text-color);
-  background-color: var(--table-row-bg);
-  border-radius: 0.5rem;
-  overflow: hidden;
-}
-
-.gc-table thead th {
-  background-color: var(--table-header-bg);
-  color: var(--table-header-color);
-  font-family: var(--font-display);
-  font-weight: 600;
-  font-size: 0.75rem;
-  text-transform: uppercase;
-  letter-spacing: 0.03em;
-  text-align: center;
-  white-space: nowrap;
-}
-
-.gc-table th,
-.gc-table td {
-  padding: var(--table-cell-py) var(--table-cell-px);
-  border: 1px solid var(--table-border-color);
-  vertical-align: middle;
-}
-
-.gc-table tbody tr:nth-child(odd) {
-  background-color: var(--table-row-bg);
-}
-.gc-table tbody tr:nth-child(even) {
-  background-color: var(--table-row-alt-bg);
-}
-.gc-table tbody tr:hover {
-  background-color: var(--table-row-hover-bg);
-}
-
-.gc-table--compact {
-  font-size: 0.8125rem;
-}
-.gc-table--compact th,
-.gc-table--compact td {
-  padding: 0.375rem 0.5rem;
-}
-
-.gc-th {
-  background-color: var(--table-header-bg);
-  color: var(--table-header-color);
-  font-family: var(--font-display);
-  font-weight: 600;
-  font-size: 0.75rem;
-  text-transform: uppercase;
-  letter-spacing: 0.03em;
-  text-align: center;
-  padding: var(--table-cell-py) var(--table-cell-px);
-  border: 1px solid var(--table-border-color);
-}
-.gc-th--left {
-  text-align: left;
-}
-.gc-th--center {
-  text-align: center;
-}
-.gc-th--right {
-  text-align: right;
-}
-
-/* Contenedor con scroll horizontal para tablas anchas */
-.table-scroll {
-  width: 100%;
-  overflow-x: auto;
-  -webkit-overflow-scrolling: touch;
-}
-
-/* --------------------------------------------------------------------------
- * Botones de acción de las tablas (editar, eliminar, ver, movimiento)
- * Tonos apagados sobre el azul institucional, para que la fila siga siendo
- * lo que resalta y no los botones.
- * ------------------------------------------------------------------------ */
-.btn-action {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 2rem;
-  height: 2rem;
-  border-radius: 0.5rem;
-  border: 1px solid transparent;
-  cursor: pointer;
-  transition: var(--transition-fast);
-  vertical-align: middle;
-  line-height: 0;
-}
-
-.btn-action:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-}
-
-.btn-action--edit {
-  background: #eef5fb;
-  color: #165d98;
-  border-color: #cfe2f2;
-}
-.btn-action--edit:hover:not(:disabled) {
-  background: #d7e7f4;
-  border-color: #aecfe9;
-}
-
-.btn-action--delete {
-  background: #fdf2f0;
-  color: #a2352a;
-  border-color: #f3ceca;
-}
-.btn-action--delete:hover:not(:disabled) {
-  background: #f9ddd9;
-  border-color: #e8b3ac;
-}
-
-.btn-action--view {
-  background: #f6f8fa;
-  color: #4a5b6b;
-  border-color: #e0e6ec;
-}
-.btn-action--view:hover:not(:disabled) {
-  background: #eef1f5;
-  color: #165d98;
-  border-color: #cfd8e0;
-}
-
-.btn-action--move {
-  background: #fef8e9;
-  color: #8a5c0a;
-  border-color: #f7e3b4;
-}
-.btn-action--move:hover:not(:disabled) {
-  background: #fdedc6;
-  border-color: #f2d488;
-}
-
-/* Grupo de acciones dentro de una celda */
-.acciones-celda {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.35rem;
-}
-
-/* --------------------------------------------------------------------------
- * Paginación
- * ------------------------------------------------------------------------ */
-.pag-btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  min-width: 2rem;
-  height: 2rem;
-  padding: 0 0.5rem;
-  border-radius: 0.5rem;
-  border: 1px solid var(--border-subtle);
-  background: #fff;
-  color: var(--text-base);
-  font-size: 0.8125rem;
-  font-weight: 500;
-  cursor: pointer;
-  transition: var(--transition-fast);
-}
-.pag-btn:hover:not(:disabled):not(.pag-btn--activa) {
-  background: var(--surface-muted);
-  border-color: var(--border-base);
-  color: var(--brand-primary);
-}
-.pag-btn:disabled {
-  opacity: 0.4;
-  cursor: not-allowed;
-}
-.pag-btn--activa {
-  background: var(--brand-primary);
-  border-color: var(--brand-primary);
-  color: #fff;
-  cursor: default;
-}
-.pag-btn--salto {
-  border-color: transparent;
-  color: var(--text-muted);
-  letter-spacing: 0.05em;
-}
-.pag-btn--salto:hover:not(:disabled) {
-  border-color: var(--border-base);
-  color: var(--brand-primary);
-}
-
-/* --------------------------------------------------------------------------
- * Ficha de detalle (modal de un registro)
- * ------------------------------------------------------------------------ */
-.detalle-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(11rem, 1fr));
-  gap: 0.85rem 1.25rem;
-}
-
-.detalle-campo {
-  min-width: 0;
-}
-
-.detalle-etiqueta {
-  display: block;
-  font-size: 0.65rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  color: var(--text-muted);
-  margin-bottom: 0.15rem;
-}
-
-.detalle-valor {
-  font-size: 0.875rem;
-  color: var(--text-strong);
-  overflow-wrap: anywhere;
-}
-
 /* ============================================================================
- * RESPONSIVE
+ * CAPAS
+ * Los estilos propios viven en las capas `base` y `components` para que las
+ * utilidades de Tailwind (hidden, md:hidden, text-white…) siempre ganen.
+ * Sin esto, `.btn` o `.btn-action` pisaban a `hidden` y el elemento seguía
+ * visible en móvil.
  * ========================================================================== */
 
-/* --------------------------------------------------------------------------
- * Tablas apiladas: en móvil cada fila se convierte en una tarjeta con
- * pares etiqueta / valor. La etiqueta sale de `data-label` en cada <td>,
- * así que no hace falta duplicar el marcado.
- * Uso: <table class="gc-table gc-table--stack"> + [attr.data-label] en los td.
- * ------------------------------------------------------------------------ */
-@media (max-width: 767px) {
-  .gc-table--stack {
-    border: 0;
-    background: transparent;
-    border-radius: 0;
+@layer base {
+  /* --------------------------------------------------------------------------
+   * Base
+   * ------------------------------------------------------------------------ */
+  html {
+    -webkit-text-size-adjust: 100%;
+    scroll-behavior: smooth;
   }
 
-  .gc-table--stack thead {
-    /* Los encabezados se reemplazan por las etiquetas de cada celda */
-    position: absolute;
-    width: 1px;
-    height: 1px;
-    overflow: hidden;
-    clip: rect(0 0 0 0);
+  /* Las secciones ancladas no quedan bajo la barra fija de la página pública */
+  :target {
+    scroll-margin-top: 4.5rem;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+  }
+
+  body {
+    font-family: var(--font-sans);
+    color: var(--text-base);
+    background-color: var(--surface-muted);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6,
+  .font-display {
+    font-family: var(--font-display);
+    letter-spacing: -0.01em;
+    color: var(--text-strong);
+  }
+
+  ::selection {
+    background: var(--brand-primary);
+    color: #fff;
+  }
+
+  /* Foco visible coherente en toda la app */
+  :where(a, button, input, select, textarea):focus-visible {
+    outline: 2px solid var(--brand-primary);
+    outline-offset: 2px;
+  }
+}
+
+@layer components {
+  /* --------------------------------------------------------------------------
+   * Formularios
+   * ------------------------------------------------------------------------ */
+  .input-control {
+    display: block;
+    width: 100%;
+    border-radius: 0.5rem;
+    border: 1px solid var(--border-base);
+    background-color: #fff;
+    padding: 0.5rem 0.75rem;
+    font-size: 0.875rem;
+    color: var(--text-base);
+    outline: none;
+    transition: border-color 0.15s ease, box-shadow 0.15s ease;
+  }
+
+  .input-control::placeholder {
+    color: #9aa7b4;
+  }
+
+  .input-control:focus {
+    border-color: var(--brand-primary);
+    box-shadow: 0 0 0 3px rgb(22 93 152 / 0.15);
+  }
+
+  .input-control:disabled {
+    background-color: var(--surface-sunken);
+    color: var(--text-muted);
+    cursor: not-allowed;
+  }
+
+  .input-control.is-invalid,
+  .input-control[aria-invalid="true"] {
+    border-color: var(--color-danger-500, #c0392b);
+  }
+
+  .input-label {
+    display: block;
+    font-size: 0.8125rem;
+    font-weight: 600;
+    color: var(--text-strong);
+    margin-bottom: 0.3rem;
+  }
+
+  .input-help {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    margin-top: 0.25rem;
+  }
+
+  .input-error {
+    font-size: 0.75rem;
+    color: #c0392b;
+    margin-top: 0.25rem;
+  }
+
+  /* --------------------------------------------------------------------------
+   * Botones institucionales
+   * ------------------------------------------------------------------------ */
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.45rem;
+    border-radius: 0.5rem;
+    padding: 0.5rem 0.95rem;
+    font-size: 0.8125rem;
+    font-weight: 600;
+    line-height: 1.25rem;
+    border: 1px solid transparent;
+    cursor: pointer;
+    transition: var(--transition-fast);
     white-space: nowrap;
   }
 
-  .gc-table--stack tbody,
-  .gc-table--stack tr,
-  .gc-table--stack td {
-    display: block;
-    width: 100%;
+  .btn:disabled {
+    opacity: 0.55;
+    cursor: not-allowed;
   }
 
-  .gc-table--stack tbody tr,
-  .gc-table--stack tbody tr:nth-child(odd),
-  .gc-table--stack tbody tr:nth-child(even) {
-    background-color: var(--surface);
-    border: 1px solid var(--border-subtle);
-    border-radius: 0.65rem;
-    margin-bottom: 0.7rem;
-    box-shadow: var(--shadow-card);
-    overflow: hidden;
+  .btn-primary {
+    background-color: var(--brand-primary);
+    color: #fff;
+  }
+  .btn-primary:hover:not(:disabled) {
+    background-color: var(--brand-primary-dark);
   }
 
-  .gc-table--stack tbody tr:last-child {
-    margin-bottom: 0;
+  .btn-accent {
+    background-color: var(--brand-accent);
+    color: #3b2704;
+  }
+  .btn-accent:hover:not(:disabled) {
+    background-color: #e09e14;
   }
 
-  /* La etiqueta va posicionada, no como item flex: así las celdas que
-     contienen varias líneas (nombre + descripción) se apilan bien y no
-     se desbordan a lo ancho. */
-  .gc-table--stack td {
-    position: relative;
-    border: 0;
-    border-bottom: 1px dashed var(--border-subtle);
-    padding: 0.55rem 0.8rem 0.55rem 7.5rem;
-    text-align: left;
-    min-height: 2.4rem;
-    overflow-wrap: anywhere;
+  .btn-outline {
+    background-color: #fff;
+    border-color: var(--border-base);
+    color: var(--text-strong);
+  }
+  .btn-outline:hover:not(:disabled) {
+    border-color: var(--brand-primary);
+    color: var(--brand-primary);
+    background-color: var(--surface-muted);
   }
 
-  .gc-table--stack td:last-child {
-    border-bottom: 0;
-  }
-
-  .gc-table--stack td::before {
-    content: attr(data-label);
-    position: absolute;
-    left: 0.8rem;
-    top: 0.6rem;
-    width: 6.2rem;
-    font-size: 0.65rem;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.04em;
-    line-height: 1.15;
+  .btn-ghost {
+    background-color: transparent;
     color: var(--text-muted);
   }
-
-  /* Celdas sin etiqueta (estados vacíos, "cargando…") ocupan todo el ancho */
-  .gc-table--stack td:not([data-label]),
-  .gc-table--stack td[colspan] {
-    padding-left: 0.8rem;
-    text-align: center;
+  .btn-ghost:hover:not(:disabled) {
+    background-color: var(--surface-sunken);
+    color: var(--text-strong);
   }
 
-  .gc-table--stack td:not([data-label])::before,
-  .gc-table--stack td[colspan]::before {
-    content: none;
+  .btn-danger {
+    background-color: #c0392b;
+    color: #fff;
+  }
+  .btn-danger:hover:not(:disabled) {
+    background-color: #9d2e23;
   }
 
-  /* La celda de acciones ocupa su propia franja, alineada a la derecha */
-  .gc-table--stack td.celda-acciones {
-    padding-left: 0.8rem;
-    text-align: right;
-    background: var(--surface-muted);
-  }
-}
-
-/* --------------------------------------------------------------------------
- * Ajustes finos por tamaño de pantalla
- * ------------------------------------------------------------------------ */
-@media (max-width: 640px) {
-  /* Encabezado de página: título arriba, acciones abajo a lo ancho */
-  .page-header {
-    flex-direction: column;
-    align-items: stretch;
-  }
-
-  .page-title {
-    font-size: 1.15rem;
-  }
-
-  /* Botones de acción un poco más grandes para el dedo */
-  .btn-action {
-    width: 2.25rem;
-    height: 2.25rem;
-  }
-
-  .pag-btn {
-    min-width: 2rem;
-    height: 2rem;
+  .btn-sm {
+    padding: 0.3rem 0.6rem;
     font-size: 0.75rem;
   }
 
+  /* --------------------------------------------------------------------------
+   * Tarjetas / superficies
+   * ------------------------------------------------------------------------ */
+  .card {
+    background-color: var(--surface);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-card, 0.75rem);
+    box-shadow: var(--shadow-card);
+  }
+
   .card-pad {
-    padding: 0.85rem 0.9rem;
+    padding: 1rem 1.15rem;
+  }
+
+  /* Tarjeta de indicador (KPI) del panel de inventario */
+  .kpi-card {
+    position: relative;
+    overflow: hidden;
+    background-color: var(--surface);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-card, 0.75rem);
+    padding: 1rem 1.15rem;
+    box-shadow: var(--shadow-card);
+  }
+
+  .kpi-card::before {
+    content: "";
+    position: absolute;
+    inset: 0 auto 0 0;
+    width: 4px;
+    background: var(--brand-primary);
+  }
+
+  .kpi-card--accent::before {
+    background: var(--brand-accent);
+  }
+  .kpi-card--danger::before {
+    background: #c0392b;
+  }
+  .kpi-card--success::before {
+    background: #1c8b4b;
   }
 
   .kpi-value {
-    font-size: 1.5rem;
+    font-family: var(--font-display);
+    font-size: 1.75rem;
+    font-weight: 700;
+    line-height: 1;
+    color: var(--text-strong);
   }
-}
 
-@media (max-width: 480px) {
+  .kpi-label {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    font-weight: 600;
+    color: var(--text-muted);
+  }
+
+  /* --------------------------------------------------------------------------
+   * Badges / etiquetas
+   * ------------------------------------------------------------------------ */
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    border-radius: 999px;
+    padding: 0.15rem 0.6rem;
+    font-size: 0.7rem;
+    font-weight: 600;
+    border: 1px solid transparent;
+    white-space: nowrap;
+  }
+
+  .badge-primary {
+    background: #eef5fb;
+    color: #0e3e67;
+    border-color: #aecfe9;
+  }
+  .badge-accent {
+    background: #fef8e9;
+    color: #875a09;
+    border-color: #fbdc8d;
+  }
+  .badge-success {
+    background: #ecf8f1;
+    color: #10552e;
+    border-color: #a8dcc1;
+  }
+  .badge-danger {
+    background: #fdeeec;
+    color: #7a241b;
+    border-color: #f0b9b1;
+  }
+  .badge-neutral {
+    background: var(--surface-sunken);
+    color: var(--text-muted);
+    border-color: var(--border-base);
+  }
+
+  /* Enlace activo del menú lateral (usado por side-menu-list) */
+  .sidebar-item-link {
+    background-color: #d7e7f4;
+    color: #0e3e67;
+    border-left: 4px solid #f2ac1d;
+  }
+
+  /* --------------------------------------------------------------------------
+   * Scrollbar
+   * ------------------------------------------------------------------------ */
+  .scrollbar-thin::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+  .scrollbar-thin::-webkit-scrollbar-track {
+    background: var(--surface-muted);
+  }
+  .scrollbar-thin::-webkit-scrollbar-thumb {
+    background: #b9c6d2;
+    border-radius: 3px;
+  }
+  .scrollbar-thin::-webkit-scrollbar-thumb:hover {
+    background: var(--brand-primary-light);
+  }
+
+  /* --------------------------------------------------------------------------
+   * Tablas globales — usar class="gc-table" (variante compacta: gc-table--compact)
+   * ------------------------------------------------------------------------ */
+  .gc-table {
+    width: 100%;
+    border-collapse: collapse;
+    border: 1px solid var(--table-border-color);
+    font-family: var(--table-font-family);
+    font-size: var(--table-font-size);
+    color: var(--table-text-color);
+    background-color: var(--table-row-bg);
+    border-radius: 0.5rem;
+    overflow: hidden;
+  }
+
+  .gc-table thead th {
+    background-color: var(--table-header-bg);
+    color: var(--table-header-color);
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    text-align: center;
+    white-space: nowrap;
+  }
+
+  .gc-table th,
+  .gc-table td {
+    padding: var(--table-cell-py) var(--table-cell-px);
+    border: 1px solid var(--table-border-color);
+    vertical-align: middle;
+  }
+
+  .gc-table tbody tr:nth-child(odd) {
+    background-color: var(--table-row-bg);
+  }
+  .gc-table tbody tr:nth-child(even) {
+    background-color: var(--table-row-alt-bg);
+  }
+  .gc-table tbody tr:hover {
+    background-color: var(--table-row-hover-bg);
+  }
+
+  .gc-table--compact {
+    font-size: 0.8125rem;
+  }
+  .gc-table--compact th,
+  .gc-table--compact td {
+    padding: 0.375rem 0.5rem;
+  }
+
+  .gc-th {
+    background-color: var(--table-header-bg);
+    color: var(--table-header-color);
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    text-align: center;
+    padding: var(--table-cell-py) var(--table-cell-px);
+    border: 1px solid var(--table-border-color);
+  }
+  .gc-th--left {
+    text-align: left;
+  }
+  .gc-th--center {
+    text-align: center;
+  }
+  .gc-th--right {
+    text-align: right;
+  }
+
+  /* Contenedor con scroll horizontal para tablas anchas */
+  .table-scroll {
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  /* --------------------------------------------------------------------------
+   * Botones de acción de las tablas (editar, eliminar, ver, movimiento)
+   * Tonos apagados sobre el azul institucional, para que la fila siga siendo
+   * lo que resalta y no los botones.
+   * ------------------------------------------------------------------------ */
+  .btn-action {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2rem;
+    height: 2rem;
+    border-radius: 0.5rem;
+    border: 1px solid transparent;
+    cursor: pointer;
+    transition: var(--transition-fast);
+    vertical-align: middle;
+    line-height: 0;
+  }
+
+  .btn-action:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  .btn-action--edit {
+    background: #eef5fb;
+    color: #165d98;
+    border-color: #cfe2f2;
+  }
+  .btn-action--edit:hover:not(:disabled) {
+    background: #d7e7f4;
+    border-color: #aecfe9;
+  }
+
+  .btn-action--delete {
+    background: #fdf2f0;
+    color: #a2352a;
+    border-color: #f3ceca;
+  }
+  .btn-action--delete:hover:not(:disabled) {
+    background: #f9ddd9;
+    border-color: #e8b3ac;
+  }
+
+  .btn-action--view {
+    background: #f6f8fa;
+    color: #4a5b6b;
+    border-color: #e0e6ec;
+  }
+  .btn-action--view:hover:not(:disabled) {
+    background: #eef1f5;
+    color: #165d98;
+    border-color: #cfd8e0;
+  }
+
+  .btn-action--move {
+    background: #fef8e9;
+    color: #8a5c0a;
+    border-color: #f7e3b4;
+  }
+  .btn-action--move:hover:not(:disabled) {
+    background: #fdedc6;
+    border-color: #f2d488;
+  }
+
+  /* Grupo de acciones dentro de una celda */
+  .acciones-celda {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+  }
+
+  /* --------------------------------------------------------------------------
+   * Paginación
+   * ------------------------------------------------------------------------ */
+  .pag-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 2rem;
+    height: 2rem;
+    padding: 0 0.5rem;
+    border-radius: 0.5rem;
+    border: 1px solid var(--border-subtle);
+    background: #fff;
+    color: var(--text-base);
+    font-size: 0.8125rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: var(--transition-fast);
+  }
+  .pag-btn:hover:not(:disabled):not(.pag-btn--activa) {
+    background: var(--surface-muted);
+    border-color: var(--border-base);
+    color: var(--brand-primary);
+  }
+  .pag-btn:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+  }
+  .pag-btn--activa {
+    background: var(--brand-primary);
+    border-color: var(--brand-primary);
+    color: #fff;
+    cursor: default;
+  }
+  .pag-btn--salto {
+    border-color: transparent;
+    color: var(--text-muted);
+    letter-spacing: 0.05em;
+  }
+  .pag-btn--salto:hover:not(:disabled) {
+    border-color: var(--border-base);
+    color: var(--brand-primary);
+  }
+
+  /* --------------------------------------------------------------------------
+   * Ficha de detalle (modal de un registro)
+   * ------------------------------------------------------------------------ */
   .detalle-grid {
-    grid-template-columns: 1fr;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(11rem, 1fr));
+    gap: 0.85rem 1.25rem;
   }
 
-  .gc-table--stack td {
-    padding-left: 6.2rem;
+  .detalle-campo {
+    min-width: 0;
   }
 
-  .gc-table--stack td::before {
-    width: 5rem;
+  .detalle-etiqueta {
+    display: block;
+    font-size: 0.65rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--text-muted);
+    margin-bottom: 0.15rem;
   }
-}
 
-/* Tarjeta de un registro en el listado móvil del inventario */
-.fila-card {
-  display: block;
-  width: 100%;
-  text-align: left;
-  background: var(--surface);
-  border: 1px solid var(--border-subtle);
-  border-radius: 0.65rem;
-  padding: 0.8rem 0.85rem;
-  box-shadow: var(--shadow-card);
-  transition: var(--transition-fast);
-}
+  .detalle-valor {
+    font-size: 0.875rem;
+    color: var(--text-strong);
+    overflow-wrap: anywhere;
+  }
 
-.fila-card:active {
-  background: var(--surface-muted);
+  /* ============================================================================
+   * RESPONSIVE
+   * ========================================================================== */
+
+  /* --------------------------------------------------------------------------
+   * Tablas apiladas: en móvil cada fila se convierte en una tarjeta con
+   * pares etiqueta / valor. La etiqueta sale de `data-label` en cada <td>,
+   * así que no hace falta duplicar el marcado.
+   * Uso: <table class="gc-table gc-table--stack"> + [attr.data-label] en los td.
+   * ------------------------------------------------------------------------ */
+  @media (max-width: 767px) {
+    .gc-table--stack {
+      border: 0;
+      background: transparent;
+      border-radius: 0;
+    }
+
+    .gc-table--stack thead {
+      /* Los encabezados se reemplazan por las etiquetas de cada celda */
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      overflow: hidden;
+      clip: rect(0 0 0 0);
+      white-space: nowrap;
+    }
+
+    .gc-table--stack tbody,
+    .gc-table--stack tr,
+    .gc-table--stack td {
+      display: block;
+      width: 100%;
+    }
+
+    .gc-table--stack tbody tr,
+    .gc-table--stack tbody tr:nth-child(odd),
+    .gc-table--stack tbody tr:nth-child(even) {
+      background-color: var(--surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: 0.65rem;
+      margin-bottom: 0.7rem;
+      box-shadow: var(--shadow-card);
+      overflow: hidden;
+    }
+
+    .gc-table--stack tbody tr:last-child {
+      margin-bottom: 0;
+    }
+
+    /* La etiqueta va posicionada, no como item flex: así las celdas que
+       contienen varias líneas (nombre + descripción) se apilan bien y no
+       se desbordan a lo ancho. */
+    .gc-table--stack td {
+      position: relative;
+      border: 0;
+      border-bottom: 1px dashed var(--border-subtle);
+      padding: 0.55rem 0.8rem 0.55rem 7.5rem;
+      text-align: left;
+      min-height: 2.4rem;
+      overflow-wrap: anywhere;
+    }
+
+    .gc-table--stack td:last-child {
+      border-bottom: 0;
+    }
+
+    .gc-table--stack td::before {
+      content: attr(data-label);
+      position: absolute;
+      left: 0.8rem;
+      top: 0.6rem;
+      width: 6.2rem;
+      font-size: 0.65rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      line-height: 1.15;
+      color: var(--text-muted);
+    }
+
+    /* Celdas sin etiqueta (estados vacíos, "cargando…") ocupan todo el ancho */
+    .gc-table--stack td:not([data-label]),
+    .gc-table--stack td[colspan] {
+      padding-left: 0.8rem;
+      text-align: center;
+    }
+
+    .gc-table--stack td:not([data-label])::before,
+    .gc-table--stack td[colspan]::before {
+      content: none;
+    }
+
+    /* La celda de acciones ocupa su propia franja, alineada a la derecha */
+    .gc-table--stack td.celda-acciones {
+      padding-left: 0.8rem;
+      text-align: right;
+      background: var(--surface-muted);
+    }
+  }
+
+  /* --------------------------------------------------------------------------
+   * Ajustes finos por tamaño de pantalla
+   * ------------------------------------------------------------------------ */
+  @media (max-width: 640px) {
+    /* Encabezado de página: título arriba, acciones abajo a lo ancho */
+    .page-header {
+      flex-direction: column;
+      align-items: stretch;
+    }
+
+    .page-title {
+      font-size: 1.15rem;
+    }
+
+    /* Botones de acción un poco más grandes para el dedo */
+    .btn-action {
+      width: 2.25rem;
+      height: 2.25rem;
+    }
+
+    .pag-btn {
+      min-width: 2rem;
+      height: 2rem;
+      font-size: 0.75rem;
+    }
+
+    .card-pad {
+      padding: 0.85rem 0.9rem;
+    }
+
+    .kpi-value {
+      font-size: 1.5rem;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .detalle-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .gc-table--stack td {
+      padding-left: 6.2rem;
+    }
+
+    .gc-table--stack td::before {
+      width: 5rem;
+    }
+  }
+
+  /* Tarjeta de un registro en el listado móvil del inventario */
+  .fila-card {
+    display: block;
+    width: 100%;
+    text-align: left;
+    background: var(--surface);
+    border: 1px solid var(--border-subtle);
+    border-radius: 0.65rem;
+    padding: 0.8rem 0.85rem;
+    box-shadow: var(--shadow-card);
+    transition: var(--transition-fast);
+  }
+
+  .fila-card:active {
+    background: var(--surface-muted);
+  }
+
+  /* ============================================================================
+   * PÁGINA PÚBLICA (landing del laboratorio)
+   * ========================================================================== */
+
+  .landing-nav {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    background: rgb(255 255 255 / 0.9);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--border-subtle);
+  }
+
+  .landing-hero {
+    position: relative;
+    overflow: hidden;
+    background: linear-gradient(150deg, #0b3252 0%, #124e80 45%, #1d6ba8 100%);
+    color: #fff;
+  }
+
+  /* Trama sutil de puntos sobre el degradado */
+  .landing-hero::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image: radial-gradient(rgb(255 255 255 / 0.14) 1px, transparent 1px);
+    background-size: 22px 22px;
+    pointer-events: none;
+  }
+
+  .landing-hero > * {
+    position: relative;
+    z-index: 1;
+  }
+
+  .landing-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--brand-accent);
+  }
+
+  .landing-title {
+    font-family: var(--font-display);
+    color: #fff;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    line-height: 1.08;
+    font-size: clamp(1.85rem, 5.5vw, 3.25rem);
+  }
+
+  .landing-section-title {
+    font-family: var(--font-display);
+    font-weight: 700;
+    letter-spacing: -0.015em;
+    color: var(--text-strong);
+    font-size: clamp(1.35rem, 3.5vw, 1.9rem);
+  }
+
+  .landing-lead {
+    font-size: clamp(0.95rem, 2.4vw, 1.075rem);
+    line-height: 1.65;
+  }
+
+  /* Monograma que hace de logotipo mientras no haya uno oficial */
+  .landing-logo {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 0.7rem;
+    background: linear-gradient(140deg, #124e80, #2b7ab8);
+    color: #fff;
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-size: 0.95rem;
+    letter-spacing: -0.03em;
+    flex-shrink: 0;
+  }
+
+  /* --------------------------------------------------------------------------
+   * Tarjeta de producto
+   * ------------------------------------------------------------------------ */
+  .producto-card {
+    display: flex;
+    flex-direction: column;
+    background: var(--surface);
+    border: 1px solid var(--border-subtle);
+    border-radius: 0.9rem;
+    overflow: hidden;
+    box-shadow: var(--shadow-card);
+    transition: var(--transition-standard);
+  }
+
+  .producto-card:hover {
+    box-shadow: var(--shadow-card-hover);
+    border-color: var(--color-primary-200, #aecfe9);
+    transform: translateY(-2px);
+  }
+
+  /* Marco de la imagen. Mientras no haya fotografía muestra una ilustración. */
+  .producto-figura {
+    position: relative;
+    aspect-ratio: 4 / 3;
+    display: grid;
+    place-items: center;
+    background: linear-gradient(160deg, #eef5fb 0%, #dceaf5 100%);
+    border-bottom: 1px solid var(--border-subtle);
+    overflow: hidden;
+  }
+
+  .producto-figura img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .producto-figura svg {
+    width: 58%;
+    max-width: 9rem;
+    height: auto;
+    color: #2b7ab8;
+    opacity: 0.85;
+  }
+
+  .producto-etiqueta-foto {
+    position: absolute;
+    right: 0.6rem;
+    bottom: 0.6rem;
+    font-size: 0.6rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: #5c7f9e;
+    background: rgb(255 255 255 / 0.75);
+    border-radius: 999px;
+    padding: 0.15rem 0.5rem;
+  }
+
+  /* --------------------------------------------------------------------------
+   * Pasos del proceso de pedido
+   * ------------------------------------------------------------------------ */
+  .paso-numero {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2rem;
+    height: 2rem;
+    border-radius: 999px;
+    background: var(--brand-accent);
+    color: #3b2704;
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-size: 0.85rem;
+    flex-shrink: 0;
+  }
+
+  /* Tarjeta de misión / visión */
+  .proposito-card {
+    position: relative;
+    background: var(--surface);
+    border: 1px solid var(--border-subtle);
+    border-radius: 0.9rem;
+    padding: 1.5rem;
+    box-shadow: var(--shadow-card);
+  }
+
+  .proposito-card::before {
+    content: "";
+    position: absolute;
+    inset: 0 auto 0 0;
+    width: 4px;
+    border-radius: 0.9rem 0 0 0.9rem;
+    background: var(--brand-primary);
+  }
+
+  .proposito-card--vision::before {
+    background: var(--brand-accent);
+  }
+
+  .landing-footer {
+    background: #0b2436;
+    color: #cfdae4;
+  }
 }

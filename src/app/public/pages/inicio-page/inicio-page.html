@@ -1,0 +1,460 @@
+<!-- ============================ Barra superior ============================ -->
+<header class="landing-nav">
+  <div class="mx-auto max-w-6xl px-4 sm:px-6 h-16 flex items-center justify-between gap-3">
+
+    <a href="#inicio" class="flex items-center gap-3 min-w-0" (click)="cerrarMenu()">
+      <span class="landing-logo" aria-hidden="true">II</span>
+      <span class="min-w-0">
+        <span class="block font-display font-bold text-sm leading-tight text-[color:var(--text-strong)] truncate">
+          Laboratorio de Ingeniería Industrial
+        </span>
+        <span class="block text-[0.7rem] text-secondary-500 truncate">CUNOC · USAC</span>
+      </span>
+    </a>
+
+    <nav class="hidden md:flex items-center gap-6 text-sm" aria-label="Secciones">
+      <a href="#productos" class="text-secondary-600 hover:text-primary-600 transition">Productos</a>
+      <a href="#proceso" class="text-secondary-600 hover:text-primary-600 transition">Cómo pedir</a>
+      <a href="#laboratorio" class="text-secondary-600 hover:text-primary-600 transition">El laboratorio</a>
+      <a href="#contacto" class="text-secondary-600 hover:text-primary-600 transition">Contacto</a>
+    </nav>
+
+    <div class="flex items-center gap-2">
+      <a routerLink="/login" class="btn btn-outline hidden sm:inline-flex">Ingresar</a>
+
+      <button type="button" class="btn-action btn-action--view md:hidden" (click)="alternarMenu()"
+              [attr.aria-expanded]="menuAbierto()" aria-label="Abrir menú">
+        <svg class="h-5 w-5" viewBox="0 0 20 20" fill="none" stroke="currentColor"
+             stroke-width="1.8" stroke-linecap="round">
+          @if (menuAbierto()) {
+            <path d="M5 5l10 10M15 5L5 15" />
+          } @else {
+            <path d="M3 6h14M3 10h14M3 14h14" />
+          }
+        </svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- Menú desplegable en móvil -->
+  @if (menuAbierto()) {
+    <nav class="md:hidden border-t border-[color:var(--border-subtle)] bg-white px-4 py-3 space-y-1"
+         aria-label="Secciones">
+      <a href="#productos" class="block py-2 text-sm text-secondary-700" (click)="cerrarMenu()">Productos</a>
+      <a href="#proceso" class="block py-2 text-sm text-secondary-700" (click)="cerrarMenu()">Cómo pedir</a>
+      <a href="#laboratorio" class="block py-2 text-sm text-secondary-700" (click)="cerrarMenu()">El laboratorio</a>
+      <a href="#contacto" class="block py-2 text-sm text-secondary-700" (click)="cerrarMenu()">Contacto</a>
+      <a routerLink="/login" class="btn btn-primary w-full mt-2">Ingresar al sistema</a>
+    </nav>
+  }
+</header>
+
+<!-- ================================ Hero ================================= -->
+<section id="inicio" class="landing-hero">
+  <div class="mx-auto max-w-6xl px-4 sm:px-6 py-14 sm:py-20 lg:py-24 grid lg:grid-cols-12 gap-10 items-center">
+
+    <div class="lg:col-span-7">
+      <p class="landing-eyebrow">
+        <span class="inline-block h-px w-6 bg-terciary-400"></span>
+        Centro Universitario de Occidente
+      </p>
+
+      <h1 class="landing-title mt-3">
+        Diseños hechos a tu medida en el
+        <span class="text-terciary-300">Laboratorio de Ingeniería Industrial</span>
+      </h1>
+
+      <p class="landing-lead mt-5 text-primary-100 max-w-2xl">
+        Sublimamos camisas, tazas y gorras, elaboramos llaveros personalizados y
+        producimos piezas en máquina tejedora industrial a partir de la imagen que
+        nos compartas. Todo se elabora aquí mismo, en el laboratorio.
+      </p>
+
+      <div class="mt-7 flex flex-col sm:flex-row gap-3">
+        <a href="#contacto" class="btn btn-accent w-full sm:w-auto">
+          Hacer un pedido
+          <svg class="h-4 w-4" viewBox="0 0 20 20" fill="none" stroke="currentColor"
+               stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M4 10h11M11 5l5 5-5 5" />
+          </svg>
+        </a>
+        <a href="#productos"
+           class="btn w-full sm:w-auto border border-white/35 text-white hover:bg-white/10">
+          Ver productos
+        </a>
+      </div>
+    </div>
+
+    <!-- Recuadro de datos -->
+    <div class="lg:col-span-5">
+      <div class="rounded-xl border border-white/20 bg-white/10 p-5 sm:p-6 backdrop-blur-sm">
+        <p class="text-xs font-semibold uppercase tracking-wider text-terciary-300">
+          Lo que producimos
+        </p>
+        <ul class="mt-4 space-y-3 text-sm">
+          @for (producto of productos(); track producto.id) {
+            <li class="flex items-start gap-3">
+              <svg class="h-4 w-4 mt-0.5 shrink-0 text-terciary-300" viewBox="0 0 20 20"
+                   fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"
+                   stroke-linejoin="round" aria-hidden="true">
+                <path d="M4 10.5l4 4 8-9" />
+              </svg>
+              <span class="text-primary-50">{{ producto.nombre }}</span>
+            </li>
+          }
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================== Productos ============================== -->
+<section id="productos" class="py-14 sm:py-20 bg-[color:var(--surface)]">
+  <div class="mx-auto max-w-6xl px-4 sm:px-6">
+
+    <div class="max-w-2xl">
+      <h2 class="landing-section-title">Productos</h2>
+      <div class="brand-rule mt-3"></div>
+      <p class="mt-4 text-sm sm:text-base text-secondary-600 leading-relaxed">
+        Cada pieza se produce por encargo. Podés traer tu propio diseño o contarnos
+        la idea para trabajarla con vos.
+      </p>
+    </div>
+
+    <div class="mt-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5">
+      @for (producto of productos(); track producto.id) {
+        <article class="producto-card">
+
+          <figure class="producto-figura">
+            @if (producto.imagen) {
+              <img [src]="producto.imagen" [alt]="producto.nombre" loading="lazy" />
+            } @else {
+              <!-- Ilustración temporal: al cargar la foto en `imagen`, se reemplaza sola -->
+              @switch (producto.id) {
+
+                @case ('camisas') {
+                  <svg viewBox="0 0 120 90" fill="none" stroke="currentColor" stroke-width="2.5"
+                       stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <path d="M46 14 30 22 20 42l12 6v28h56V48l12-6-10-20-16-8" />
+                    <path d="M46 14c4 9 24 9 28 0" />
+                  </svg>
+                }
+
+                @case ('tazas') {
+                  <svg viewBox="0 0 120 90" fill="none" stroke="currentColor" stroke-width="2.5"
+                       stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <path d="M32 26h48v40a8 8 0 0 1-8 8H40a8 8 0 0 1-8-8z" />
+                    <path d="M80 36h6a12 12 0 0 1 0 24h-6" />
+                    <path d="M46 18c0-3 4-3 4-6M60 18c0-3 4-3 4-6" opacity=".55" />
+                  </svg>
+                }
+
+                @case ('gorras') {
+                  <svg viewBox="0 0 120 90" fill="none" stroke="currentColor" stroke-width="2.5"
+                       stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <path d="M32 58a28 28 0 0 1 56 0" />
+                    <path d="M32 58h56" />
+                    <path d="M88 58h6a12 12 0 0 1 12 12H88z" />
+                    <circle cx="60" cy="32" r="2.5" />
+                  </svg>
+                }
+
+                @case ('llaveros') {
+                  <svg viewBox="0 0 120 90" fill="none" stroke="currentColor" stroke-width="2.5"
+                       stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <circle cx="40" cy="32" r="11" />
+                    <path d="M48 40l7 7" />
+                    <rect x="52" y="44" width="38" height="28" rx="7" />
+                    <circle cx="60" cy="52" r="2.5" />
+                  </svg>
+                }
+
+                @case ('tejido') {
+                  <svg viewBox="0 0 120 90" fill="none" stroke="currentColor" stroke-width="2.5"
+                       stroke-linecap="round" aria-hidden="true">
+                    <path d="M22 30q9-11 18 0t18 0 18 0 18 0" />
+                    <path d="M22 46q9-11 18 0t18 0 18 0 18 0" />
+                    <path d="M22 62q9-11 18 0t18 0 18 0 18 0" />
+                  </svg>
+                }
+              }
+              <figcaption class="producto-etiqueta-foto">Fotografía próximamente</figcaption>
+            }
+          </figure>
+
+          <div class="p-4 sm:p-5 flex flex-col flex-1">
+            <h3 class="font-display font-semibold text-[color:var(--text-strong)]">
+              {{ producto.nombre }}
+            </h3>
+            <p class="mt-1.5 text-sm text-secondary-600 leading-relaxed">{{ producto.resumen }}</p>
+
+            <ul class="mt-3 space-y-1.5 flex-1">
+              @for (detalle of producto.detalles; track detalle) {
+                <li class="flex items-start gap-2 text-xs text-secondary-500">
+                  <span class="mt-1.5 h-1 w-1 rounded-full bg-terciary-400 shrink-0"></span>
+                  {{ detalle }}
+                </li>
+              }
+            </ul>
+
+            <a href="#contacto" class="btn btn-outline btn-sm mt-4 self-start">Cotizar</a>
+          </div>
+        </article>
+      }
+    </div>
+  </div>
+</section>
+
+<!-- =============================== Proceso =============================== -->
+<section id="proceso" class="py-14 sm:py-20 bg-[color:var(--surface-muted)]">
+  <div class="mx-auto max-w-6xl px-4 sm:px-6">
+
+    <div class="max-w-2xl">
+      <h2 class="landing-section-title">Cómo hacer un pedido</h2>
+      <div class="brand-rule mt-3"></div>
+    </div>
+
+    <ol class="mt-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+      @for (paso of pasos; track paso.titulo; let i = $index) {
+        <li class="card card-pad h-full">
+          <span class="paso-numero">{{ i + 1 }}</span>
+          <h3 class="mt-3 font-display font-semibold text-sm text-[color:var(--text-strong)]">
+            {{ paso.titulo }}
+          </h3>
+          <p class="mt-1.5 text-sm text-secondary-600 leading-relaxed">{{ paso.texto }}</p>
+        </li>
+      }
+    </ol>
+  </div>
+</section>
+
+<!-- ============================ El laboratorio =========================== -->
+<section id="laboratorio" class="py-14 sm:py-20 bg-[color:var(--surface)]">
+  <div class="mx-auto max-w-6xl px-4 sm:px-6">
+
+    <div class="max-w-2xl">
+      <h2 class="landing-section-title">El laboratorio</h2>
+      <div class="brand-rule mt-3"></div>
+      <p class="mt-4 text-sm sm:text-base text-secondary-600 leading-relaxed">
+        Un espacio de la Carrera de Ingeniería Industrial del Centro Universitario de
+        Occidente, donde la práctica académica y la producción conviven.
+      </p>
+    </div>
+
+    <div class="mt-8 grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-5">
+
+      <div class="proposito-card">
+        <p class="text-xs font-bold uppercase tracking-wider text-primary-600">Misión</p>
+        <p class="mt-3 text-sm sm:text-[0.95rem] text-secondary-700 leading-relaxed">
+          Brindar a los estudiantes de la carrera de Ingeniería Industrial del Centro
+          Universitario de Occidente el espacio físico, equipo y materiales necesarios
+          para llevar a la práctica los conocimientos teóricos adquiridos como parte de
+          su formación académica universitaria y facilitar las labores de docencia.
+        </p>
+      </div>
+
+      <div class="proposito-card proposito-card--vision">
+        <p class="text-xs font-bold uppercase tracking-wider text-terciary-600">Visión</p>
+        <p class="mt-3 text-sm sm:text-[0.95rem] text-secondary-700 leading-relaxed">
+          Convertirse en un laboratorio que satisfaga las necesidades experimentales de
+          la educación activa en la Carrera de Ingeniería Industrial del Centro
+          Universitario de Occidente, acorde a la tecnología y tendencias del ámbito
+          laboral.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- =============================== Contacto ============================== -->
+<section id="contacto" class="py-14 sm:py-20 bg-[color:var(--surface-muted)]">
+  <div class="mx-auto max-w-6xl px-4 sm:px-6 grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8">
+
+    <!-- Datos -->
+    <div class="lg:col-span-5">
+      <h2 class="landing-section-title">Hablemos de tu pedido</h2>
+      <div class="brand-rule mt-3"></div>
+      <p class="mt-4 text-sm sm:text-base text-secondary-600 leading-relaxed">
+        Contanos qué necesitás y con gusto te preparamos una cotización.
+      </p>
+
+      <ul class="mt-6 space-y-4 text-sm">
+
+        @if (contacto.whatsapp) {
+          <li class="flex items-start gap-3">
+            <span class="btn-action btn-action--move shrink-0" aria-hidden="true">
+              <svg class="h-4 w-4" viewBox="0 0 20 20" fill="none" stroke="currentColor"
+                   stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M3 17l1.3-4A7 7 0 1 1 7 15.7z" />
+              </svg>
+            </span>
+            <span>
+              <span class="block text-xs uppercase tracking-wide font-semibold text-secondary-500">WhatsApp</span>
+              <a [href]="enlaceWhatsApp()" target="_blank" rel="noopener"
+                 class="text-primary-600 hover:underline">Escribinos por WhatsApp</a>
+            </span>
+          </li>
+        }
+
+        @if (contacto.correo) {
+          <li class="flex items-start gap-3">
+            <span class="btn-action btn-action--edit shrink-0" aria-hidden="true">
+              <svg class="h-4 w-4" viewBox="0 0 20 20" fill="none" stroke="currentColor"
+                   stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="2.5" y="4.5" width="15" height="11" rx="2" />
+                <path d="M3 6l7 5 7-5" />
+              </svg>
+            </span>
+            <span>
+              <span class="block text-xs uppercase tracking-wide font-semibold text-secondary-500">Correo</span>
+              <a [href]="'mailto:' + contacto.correo" class="text-primary-600 hover:underline break-all">
+                {{ contacto.correo }}
+              </a>
+            </span>
+          </li>
+        }
+
+        @if (contacto.telefono) {
+          <li class="flex items-start gap-3">
+            <span class="btn-action btn-action--view shrink-0" aria-hidden="true">
+              <svg class="h-4 w-4" viewBox="0 0 20 20" fill="none" stroke="currentColor"
+                   stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M5 3h3l1.5 4-2 1.5a10 10 0 0 0 4 4L13 10.5 17 12v3a2 2 0 0 1-2.2 2A13 13 0 0 1 3 5.2 2 2 0 0 1 5 3z" />
+              </svg>
+            </span>
+            <span>
+              <span class="block text-xs uppercase tracking-wide font-semibold text-secondary-500">Teléfono</span>
+              <span class="text-secondary-700">{{ contacto.telefono }}</span>
+            </span>
+          </li>
+        }
+
+        <li class="flex items-start gap-3">
+          <span class="btn-action btn-action--view shrink-0" aria-hidden="true">
+            <svg class="h-4 w-4" viewBox="0 0 20 20" fill="none" stroke="currentColor"
+                 stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M10 17s6-5.2 6-9.5A6 6 0 0 0 4 7.5C4 11.8 10 17 10 17z" />
+              <circle cx="10" cy="7.5" r="2.2" />
+            </svg>
+          </span>
+          <span>
+            <span class="block text-xs uppercase tracking-wide font-semibold text-secondary-500">Dónde estamos</span>
+            <span class="text-secondary-700">{{ contacto.direccion }}</span>
+            <span class="block text-secondary-500 text-xs mt-0.5">{{ contacto.horario }}</span>
+          </span>
+        </li>
+      </ul>
+
+      @if (!hayCanal()) {
+        <p class="mt-6 rounded-lg border border-terciary-200 bg-terciary-50 px-4 py-3 text-xs text-terciary-700">
+          Falta configurar el WhatsApp y el correo del laboratorio en
+          <code class="font-mono">inicio-page.ts</code> (constante <strong>CONTACTO</strong>).
+        </p>
+      }
+    </div>
+
+    <!-- Formulario -->
+    <div class="lg:col-span-7">
+      <form class="card card-pad space-y-4" (submit)="enviarPedido($event)">
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div>
+            <label class="input-label" for="c-nombre">Tu nombre *</label>
+            <input id="c-nombre" type="text" class="input-control" required
+                   [value]="form().nombre"
+                   (input)="actualizar('nombre', $any($event.target).value)"
+                   placeholder="Nombre y apellido" />
+          </div>
+
+          <div>
+            <label class="input-label" for="c-contacto">Teléfono o correo *</label>
+            <input id="c-contacto" type="text" class="input-control" required
+                   [value]="form().contacto"
+                   (input)="actualizar('contacto', $any($event.target).value)"
+                   placeholder="Para responderte" />
+          </div>
+
+          <div>
+            <label class="input-label" for="c-producto">Producto</label>
+            <select id="c-producto" class="input-control" [value]="form().producto"
+                    (change)="actualizar('producto', $any($event.target).value)">
+              <option value="">Todavía no lo tengo claro</option>
+              @for (producto of productos(); track producto.id) {
+                <option [value]="producto.nombre">{{ producto.nombre }}</option>
+              }
+            </select>
+          </div>
+
+          <div>
+            <label class="input-label" for="c-cantidad">Cantidad aproximada</label>
+            <input id="c-cantidad" type="text" class="input-control"
+                   [value]="form().cantidad"
+                   (input)="actualizar('cantidad', $any($event.target).value)"
+                   placeholder="Ej. 20 camisas" />
+          </div>
+        </div>
+
+        <div>
+          <label class="input-label" for="c-mensaje">Contanos tu idea</label>
+          <textarea id="c-mensaje" rows="4" class="input-control"
+                    [value]="form().mensaje"
+                    (input)="actualizar('mensaje', $any($event.target).value)"
+                    placeholder="Colores, diseño, fecha en que lo necesitás…"></textarea>
+        </div>
+
+        <div class="flex flex-col-reverse sm:flex-row sm:items-center sm:justify-between gap-3 pt-1">
+          <p class="text-xs text-secondary-500">
+            Se abre WhatsApp con tu pedido ya redactado. Podés revisarlo antes de enviarlo.
+          </p>
+          <button type="submit" class="btn btn-primary w-full sm:w-auto" [disabled]="!formValido()">
+            Enviar pedido
+          </button>
+        </div>
+
+        @if (enviado()) {
+          <p class="rounded-lg border border-success-300 bg-success-50 px-4 py-3 text-sm text-success-700">
+            Listo, abrimos la conversación con tu pedido. Si no se abrió, revisá que el
+            navegador no haya bloqueado la ventana emergente.
+          </p>
+        }
+
+        @if (sinCanal()) {
+          <p class="rounded-lg border border-danger-300 bg-danger-50 px-4 py-3 text-sm text-danger-700">
+            Aún no hay un canal de contacto configurado. Escribinos directamente al
+            laboratorio mientras tanto.
+          </p>
+        }
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- ================================ Pie ================================== -->
+<footer class="landing-footer">
+  <div class="mx-auto max-w-6xl px-4 sm:px-6 py-10 grid grid-cols-1 sm:grid-cols-2 gap-6 items-start">
+
+    <div>
+      <div class="flex items-center gap-3">
+        <span class="landing-logo" aria-hidden="true">II</span>
+        <span>
+          <span class="block font-display font-bold text-sm text-white">
+            Laboratorio de Ingeniería Industrial
+          </span>
+          <span class="block text-xs opacity-70">
+            Centro Universitario de Occidente · Universidad de San Carlos de Guatemala
+          </span>
+        </span>
+      </div>
+      <p class="mt-4 text-xs opacity-70 max-w-md leading-relaxed">
+        {{ contacto.direccion }}<br />{{ contacto.horario }}
+      </p>
+    </div>
+
+    <div class="sm:text-right">
+      <a routerLink="/login" class="btn btn-outline">Ingresar al sistema</a>
+      <p class="mt-4 text-xs opacity-60">
+        © {{ anio }} Laboratorio de Ingeniería Industrial, CUNOC-USAC.
+      </p>
+    </div>
+  </div>
+</footer>
