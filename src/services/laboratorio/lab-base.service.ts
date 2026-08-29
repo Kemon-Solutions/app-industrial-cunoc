@@ -169,7 +169,10 @@ export abstract class LabBaseService<T extends { id?: string }> extends HttpServ
   protected notificarError(error: unknown, porDefecto: string): void {
     const mensaje =
       (error as { error?: { message?: string } })?.error?.message ?? porDefecto;
-    console.error(`[${this.endpoint}]`, error);
+    // Cadena de formato constante: `this.endpoint` va como argumento, no
+    // interpolado, para que un '%s' en su valor no pueda desplazar los
+    // argumentos siguientes y falsear la linea de log.
+    console.error('[%s]', this.endpoint, error);
     this.toastr.error(mensaje, 'Error');
   }
 }
