@@ -1,0 +1,138 @@
+name: "CD - Despliegue a Develop (Frontend Angular)"
+
+on:
+  push:
+    branches: [ "develop" ]
+  pull_request:
+    types: [ closed ]
+    branches: [ "develop" ]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+# Evita que dos despliegues escriban a la vez sobre el servidor.
+# cancel-in-progress en false: preferimos un despliegue duplicado (es
+# idempotente) antes que abortar un rsync a medias y dejar el sitio incompleto.
+concurrency:
+  group: cd-develop-${{ github.ref }}
+  cancel-in-progress: false
+
+env:
+  # Angular 21 exige ^20.19.0 || ^22.12.0 || >=24.0.0 (engines de @angular/core).
+  NODE_VERSION: '22.12'
+  # Nombre del proyecto en angular.json; define la ruta de salida del build.
+  ANGULAR_PROJECT: 'prototipo-app'
+  # Debe coincidir con la ruta pública desde la que nginx sirve la app.
+  # Si se sirve en una subruta (p. ej. https://host/app/), poner '/app/'.
+  BASE_HREF: '/'
+
+jobs:
+  security-scan:
+    name: "Security Gate (SAST + SCA)"
+    # Solo continúa si es push/dispatch, o si el PR fue realmente fusionado.
+    if: github.event_name != 'pull_request' || github.event.pull_request.merged == true
+    uses: ./.github/workflows/security-scan.yml
+
+  build-test:
+    name: "Prueba de Compilación (npm run build)"
+    needs: security-scan
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Checkout del Código Fuente
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5  # v4.3.1
+
+      - name: Configurar Node.js
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020  # v4.4.0
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+
+      - name: Instalar Dependencias
+        run: npm ci
+
+      - name: Compilar Aplicación Angular
+        run: npm run build -- --configuration production --base-href "$BASE_HREF"
+
+      - name: Verificar Artefacto de Compilación
+        run: |
+          set -euo pipefail
+          SALIDA="dist/${ANGULAR_PROJECT}/browser"
+          test -f "${SALIDA}/index.html" || {
+            echo "::error::No se generó ${SALIDA}/index.html"
+            echo "Contenido de dist/:"; ls -R dist/ || true
+            exit 1
+          }
+          echo "Compilación correcta. Archivos: $(find "$SALIDA" -type f | wc -l)"
+
+      # Se publica el resultado del build para que el despliegue use exactamente
+      # los mismos bytes que se acaban de verificar, en vez de recompilar.
+      - name: Publicar Artefacto del Build
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02  # v4.6.2
+        with:
+          name: frontend-dist
+          path: dist/${{ env.ANGULAR_PROJECT }}/browser
+          retention-days: 5
+          if-no-files-found: error
+
+  deploy-frontend:
+    name: "Despliegue Frontend (self-hosted AL2023)"
+    needs: [ security-scan, build-test ]
+    runs-on: [ self-hosted, Linux, X64 ]
+    timeout-minutes: 15
+    env:
+      DEPLOY_DIR: /usr/share/nginx/html/industrial-cunoc/app
+    defaults:
+      run:
+        shell: bash
+    steps:
+      # La app es estática: no hace falta checkout, ni Node, ni npm, ni pm2 en
+      # el runner. Solo se descarga lo que build-test ya compiló y verificó.
+      - name: Descargar Artefacto del Build
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093  # v4.3.0
+        with:
+          name: frontend-dist
+          path: dist-deploy
+
+      - name: Verificar Herramientas del Runner
+        run: |
+          set -euo pipefail
+          grep PRETTY_NAME /etc/os-release
+          # Amazon Linux 2023 no trae rsync preinstalado.
+          command -v rsync >/dev/null || sudo -n dnf install -y rsync
+          command -v rsync >/dev/null || {
+            echo "::error::Falta 'rsync' en el runner y no se pudo instalar"
+            exit 1
+          }
+          test -f dist-deploy/index.html || {
+            echo "::error::El artefacto descargado no contiene index.html"
+            exit 1
+          }
+
+      - name: Preparar Directorio de Despliegue
+        run: |
+          set -euo pipefail
+          sudo -n mkdir -p "$DEPLOY_DIR"
+          sudo -n chown -R "$(id -u):$(id -g)" "$DEPLOY_DIR"
+
+      - name: Copiar Artefactos al Directorio de Despliegue
+        run: |
+          set -euo pipefail
+          # Barra final en el origen: se copia el CONTENIDO, de modo que
+          # index.html quede en la raíz de $DEPLOY_DIR.
+          # --delete es necesario aquí: elimina los chunks con hash antiguo que
+          # ya no existen en este build.
+          rsync -a --delete dist-deploy/ "$DEPLOY_DIR/"
+          # nginx corre como otro usuario: debe poder leer los archivos.
+          chmod -R a+rX "$DEPLOY_DIR"
+
+      - name: Verificar Despliegue
+        run: |
+          set -euo pipefail
+          test -f "$DEPLOY_DIR/index.html" || {
+            echo "::error::index.html no llegó a $DEPLOY_DIR"
+            exit 1
+          }
+          echo "Archivos desplegados: $(find "$DEPLOY_DIR" -type f | wc -l)"
+          echo "index.html: $(stat -c '%s bytes, permisos %a' "$DEPLOY_DIR/index.html")"
